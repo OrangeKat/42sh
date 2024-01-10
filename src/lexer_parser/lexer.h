@@ -9,10 +9,6 @@ enum token_type
     TOKEN_THEN,
     TOKEN_ELIF,
     TOKEN_ELSE,
-    TOKEN_FI,
-    TOKEN_COLON,
-    TOKEN_NL,
-    TOKEN_SQUOTE,
     TOKEN_WORDS
 };
 
