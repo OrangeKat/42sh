@@ -83,7 +83,15 @@ int token_handler(struct token_list tokens, char *word)
     }
 }
 
-
+char *string_handler(char *input)
+{
+    char *start = NULL;
+    while (input)
+    {
+        //TODO
+    }
+    return start;
+}
 
 struct token_list *token_list_genesis(char *input)
 {
