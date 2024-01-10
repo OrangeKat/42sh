@@ -21,12 +21,19 @@ struct token *token_pop(struct token_list *tokens)
 
 void token_free(struct token *token)
 {
-    //TODO
+    free(token->value);
+    free(token);
 }
 
 void token_list_destroy(struct token_list *tokens)
 {
-    //TODO
+    struct token *curr = tokens->head;
+    while (curr != NULL)
+    {
+        struct token *tmp = curr;
+        token_free(curr);
+        curr = tmp->next;
+    }
 }
 
 struct token_list *token_list_genesis(char *input)
