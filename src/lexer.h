@@ -29,10 +29,10 @@ struct token_list
     size_t size;
 };
 
-void token_push(struct token_list tokens, struct token token);
-struct token *token_pop(struct token_list tokens);
-void token_free(struct token token);
-void token_list_destroy(struct token_list tokens);
-struct token_list token_list_genesis(char *input);
+void token_push(struct token_list *tokens, struct token *token);
+struct token *token_pop(struct token_list *tokens);
+void token_free(struct token *token);
+void token_list_destroy(struct token_list *tokens);
+struct token_list *token_list_genesis(char *input);
 
 #endif // LEXER_H
