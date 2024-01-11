@@ -6,7 +6,7 @@
 #include "builtin.h"
 
 //@params: str:char * the string where we want to extend two chars to the new
-//char
+// char
 //         index:size_t the index where we start
 //         new:char the char that will take the place of the two chars at index
 //         and index + 1
@@ -21,7 +21,7 @@ void extend_char(char *str, size_t index, char new)
 }
 
 //@params: str: char * the string in which we want to extend two chars to their
-//special one
+// special one
 void extend_string(char *str)
 {
     size_t i = 0;
@@ -63,7 +63,9 @@ int echo(char *str, int extend, int newline)
     }
     printf("%s", res);
     if (newline)
+    {
         putchar('\n');
+    }
     free(res);
     return 0;
 }
