@@ -5,27 +5,43 @@
 
 #include "builtin.h"
 
-//@params: str:char * the string which contains the character to escape
-//         index:size_t the index where we escape the character
-void escape_char(char *str, size_t index)
+//@params: str:char * the string where we want to extend two chars to the new
+//char
+//         index:size_t the index where we start
+//         new:char the char that will take the place of the two chars at index
+//         and index + 1
+void extend_char(char *str, size_t index, char new)
 {
-    char c;
-    if (str[index] == '\n')
-        c = 'n';
-    else if (str[index] == '\t')
-        c = 't';
-    else
-        c = '\0';
-    // this should not happen and is a debug case
-    str[index++] = '\\';
-    char temp1 = str[index];
-    char temp2;
-    str[index++] = c;
-    while (str[index - 1] != '\0')
+    str[index++] = new;
+    while (str[index] != '\0')
     {
-        temp2 = str[index];
-        str[index++] = temp1;
-        temp1 = temp2;
+        str[index] = str[index + 1];
+        index++;
+    }
+}
+
+//@params: str: char * the string in which we want to extend two chars to their
+//special one
+void extend_string(char *str)
+{
+    size_t i = 0;
+    while (str[i] != '\0')
+    {
+        if (str[i++] == '\\')
+        {
+            if (str[i] == 'n')
+            {
+                extend_char(str, i - 1, '\n');
+            }
+            else if (str[i] == 't')
+            {
+                extend_char(str, i - 1, '\t');
+            }
+            else if (str[i] == '\\')
+            {
+                extend_char(str, i - 1, '\\');
+            }
+        }
     }
 }
 
@@ -41,27 +57,9 @@ int echo(char *str, int extend, int newline)
     if (res == NULL)
         return 1;
     strncpy(res, str, len);
-    if (!extend)
+    if (extend)
     {
-        size_t i = 0;
-        while (res[i] != '\0')
-        {
-            if (res[i] == '\n' || res[i] == '\t')
-            {
-                len++;
-            }
-            i++;
-        }
-        res = realloc(res, len + 1);
-        i = 0;
-        while (res[i] != '\0')
-        {
-            if (res[i] == '\n' || res[i] == '\t')
-            {
-                escape_char(res, i);
-            }
-            i++;
-        }
+        extend_string(res);
     }
     printf("%s", res);
     if (newline)
