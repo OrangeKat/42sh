@@ -59,11 +59,9 @@ void extend_string(char *str)
 ** \param extend Controls if \t (two separate characters)are extended to tabs
 ** and \\n to newline\n
 ** 0 by default or if -E, 1 if -e is specified
-** \param newline controls if a newline is added at the end of the string\n
-** 1 by default, 0 if -n is specified
 ** \return Returns 0 in case of success, 1 in case of failure
 */
-int echo(char *str, int extend, int newline)
+int echosingle(char *str, int extend)
 {
     size_t len = strlen(str);
     char *res = malloc(sizeof(char) * (len + 1));
@@ -75,10 +73,32 @@ int echo(char *str, int extend, int newline)
         extend_string(res);
     }
     printf("%s", res);
+    free(res);
+    return 0;
+}
+
+/**
+** \brief Prints the arguments separated by space
+** \details Prints all of its arguments separated by a space
+** \param args The list of arguments to print
+** \param argnum The number of arguments
+** \param extend Controls if \t (two separate characters)are extended to tabs
+** and \\n to newline\n
+** 0 by default or if -E, 1 if -e is specified
+** \param newline controls if a newline is added at the end of the string\n
+** 1 by default, 0 if -n is specified
+** \return Returns 0 in case of success, 1 in case of failure
+*/
+int echo(char *args[], size_t argnum, int extend, int newline)
+{
+    for (size_t i = 0; i < argnum; i++)
+    {
+        if (echosingle(args[i], extend))
+            return 1;
+    }
     if (newline)
     {
         putchar('\n');
     }
-    free(res);
     return 0;
 }
