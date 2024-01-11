@@ -5,11 +5,14 @@
 
 #include "builtin.h"
 
-//@params: str:char * the string where we want to extend two chars to the new
-// char
-//         index:size_t the index where we start
-//         new:char the char that will take the place of the two chars at index
-//         and index + 1
+/**
+** \brief Extends two characters to their special character
+** \details Extends the two characters at index and index + 1 to their special
+** character, defined by new
+** \param str The string to extend
+** \param index The index where the two characters are located
+** \param new The special character that will take place of the old two
+*/
 void extend_char(char *str, size_t index, char new)
 {
     str[index++] = new;
@@ -20,8 +23,12 @@ void extend_char(char *str, size_t index, char new)
     }
 }
 
-//@params: str: char * the string in which we want to extend two chars to their
-// special one
+/**
+** \brief Extends two characters to their special character in the string
+** \details Loops through the strings and extends characters when it finds them
+** \param str The string to extend
+** \param extend Controls if \t (two separate characters)are extended to tabs
+*/
 void extend_string(char *str)
 {
     size_t i = 0;
@@ -45,11 +52,17 @@ void extend_string(char *str)
     }
 }
 
-//@params: str:char * the string to print
-//         extend:int controls if \t are extended to tabs and \n to newline
-//         0 by default if -e is not specified
-//         newline:int controls if a newline is added at end of string
-//         1 by default if -n is not specified
+/**
+** \brief Prints a string to standard output
+** \details Takes a string from statard input and prints it to standard output
+** \param str The string to print
+** \param extend Controls if \t (two separate characters)are extended to tabs
+** and \\n to newline\n
+** 0 by default or if -E, 1 if -e is specified
+** \param newline controls if a newline is added at the end of the string\n
+** 1 by default, 0 if -n is specified
+** \return Returns 0 in case of success, 1 in case of failure
+*/
 int echo(char *str, int extend, int newline)
 {
     size_t len = strlen(str);
