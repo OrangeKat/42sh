@@ -95,6 +95,10 @@ int echo(char *args[], size_t argnum, int extend, int newline)
     {
         if (echosingle(args[i], extend))
             return 1;
+        if (i != argnum - 1)
+        {
+            putchar(' ');
+        }
     }
     if (newline)
     {
