@@ -10,26 +10,24 @@ enum parser_status
     PARSER_UNEXPECTED_TOKEN,
 };
 
+/*
+    input =
+    simple_command '\n'
+    | simple_command EOF
+    | '\n'
+    | EOF
+    ;
+*/
 enum parser_status parse(struct ast **res, struct lexer *lexer);
 
+/*
+    simple_command = WORD { element } ;
+*/
 enum parser_status parse_exp(struct ast **res, struct lexer *lexer);
 
-/**
- * \brief Parse texp expressions separated by * and /
- *
- * sexp =      texp  { ('*' | '/' ) texp } ;
- */
+/*
+    element = WORD ;
+*/
 enum parser_status parse_sexp(struct ast **res, struct lexer *lexer);
-
-/**
- * \brief Parse either a number, a - a number, or a parenthesized expression
- *
- * texp =      NUMBER
- *          |  '-' NUMBER
- *          |  '-' '(' exp ')'
- *          |  '(' exp ')'
- *          ;
- */
-enum parser_status parse_texp(struct ast **res, struct lexer *lexer);
 
 #endif /* !PARSER_H */
