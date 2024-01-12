@@ -1,3 +1,5 @@
+#include "token_utils.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,6 +25,22 @@ char* get_string(FILE *fd)
     size_t size = 1;
     char *res = calloc(sizeof(char),size);
     while((c = fgetc(fd)) != '\'' && c != EOF)
+    {
+        res[size-1] = c;
+        size++;
+        res = realloc(res,size);
+    }
+    if(c == EOF)
+    {
+        free(res);
+        return NULL;
+    }
+    return res;
+}
+char * get_word(FILE *fd)
+{
+    char * res = calloc(sizeof(char),1);
+    while((c = fgetc(fd))!= EOF && is_separator(c))
     {
         res[size-1] = c;
         size++;
