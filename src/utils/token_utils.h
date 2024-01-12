@@ -1,6 +1,8 @@
 #ifndef TOKEN_UTILS_H
 #define TOKEN_UTILS_H
 
+#include <stdio.h>
+
 int is_separator(char c);
 
 char* get_string(FILE *fd);
