@@ -11,16 +11,11 @@
 int main(int argc,char **argv)
 {
     FILE *f;
-    //error argument
-    if (argc < 2 || argc > 4)
-    {   
-        err(-1,"too few arguments to function");
-    }
     //check if it there is a string argument
     if(strcmp("-c",argv[1]) == 0)
     {
         //create a file and copy argv[2] inside
-        f = fmemopen(argv[2],strlen(argv[2]),"w");
+        f = fmemopen(argv[2],strlen(argv[2]),"r");
     }
     // stdin
     else if(strcmp("<" ,argv[1]))
