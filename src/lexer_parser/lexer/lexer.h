@@ -1,7 +1,7 @@
-#ifndef LEXER_H
-#define LEXER_H
+#ifndef LEXER_ROBIN_H
+#define LEXER_ROBIN_H
 
-#include "token.h"
+#include "token_robin.h"
 #include <stdio.h>
 
 struct lexer
@@ -11,7 +11,7 @@ struct lexer
     struct token *current_tok; // The next token, if processed
 };
 
-struct lexer *lexer_new(const char *input);
+struct lexer *lexer_new(FILE *input_file);
 
 void lexer_free(struct lexer *lexer);
 
