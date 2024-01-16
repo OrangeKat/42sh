@@ -6,8 +6,8 @@
 
 int is_separator(char c)
 {
-    char separator_list[] = {' ','\n','\''};
-    size_t size = 3;
+    char separator_list[] = {' '};
+    size_t size = 1;
     while(size > 0)
     {
         size--;
@@ -19,7 +19,7 @@ int is_separator(char c)
     return 0;
 }
 
-char* get_string(FILE *fd)
+char *get_string(FILE *fd)
 {
     char c;
     size_t size = 1;
@@ -38,7 +38,7 @@ char* get_string(FILE *fd)
     res[size] = '\0';
     return res;
 }
-char * get_word(FILE *fd)
+char *get_word(FILE *fd)
 {
     size_t size = 1;
     char c;

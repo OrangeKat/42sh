@@ -5,7 +5,7 @@
 
 enum token_type
 {
-    TOKEN_WORD=0,
+    TOKEN_WORD,
     TOKEN_EOF,
     TOKEN_NL
 };
@@ -13,6 +13,6 @@ enum token_type
 struct token
 {
     enum token_type type; // The kind of token
-    ssize_t value; // If the token is a word, its value
+    char* value; // If the token is a word, its value
 };
 #endif /* !TOKEN_H */
