@@ -9,7 +9,8 @@ struct ast *ast_genesis(enum ast_type type)
     new->type = type;
     new->nb_children = 0;
     new->children = NULL;
-    new->data = calloc(1, sizeof(char));
+    new->data = malloc(sizeof(char *));
+    new->data[0] = NULL;
 
     return new;
 }
