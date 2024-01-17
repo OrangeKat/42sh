@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "file_to_string.h": "c",
+        "random": "c"
+    }
+}

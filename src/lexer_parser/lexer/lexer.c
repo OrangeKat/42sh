@@ -1,17 +1,19 @@
-#include "lexer_robin.h"
+#include "lexer.h"
 
 #include <err.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "token_robin.h"
+#include "token.h"
 #include "../../utils/token_utils.h"
 
 struct lexer *lexer_new(FILE *input_file)
 {
     struct lexer *new = malloc(sizeof(struct lexer));
     new->input_file = input_file;
-    new->current_tok = NULL;
-    new->offset = 0;
+    new->current_tok = parse_input_for_tok(new);
+    new->offset = ftell(input_file);
+    new->separator = 0;
     return new;
 }
 
@@ -48,13 +50,12 @@ struct token *parse_input_for_tok(struct lexer *lexer)
             str[size-1] = '\0';
             res->type = TOKEN_WORD;
             res->value = str;
-            fseek(lexer->input_file,-1,SEEK_CUR);
+            lexer->separator = 1;   
             return res;
         }
         str[size-1] = c;
         size++;
         str = realloc(str,size);
-
     }
     str[size-1] = '\0'; 
     if (str[0] == '\0')
@@ -62,6 +63,7 @@ struct token *parse_input_for_tok(struct lexer *lexer)
         res->type = TOKEN_EOF;
         res->value = NULL;
         free(str);
+        return res;
     }
     res->type = TOKEN_WORD;
     res->value = str;
@@ -70,21 +72,26 @@ struct token *parse_input_for_tok(struct lexer *lexer)
 
 struct token *lexer_peek(struct lexer *lexer)
 {
-    if (lexer->current_tok == NULL)
-    {
-        lexer->current_tok = parse_input_for_tok(lexer);
-    }
-    return lexer->current_tok;
+    fseek(lexer->input_file,lexer->offset,SEEK_SET);
+    struct token *tok = parse_input_for_tok(lexer);
+    return tok;
 }
 
 struct token *lexer_pop(struct lexer *lexer)
 {
-    struct token *to_pop = lexer_peek(lexer);
-    lexer->current_tok = NULL;
+    struct token *to_pop = lexer->current_tok;
+    struct token *peek = lexer_peek(lexer);
+    lexer->current_tok = peek;
+    lexer->offset = ftell(lexer->input_file);
+    if(lexer->separator)
+    {
+        lexer->offset--;
+        lexer->separator = 0; 
+    }
     return to_pop;
 }
 
-/*int main(void)
+int main(void)
 {
     struct lexer *lex = lexer_new(fopen("test.sh","r"));
     struct token *tok = lexer_peek(lex);
@@ -93,6 +100,6 @@ struct token *lexer_pop(struct lexer *lexer)
     tok = lexer_peek(lex);
     printf("%s\n",lex->current_tok->value);
     tok = lexer_pop(lex);
-    printf("%d\n",lexer_peek(lex)->type);
+    printf("%d\n",lex->current_tok->type);
     return 0;
-}*/
+}
