@@ -49,7 +49,11 @@ int main(int argc,char **argv)
 
     for (size_t i = 0; i < sizeof(tree_list) / sizeof(struct ast *); i++)
     {
-        echo(tree_list[i]->data, sizeof(tree_list[i]->data) / sizeof(char *) + 1, 0, 1);
+        int size = 0;
+        while (tree_list[i]->data[size] != NULL){
+            size++;
+    }
+        echo(tree_list[i]->data, size, 0, 1);
         ast_destroy(tree_list[i]);
     }
     free(tree_list);
