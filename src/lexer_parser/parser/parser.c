@@ -8,15 +8,15 @@
 static void add_to_data(char **data, char *word)
 {
     size_t length = 0;
-    while (data[length])
+    while (data[length] != NULL)
     {
         length++;
     }
     data[length] = word;
     length++;
 
-    data = realloc(data, length);
-    data[length - 1] = NULL;
+    data = realloc(data, (length + 1) * sizeof(char *));
+    data[length] = NULL;
 }
 
 /*
@@ -42,7 +42,7 @@ enum parser_status parse(struct ast **tree_list, struct lexer *lexer, size_t cur
         free(lexer_pop(lexer));
         return PARSER_OK;
     }
-    else if (parse_simple_command(lexer, ast_node) == PARSER_OK)
+    else if (parse_simple_command(lexer, &ast_node) == PARSER_OK)
     {
         tree_list[curr_root] = ast_node;
         parse(tree_list, lexer, curr_root);
@@ -58,12 +58,12 @@ enum parser_status parse(struct ast **tree_list, struct lexer *lexer, size_t cur
 /*
     simple_command = WORD { element } ;
 */
-enum parser_status parse_simple_command(struct lexer *lexer, struct ast *node)
+enum parser_status parse_simple_command(struct lexer *lexer, struct ast **node)
 {
     struct ast *new_cmd = ast_genesis(AST_CMD);
-    if (lexer->current_tok == TOKEN_WORD && parse_element(lexer, new_cmd->data) == PARSER_OK)
+    if (lexer->current_tok->type == TOKEN_WORD && parse_element(lexer, new_cmd->data) == PARSER_OK)
     {
-        node = new_cmd;
+        *node = new_cmd;
         return PARSER_OK;
     }
     else
@@ -82,7 +82,7 @@ enum parser_status parse_element(struct lexer *lexer, char **data)
         struct token *start = lexer_pop(lexer);
         add_to_data(data, start->value);
         free(start);
-        while (lexer_peek(lexer)->type == TOKEN_WORD)
+        while (lexer->current_tok->type == TOKEN_WORD)
         {
             struct token *tmp = lexer_pop(lexer);
             add_to_data(data, tmp->value);

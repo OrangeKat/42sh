@@ -23,7 +23,7 @@ enum parser_status parse(struct ast **tree_list, struct lexer *lexer, size_t cur
 /*
     simple_command = WORD { element } ;
 */
-enum parser_status parse_simple_command(struct lexer *lexer, struct ast *node);
+enum parser_status parse_simple_command(struct lexer *lexer, struct ast **node);
 
 /*
     element = WORD ;
