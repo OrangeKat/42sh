@@ -63,7 +63,7 @@ void extend_string(char *str)
 */
 int echosingle(char *str, int extend)
 {
-    size_t len = strlen(str);
+    size_t len = strlen(str) + 1;
     char *res = malloc(sizeof(char) * (len + 1));
     if (res == NULL)
         return 1;

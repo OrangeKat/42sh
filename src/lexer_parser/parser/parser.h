@@ -28,6 +28,6 @@ enum parser_status parse_simple_command(struct lexer *lexer, struct ast **node);
 /*
     element = WORD ;
 */
-enum parser_status parse_element(struct lexer *lexer, char **data);
+enum parser_status parse_element(struct lexer *lexer, struct ast *node);
 
 #endif /* !PARSER_H */
