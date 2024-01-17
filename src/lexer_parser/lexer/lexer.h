@@ -12,9 +12,9 @@ struct lexer
     int separator;
 };
 
-struct lexer *lexer_new(FILE *input_file);
+struct lexer *lexer_genesis(FILE *input_file);
 
-void lexer_free(struct lexer *lexer);
+void lexer_destroy(struct lexer *lexer);
 
 struct token *parse_input_for_tok(struct lexer *lexer);
 

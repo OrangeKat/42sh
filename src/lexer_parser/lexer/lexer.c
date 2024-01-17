@@ -7,7 +7,7 @@
 #include "token.h"
 #include "../../utils/token_utils.h"
 
-struct lexer *lexer_new(FILE *input_file)
+struct lexer *lexer_genesis(FILE *input_file)
 {
     struct lexer *new = malloc(sizeof(struct lexer));
     new->input_file = input_file;
@@ -17,10 +17,14 @@ struct lexer *lexer_new(FILE *input_file)
     return new;
 }
 
-void lexer_free(struct lexer *lexer)
+void lexer_destroy(struct lexer *lexer)
 {
     if (lexer->current_tok)
     {
+        if (lexer->current_tok->value)
+        {
+            free(lexer->current_tok->value);
+        }
         free(lexer->current_tok);
     }
     free(lexer);

@@ -3,25 +3,36 @@
 #include <err.h>
 #include <stdlib.h>
 
-struct ast *ast_new(enum ast_type type)
+struct ast *ast_genesis(enum ast_type type)
 {
-    struct ast *new = calloc(1, sizeof(struct ast));
-    if (!new)
-        return NULL;
+    struct ast *new = malloc(sizeof(struct ast));
     new->type = type;
+    new->nbchildren = 0;
+    new->children = NULL;
+    new->data = calloc(1, sizeof(char));
+
     return new;
 }
 
-void ast_free(struct ast *ast)
+goid add_child_to_parent(struct ast *parent, struct ast *child)
 {
-    if (ast == NULL)
-        return;
+    parent->children = realloc(parent->children, parent->nbchildren + 1);
+    parent->children[parent->nb_children] = child;
+    parent-nbchildren++;
+}
 
-    ast_free(ast->left);
-    ast->left = NULL;
+void ast_destroy(struct ast *ast)
+{
+    for (size_t i = 0; i < ast->nbchildren; i++)
+    {
+        ast_free(ast->children[i]);
+    }
+    free(ast->children);
 
-    ast_free(ast->right);
-    ast->right = NULL;
+    if (ast->data)
+    {
+        free(ast->data);
+    }
 
     free(ast);
 }

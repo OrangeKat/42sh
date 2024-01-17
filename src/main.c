@@ -7,6 +7,8 @@
 #include <stddef.h>
 
 #include "utils/file_to_string.h"
+#include "lexer_parser/parser/parser.h"
+#include "lexer_parser/lexer/lexer.h"
 
 int main(int argc,char **argv)
 {
@@ -30,6 +32,9 @@ int main(int argc,char **argv)
             err(-1,"not a file");
         }
     }
+
+    struct lexer *lexer = lexer_genesis(f);
     
+
     return 0;
 }
