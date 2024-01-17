@@ -1,0 +1,2 @@
+echo hello there what is good
+echo ??ASD???ASD?

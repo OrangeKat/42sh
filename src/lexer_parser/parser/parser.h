@@ -1,8 +1,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "ast.h"
-#include "lexer.h"
+#include "../ast/ast.h"
+#include "../lexer/lexer.h"
 
 enum parser_status
 {
@@ -18,16 +18,16 @@ enum parser_status
     | EOF
     ;
 */
-enum parser_status parse(struct ast **res, struct lexer *lexer);
+enum parser_status parse(struct ast **tree_list, struct lexer *lexer, size_t curr_root);
 
 /*
     simple_command = WORD { element } ;
 */
-enum parser_status parse_exp(struct ast **res, struct lexer *lexer);
+enum parser_status parse_simple_command(struct lexer *lexer, struct ast *node);
 
 /*
     element = WORD ;
 */
-enum parser_status parse_sexp(struct ast **res, struct lexer *lexer);
+enum parser_status parse_element(struct lexer *lexer, char **data);
 
 #endif /* !PARSER_H */

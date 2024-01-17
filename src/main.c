@@ -9,6 +9,8 @@
 #include "utils/file_to_string.h"
 #include "lexer_parser/parser/parser.h"
 #include "lexer_parser/lexer/lexer.h"
+#include "lexer_parser/ast/ast.h"
+#include "builtins/builtin.h"
 
 int main(int argc,char **argv)
 {
@@ -34,7 +36,22 @@ int main(int argc,char **argv)
     }
 
     struct lexer *lexer = lexer_genesis(f);
-    
+    struct ast **tree_list = malloc(sizeof(struct ast *));
+    if (parse(tree_list, lexer, 0) != PARSER_OK)
+    {
+        lexer_destroy(lexer);
+        for (size_t i = 0; i < sizeof(tree_list) / sizeof(struct ast *); i++)
+        {
+            ast_destroy(tree_list[i]);
+        }
+        return 1;
+    }
+
+    for (size_t i = 0; i < sizeof(tree_list) / sizeof(struct ast *); i++)
+    {
+        echo(tree_list[i]->data, sizeof(tree_list[i]->data) / sizeof(char *), 0, 1);
+        ast_destroy(tree_list[i]);
+    }
 
     return 0;
 }

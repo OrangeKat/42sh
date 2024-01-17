@@ -32,14 +32,14 @@ enum parser_status parse(struct ast **tree_list, struct lexer *lexer, size_t cur
     struct ast *ast_node = NULL;
     if (lexer->current_tok->type == TOKEN_NL)
     {
-        lexer_pop(lexer);
+        free(lexer_pop(lexer));
         tree_list = realloc(tree_list, curr_root + 2);
         parse(tree_list, lexer, curr_root + 1);
         return PARSER_OK;
     }
     else if (lexer->current_tok->type == TOKEN_EOF)
     {
-        lexer_pop(lexer);
+        free(lexer_pop(lexer));
         return PARSER_OK;
     }
     else if (parse_simple_command(lexer, ast_node) == PARSER_OK)

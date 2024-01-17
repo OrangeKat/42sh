@@ -95,6 +95,7 @@ struct token *lexer_pop(struct lexer *lexer)
     return to_pop;
 }
 
+/*
 int main(void)
 {
     struct lexer *lex = lexer_new(fopen("test.sh","r"));
@@ -107,3 +108,4 @@ int main(void)
     printf("%d\n",lex->current_tok->type);
     return 0;
 }
+*/
