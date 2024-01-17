@@ -52,6 +52,8 @@ int main(int argc,char **argv)
         echo(tree_list[i]->data, sizeof(tree_list[i]->data) / sizeof(char *) + 1, 0, 1);
         ast_destroy(tree_list[i]);
     }
-
+    free(tree_list);
+    lexer_destroy(lexer);
+    fclose(f);
     return 0;
 }
