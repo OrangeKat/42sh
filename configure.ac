@@ -17,7 +17,7 @@ AC_PROG_RANLIB
 AC_PROG_CC
 
 # Check if a compiler have this list of flags
-AX_COMPILER_FLAGS([],[],[], [-Wall -Wextra -Werror -Wvla -pedantic -std=c99])
+AX_COMPILER_FLAGS([], [], [], [-Wall -Wextra -Werror -Wvla -pedantic -std=c99])
 
 # List Makefile in subdirectories
 AC_CONFIG_FILES([
@@ -25,5 +25,6 @@ AC_CONFIG_FILES([
                  src/Makefile
                  src/builtins/Makefile
                  src/lexer_parser/Makefile
+                 src/utils/Makefile
                  ])
 AC_OUTPUT

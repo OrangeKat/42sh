@@ -11,4 +11,5 @@ bin_PROGRAMS = 42sh
 
 42sh_LDADD = \
 	builtins/libbin.a \
-	lexer_parser/liblexpar.a
+	lexer_parser/liblexpar.a \
+	utils/libutils.a
