@@ -1,3 +1,13 @@
+all: src/42sh
 
 clean:
-	$(RM) Makefile.in doc/html install-sh depcomp missing aclocal.m4 ar-lib autom4te.cache/ compile configure
+	rm -rf config.log config.status configure configure~ \
+		install-sh install-sh~ depcomp missing \
+		aclocal.m4 ar-lib autom4te.cache/ compile \
+		doc/html \
+		src/42sh \
+		Makefile Makefile.in \
+		src/Makefile src/Makefile.in \
+		src/builtins/Makefile src/builtins/Makefile.in \
+		src/lexer_parser/Makefile src/lexer_parser/Makefile.in \
+		src/utils/Makefile src/utils/Makefile.in
