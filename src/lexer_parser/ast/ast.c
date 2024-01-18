@@ -3,25 +3,41 @@
 #include <err.h>
 #include <stdlib.h>
 
-struct ast *ast_new(enum ast_type type)
+struct ast *ast_genesis(enum ast_type type)
 {
-    struct ast *new = calloc(1, sizeof(struct ast));
-    if (!new)
-        return NULL;
+    struct ast *new = malloc(sizeof(struct ast));
     new->type = type;
+    new->nb_children = 0;
+    new->children = NULL;
+    new->data = malloc(sizeof(char *));
+    new->data[0] = NULL;
+
     return new;
 }
 
-void ast_free(struct ast *ast)
+void add_child_to_parent(struct ast *parent, struct ast *child)
 {
-    if (ast == NULL)
-        return;
+    parent->children = realloc(parent->children, parent->nb_children + 1);
+    parent->children[parent->nb_children] = child;
+    parent->nb_children++;
+}
 
-    ast_free(ast->left);
-    ast->left = NULL;
+void ast_destroy(struct ast *ast)
+{
+    for (size_t i = 0; i < ast->nb_children; i++)
+    {
+        ast_destroy(ast->children[i]);
+    }
+    free(ast->children);
 
-    ast_free(ast->right);
-    ast->right = NULL;
+    if (ast->data)
+    {
+        for (size_t i = 0; ast->data[i] != NULL; i++)
+        {
+            free(ast->data[i]);
+        }
+        free(ast->data);
+    }
 
     free(ast);
 }
