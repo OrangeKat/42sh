@@ -15,7 +15,7 @@ struct ast *ast_genesis(enum ast_type type)
     return new;
 }
 
-void add_child_to_parent(struct ast *parent, struct ast *child)
+struct ast *add_child_to_parent(struct ast *parent, struct ast *child)
 {
     if (parent->nb_children == 0)
     {
@@ -23,10 +23,17 @@ void add_child_to_parent(struct ast *parent, struct ast *child)
     }
     else
     {
-        parent->children = realloc(parent->children, parent->nb_children + 1);
+        struct ast **tmp = malloc(sizeof(struct ast *) * (parent->nb_children + 1));
+        for (size_t i = 0; i < parent->nb_children; i++)
+        {
+            tmp[i] = parent->children[i];
+        }
+        free(parent->children);
+        parent->children = tmp;
     }
     parent->children[parent->nb_children] = child;
     parent->nb_children++;
+    return parent;
 }
 
 void ast_destroy(struct ast *ast)

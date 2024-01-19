@@ -70,7 +70,7 @@ enum parser_status parse_list(struct lexer *lexer, struct ast **node)
         {
             return PARSER_UNEXPECTED_TOKEN;
         }
-        add_child_to_parent(new_list, ast_node);
+        new_list = add_child_to_parent(new_list, ast_node);
 
         if (lexer->current_tok->type == TOKEN_NL)
         {

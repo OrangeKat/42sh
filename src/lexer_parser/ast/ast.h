@@ -20,6 +20,6 @@ struct ast
 
 void ast_destroy(struct ast *ast);
 struct ast *ast_genesis(enum ast_type type);
-void add_child_to_parent(struct ast *parent, struct ast *child);
+struct ast *add_child_to_parent(struct ast *parent, struct ast *child);
 
 #endif /* !AST_H */

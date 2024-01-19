@@ -59,6 +59,7 @@ struct token *parse_input_for_tok(struct lexer *lexer)
         {
             if(size == 1)
             {
+                free(str);
                 res->type = TOKEN_NL;
                 return res;
             }
