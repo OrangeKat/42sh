@@ -44,7 +44,7 @@ struct token *parse_input_for_tok(struct lexer *lexer)
             res->type = TOKEN_WORD;
             return res;
         }
-        if (c == '\n')
+        if (c == '\n' || c == ';')
         {
             if(size == 1)
             {

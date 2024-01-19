@@ -28,14 +28,14 @@ static char** add_to_data(char **data, char *word)
     | EOF
     ;
 */
-enum parser_status parse(struct ast **tree_list, struct lexer *lexer, size_t curr_root)
+enum parser_status parse(struct ast **root, struct lexer *lexer)
 {
     struct ast *ast_node = NULL;
+
     if (lexer->current_tok->type == TOKEN_NL)
     {
         free(lexer_pop(lexer));
-        tree_list = realloc(tree_list, curr_root + 2);
-        parse(tree_list, lexer, curr_root + 1);
+        parse(root, lexer);
         return PARSER_OK;
     }
     else if (lexer->current_tok->type == TOKEN_EOF)
@@ -43,10 +43,10 @@ enum parser_status parse(struct ast **tree_list, struct lexer *lexer, size_t cur
         free(lexer_pop(lexer));
         return PARSER_OK;
     }
-    else if (parse_simple_command(lexer, &ast_node) == PARSER_OK)
+    else if (parse_list(lexer, &ast_node) == PARSER_OK)
     {
-        tree_list[curr_root] = ast_node;
-        parse(tree_list, lexer, curr_root);
+        *root = ast_node;
+        parse(root, lexer);
         return PARSER_OK;
     }
     else 
@@ -54,6 +54,30 @@ enum parser_status parse(struct ast **tree_list, struct lexer *lexer, size_t cur
         lexer_destroy(lexer);
         return PARSER_UNEXPECTED_TOKEN;
     }
+}
+
+/*
+    list = simple_command { ; simple_command } [ ; ] ;
+*/
+enum parser_status parse_list(struct lexer *lexer, struct ast **node)
+{
+    struct ast *new_list = ast_genesis(AST_LIST);
+    *node = new_list;
+    while (lexer->current_tok->type != TOKEN_EOF)
+    {
+        struct ast *ast_node = NULL;
+        if (parse_simple_command(lexer, &ast_node) == PARSER_UNEXPECTED_TOKEN)
+        {
+            return PARSER_UNEXPECTED_TOKEN;
+        }
+        add_child_to_parent(new_list, ast_node);
+
+        if (lexer->current_tok->type == TOKEN_NL)
+        {
+            free(lexer_pop(lexer));
+        }
+    }
+    return PARSER_OK;
 }
 
 /*
