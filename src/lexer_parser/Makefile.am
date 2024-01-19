@@ -11,7 +11,7 @@ liblexpar_a_SOURCES= \
 	parser/parser.c \
 	parser/parser.h
 
-liblexpar_a_CPPFLAGS = -I(top_srcdir)/src
+liblexpar_a_CPPFLAGS = -I$(top_srcdir)/src
 liblexpar_a_CFLAGS = -std=c99 -Werror -Wall -Wextra -Wvla -pedantic
 
 noinst_LIBRARIES = liblexpar.a

@@ -8,5 +8,7 @@ libbin_a_SOURCES= \
 	false.c \
 	builtin.h
 
-libbin_a_CPPFLAGS = -I(top_srcdir)/src
+libbin_a_CPPFLAGS = -I$(top_srcdir)/src
 libbin_a_CFLAGS = -std=c99 -Werror -Wall -Wextra -Wvla -pedantic
+
+noinst_LIBRARIES = libbin.a

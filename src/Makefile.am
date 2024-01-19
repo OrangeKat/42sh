@@ -1,5 +1,6 @@
 SUBDIRS = builtins \
-		  lexer_parser
+		  lexer_parser \
+		  utils
 
 bin_PROGRAMS = 42sh
 
