@@ -17,7 +17,14 @@ struct ast *ast_genesis(enum ast_type type)
 
 void add_child_to_parent(struct ast *parent, struct ast *child)
 {
-    parent->children = realloc(parent->children, parent->nb_children + 1);
+    if (parent->nb_children == 0)
+    {
+        parent->children = malloc(sizeof(struct ast *));
+    }
+    else
+    {
+        parent->children = realloc(parent->children, parent->nb_children + 1);
+    }
     parent->children[parent->nb_children] = child;
     parent->nb_children++;
 }

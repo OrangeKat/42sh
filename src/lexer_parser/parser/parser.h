@@ -18,7 +18,12 @@ enum parser_status
     | EOF
     ;
 */
-enum parser_status parse(struct ast **tree_list, struct lexer *lexer, size_t curr_root);
+enum parser_status parse(struct ast **root, struct lexer *lexer);
+
+/*
+    list = simple_command { ; simple_command } [ ; ] ;
+*/
+enum parser_status parse_list(struct lexer *lexer, struct ast **node);
 
 /*
     simple_command = WORD { element } ;

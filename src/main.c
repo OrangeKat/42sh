@@ -6,6 +6,7 @@
 #include <err.h>
 #include <stddef.h>
 
+#include "lexer_parser/eval/eval.h"
 #include "utils/file_to_string.h"
 #include "lexer_parser/parser/parser.h"
 #include "lexer_parser/lexer/lexer.h"
@@ -37,20 +38,16 @@ int main(int argc,char **argv)
 
     struct lexer *lexer = lexer_genesis(f);
     struct ast *tree_root = NULL;
-    if (parse(&tree_root, lexer, 0) != PARSER_OK)
+    if (parse(&tree_root, lexer) != PARSER_OK)
     {
         lexer_destroy(lexer);
         ast_destroy(tree_root);
         return 1;
     }
 
-    if (tree_root)
-    {
-        echo(tree_root->data, size, 0, 1);
-    }
+    ast_eval(tree_root);
 
-    ast_destroy(tree_list[i]);
-    free(tree_list);
+    ast_destroy(tree_root);
     lexer_destroy(lexer);
     fclose(f);
     return 0;
