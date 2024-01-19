@@ -9,7 +9,9 @@ liblexpar_a_SOURCES= \
 	lexer/lexer.h \
 	lexer/lexer.h \
 	parser/parser.c \
-	parser/parser.h
+	parser/parser.h \
+	eval/eval.c \
+	eval/eval.h
 
 liblexpar_a_CPPFLAGS = -I$(top_srcdir)/src
 liblexpar_a_CFLAGS = -std=c99 -Werror -Wall -Wextra -Wvla -pedantic

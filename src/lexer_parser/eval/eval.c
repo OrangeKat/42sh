@@ -6,7 +6,7 @@ void ast_eval(struct ast *ast)
 {
     if (ast->type == AST_CMD)
     {
-        int size = 0;
+        size_t size = 0;
         while (ast->data[size] != NULL)
         {
             size++;
@@ -15,7 +15,7 @@ void ast_eval(struct ast *ast)
     }
     else if (ast->type == AST_LIST)
     {
-        for (int i = 0; i < ast->nb_children; i++)
+        for (size_t i = 0; i < ast->nb_children; i++)
         {
             ast_eval(ast->children[i]);
         }
