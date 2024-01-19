@@ -15,7 +15,11 @@
 
 int main(int argc,char **argv)
 {
-    FILE *f;
+    if (argc == 0)
+    {
+        return 1;
+    }
+    FILE *f = NULL;
     //check if it there is a string argument
     if(strcmp("-c",argv[1]) == 0)
     {
