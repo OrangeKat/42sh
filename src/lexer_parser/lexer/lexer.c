@@ -42,11 +42,15 @@ struct token *parse_input_for_tok(struct lexer *lexer)
     {
         continue;
     }
-    fseek(lexer->input_file,-1,SEEK_CUR);
+    if (c != EOF)
+    {
+        fseek(lexer->input_file,-1,SEEK_CUR);
+    }
     while((c = fgetc(lexer->input_file)) != EOF && !is_separator(c))
     {
         if(c == '\'')
         {
+            free(str);
             res->value = get_string(lexer->input_file);
             res->type = TOKEN_WORD;
             return res;

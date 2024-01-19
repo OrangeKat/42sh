@@ -35,7 +35,7 @@ char *get_string(FILE *fd)
         free(res);
         return NULL;
     }
-    res[size] = '\0';
+    res[size-1] = '\0';
     return res;
 }
 char *get_word(FILE *fd)
