@@ -91,7 +91,7 @@ int echosingle(char *str, int extend)
 */
 int echo(char *args[], size_t argnum, int extend, int newline)
 {
-    for (size_t i = 0; i < argnum; i++)
+    for (size_t i = 1; i < argnum; i++)
     {
         if (echosingle(args[i], extend))
             return 1;
