@@ -7,7 +7,7 @@ liblexpar_a_SOURCES= \
 	ast/ast.h \
 	lexer/lexer.c \
 	lexer/lexer.h \
-	lexer/lexer.h \
+	lexer/token.h \
 	parser/parser.c \
 	parser/parser.h \
 	eval/eval.c \

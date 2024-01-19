@@ -11,4 +11,7 @@ clean:
 		src/builtins/Makefile src/builtins/Makefile.in \
 		src/lexer_parser/Makefile src/lexer_parser/Makefile.in \
 		src/utils/Makefile src/utils/Makefile.in \
-		src/*/*.o
+		src/*/*.a \
+		src/*.o \
+		src/*/*.o \
+		src/*/*/*.o
