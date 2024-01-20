@@ -7,8 +7,14 @@ enum token_type
 {
     TOKEN_WORD,
     TOKEN_EOF,
-    TOKEN_NL
+    TOKEN_NL,
+    TOKEN_IF,
+    TOKEN_ELSE,
+    TOKEN_FI,
+    TOKEN_ELIF,
+    TOKEN_THEN
 };
+
 
 struct token
 {
