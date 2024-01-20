@@ -11,6 +11,6 @@ bin_PROGRAMS = 42sh
 42sh_CFLAGS = -std=c99 -Wall -Wextra -Werror -Wvla -pedantic
 
 42sh_LDADD = \
-	builtins/libbin.a \
 	lexer_parser/liblexpar.a \
+	builtins/libbin.a \
 	utils/libutils.a
