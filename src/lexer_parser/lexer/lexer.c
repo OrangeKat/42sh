@@ -74,7 +74,7 @@ struct token *parse_input_for_tok(struct lexer *lexer)
         str = realloc(str,size);
     }
     str[size-1] = '\0'; 
-    if (str[0] == '\0')
+    /*if (str[0] == '\0')
     {
         res->type = TOKEN_EOF;
         res->value = NULL;
@@ -83,7 +83,8 @@ struct token *parse_input_for_tok(struct lexer *lexer)
     }
     res->type = TOKEN_WORD;
     res->value = str;
-    return  res;
+    return  res;*/
+    return set_token(res,str);
 }
 
 struct token *lexer_peek(struct lexer *lexer)

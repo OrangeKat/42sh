@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../lexer_parser/lexer/token.h"
+
 int is_separator(char c)
 {
     char separator_list[] = {' '};
@@ -17,6 +19,62 @@ int is_separator(char c)
         }
     }
     return 0;
+}
+
+struct token *set_token(struct token *res,char *str)
+{
+    if (str[0] == '\0')
+    {
+        res->type = TOKEN_EOF;
+        res->value = NULL;
+        free(str);
+        return res;
+    }
+    if(strcmp(str,"if") == 0)
+    {
+        res->type = TOKEN_IF;
+        res->value = NULL;
+        free(str);
+        return res;
+    }
+    if(strcmp(str,"else") == 0)
+    {
+        res->type = TOKEN_ELSE;
+        res->value = NULL;
+        free(str);
+        return res;
+    }
+    if(strcmp(str,"fi") == 0)
+    {
+        res->type = TOKEN_FI;
+        res->value = NULL;
+        free(str);
+        return res;
+    }
+    if(strcmp(str,"fi") == 0)
+    {
+        res->type = TOKEN_FI;
+        res->value = NULL;
+        free(str);
+        return res;
+    }
+    if(strcmp(str,"elif") == 0)
+    {
+        res->type = TOKEN_ELIF;
+        res->value = NULL;
+        free(str);
+        return res;
+    }
+    if(strcmp(str,"then") == 0)
+    {
+        res->type = TOKEN_THEN;
+        res->value = NULL;
+        free(str);
+        return res;
+    }
+    res->type = TOKEN_WORD;
+    res->value = str;
+    return res;
 }
 
 char *get_string(FILE *fd)
@@ -52,18 +110,12 @@ char *get_word(FILE *fd)
     res[size] = '\0';
     return res;
 }
-/*int main(void)
+int main(void)
 {
-    FILE *fd;
-    fd = fopen("test.sh","r");
-    char c;
-    char *s;
-    char *s2;
-    s = get_word(fd);
-    s2 = get_word(fd);
-    printf("%s\n",s);
-    printf("%s\n",s2);
-    c = fgetc(fd);
-    printf("%d\n",c);
-    return 0;
-}*/
+    struct token *tok = malloc(sizeof(struct token));
+    tok->type = 0;
+    tok->value = NULL;
+    char *str = "if";
+    tok = set_token(tok,str);
+    printf("%d\n",tok->type);
+}
