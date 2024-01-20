@@ -110,7 +110,8 @@ char *get_word(FILE *fd)
     res[size] = '\0';
     return res;
 }
-int main(void)
+
+/*int main(void)
 {
     struct token *tok = malloc(sizeof(struct token));
     tok->type = 0;
@@ -118,4 +119,4 @@ int main(void)
     char *str = "if";
     tok = set_token(tok,str);
     printf("%d\n",tok->type);
-}
+}*/
