@@ -37,13 +37,11 @@ int command_line_handler(FILE **f, int argc, char **argv)
 
 int file_handler(FILE **f, char **argv)
 {
-    if ((*f = fopen(argv[1], "r")) == NULL)
+    *f = fopen(argv[1], "r");
+    // error
+    if (*f == NULL)
     {
         err(-1, "not a file");
-    }
-    // file
-    else
-    {
     }
     return 0;
 }
