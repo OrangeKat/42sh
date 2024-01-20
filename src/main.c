@@ -14,9 +14,8 @@
 #include "lexer_parser/parser/parser.h"
 #include "utils/file_to_string.h"
 
-int stdin_handler(FILE **f)
+int stdin_handler(FILE **f, char *buffer)
 {
-    char buffer[1024];
     if (read(STDIN_FILENO, buffer, 1024) < 0)
     {
         // error handling: could not read stdin
@@ -55,7 +54,8 @@ int main(int argc, char **argv)
     // stdin
     if (argc == 1)
     {
-        stdin_handler(&f);
+        char buffer[1024];
+        stdin_handler(&f, buffer);
     }
     // check if it there is a string argument
     else if (strcmp("-c", argv[1]) == 0)
