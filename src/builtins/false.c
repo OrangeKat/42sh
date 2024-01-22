@@ -7,5 +7,5 @@
 */
 int bin_false(void)
 {
-    return 1;
+    return 0;
 }
