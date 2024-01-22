@@ -63,17 +63,11 @@ void extend_string(char *str)
 */
 int echosingle(char *str, int extend)
 {
-    size_t len = strlen(str) + 1;
-    char *res = malloc(sizeof(char) * (len + 1));
-    if (res == NULL)
-        return 1;
-    strncpy(res, str, len);
     if (extend)
     {
-        extend_string(res);
+        extend_string(str);
     }
-    printf("%s", res);
-    free(res);
+    printf("%s", str);
     return 0;
 }
 
