@@ -5,6 +5,6 @@
 
 int bin_true(void);
 int bin_false(void);
-int echo(char *args[], size_t argnum, int flags);
+int echo(char *args[], size_t argnum);
 
 #endif // BUILTIN_H

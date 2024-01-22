@@ -19,7 +19,7 @@ static int cmd_handler(char **data, size_t size)
     }
     else if (strcmp(data[0], "echo") == 0)
     {
-        return !echo(data, size, 2);
+        return !echo(data, size);
     }
     else
     {

@@ -5,9 +5,6 @@
 
 #include "builtin.h"
 
-#define ECHO_NEWLINE 2
-#define ECHO_EXTEND 1
-
 /**
 ** \brief Extends two characters to their special character
 ** \details Extends the two characters at index and index + 1 to their special
@@ -92,18 +89,42 @@ int echosingle(char *str, int extend)
 ** 1 by default, 0 if -n is specified
 ** \return Returns 0 in case of success, 1 in case of failure
 */
-int echo(char *args[], size_t argnum, int flags)
+int echo(char *args[], size_t argnum)
 {
-    for (size_t i = 1; i < argnum; i++)
+    int newline = 1;
+    int extend = 0;
+    size_t i = 1;
+    while (i < argnum)
     {
-        if (echosingle(args[i], flags | ECHO_EXTEND))
+        if (strcmp(args[i], "-n") == 0)
+        {
+            newline = 0;
+        }
+        else if (strcmp(args[i], "-e") == 0)
+        {
+            extend = 1;
+        }
+        else if (strcmp(args[i], "-E") == 0)
+        {
+            extend = 0;
+        }
+        else
+        {
+            break;
+        }
+        i++;
+    }
+    while (i < argnum)
+    {
+        if (echosingle(args[i], extend))
             return 1;
         if (i != argnum - 1)
         {
             putchar(' ');
         }
+        i++;
     }
-    if (flags | ECHO_NEWLINE)
+    if (newline)
     {
         putchar('\n');
     }
