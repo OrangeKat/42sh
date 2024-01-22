@@ -16,11 +16,14 @@
 
 int stdin_handler(FILE **f, char *buffer)
 {
-    if (read(STDIN_FILENO, buffer, 1024) < 0)
+    size_t length = 0;
+    char tmp_buff[1];
+    while(read(STDIN_FILENO, tmp_buff, 1) < 0)
     {
-        // error handling: could not read stdin
+        buffer = realloc(buffer, ++length);
+        buffer[length - 1] = tmp_buff[0];
     }
-    *f = fmemopen(buffer, strlen(buffer), "r");
+    *f = fmemopen(buffer, length - 1, "r");
     return 0;
 }
 
@@ -52,7 +55,7 @@ int main(int argc, char **argv)
     // stdin
     if (argc == 1)
     {
-        char buffer[1024];
+        char *buffer;
         stdin_handler(&f, buffer);
     }
     // check if it there is a string argument

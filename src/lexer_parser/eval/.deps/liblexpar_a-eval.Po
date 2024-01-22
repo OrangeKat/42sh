@@ -1,0 +1,39 @@
+eval/liblexpar_a-eval.o: eval/eval.c \
+ /run/current-system/sw/include/stdc-predef.h eval/eval.h \
+ eval/../ast/ast.h /run/current-system/sw/include/unistd.h \
+ /run/current-system/sw/include/features.h \
+ /run/current-system/sw/include/features-time64.h \
+ /run/current-system/sw/include/bits/wordsize.h \
+ /run/current-system/sw/include/bits/timesize.h \
+ /run/current-system/sw/include/sys/cdefs.h \
+ /run/current-system/sw/include/bits/long-double.h \
+ /run/current-system/sw/include/gnu/stubs.h \
+ /run/current-system/sw/include/gnu/stubs-64.h \
+ /run/current-system/sw/include/bits/posix_opt.h \
+ /run/current-system/sw/include/bits/types.h \
+ /run/current-system/sw/include/bits/typesizes.h \
+ /run/current-system/sw/include/bits/time64.h \
+ /nix/store/b7hvml0m3qmqraz1022fwvyyg6fc1vdy-gcc-12.2.0/lib/gcc/x86_64-unknown-linux-gnu/12.2.0/include/stddef.h \
+ /run/current-system/sw/include/bits/confname.h \
+ /run/current-system/sw/include/bits/unistd_ext.h \
+ eval/../../builtins/builtin.h
+/run/current-system/sw/include/stdc-predef.h:
+eval/eval.h:
+eval/../ast/ast.h:
+/run/current-system/sw/include/unistd.h:
+/run/current-system/sw/include/features.h:
+/run/current-system/sw/include/features-time64.h:
+/run/current-system/sw/include/bits/wordsize.h:
+/run/current-system/sw/include/bits/timesize.h:
+/run/current-system/sw/include/sys/cdefs.h:
+/run/current-system/sw/include/bits/long-double.h:
+/run/current-system/sw/include/gnu/stubs.h:
+/run/current-system/sw/include/gnu/stubs-64.h:
+/run/current-system/sw/include/bits/posix_opt.h:
+/run/current-system/sw/include/bits/types.h:
+/run/current-system/sw/include/bits/typesizes.h:
+/run/current-system/sw/include/bits/time64.h:
+/nix/store/b7hvml0m3qmqraz1022fwvyyg6fc1vdy-gcc-12.2.0/lib/gcc/x86_64-unknown-linux-gnu/12.2.0/include/stddef.h:
+/run/current-system/sw/include/bits/confname.h:
+/run/current-system/sw/include/bits/unistd_ext.h:
+eval/../../builtins/builtin.h:
