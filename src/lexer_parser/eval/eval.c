@@ -1,18 +1,20 @@
 #include "eval.h"
 
+#include <string.h>
+
 #include "../../builtins/builtin.h"
 
-static cmd_handler(char **data, size_t size)
+static int cmd_handler(char **data, size_t size)
 {
-    if (strcmp(data[0], "true"))
+    if (strcmp(data[0], "true") == 0)
     {
         return bin_true();
     }
-    else if (strcmp(data[0], "false"))
+    else if (strcmp(data[0], "false") == 0)
     {
         return bin_false();
     }
-    else if (strcmp(data[0], "echo"))
+    else if (strcmp(data[0], "echo") == 0)
     {
         return !echo(data, size, 0, 1);
     }
@@ -56,4 +58,5 @@ int ast_eval(struct ast *ast)
             return ast_eval(ast->children[2]);
         }
     }
+    return 1;
 }

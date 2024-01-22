@@ -3,6 +3,6 @@
 
 #include "../ast/ast.h"
 
-void ast_eval(struct ast *ast);
+int ast_eval(struct ast *ast);
 
 #endif // EVAL_H
