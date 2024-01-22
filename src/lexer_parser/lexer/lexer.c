@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "token.h"
 #include "../../utils/token_utils.h"
+#include "token.h"
 
 struct lexer *lexer_genesis(FILE *input_file)
 {
@@ -30,25 +30,23 @@ void lexer_destroy(struct lexer *lexer)
     free(lexer);
 }
 
-
-
 struct token *parse_input_for_tok(struct lexer *lexer)
 {
     struct token *res = malloc(sizeof(struct token));
-    size_t size = 1; 
-    char *str = calloc(sizeof(char),size);
+    size_t size = 1;
+    char *str = calloc(sizeof(char), size);
     char c;
-    while((c = fgetc(lexer->input_file)) != EOF && is_separator(c))
+    while ((c = fgetc(lexer->input_file)) != EOF && is_separator(c))
     {
         continue;
     }
     if (c != EOF)
     {
-        fseek(lexer->input_file,-1,SEEK_CUR);
+        fseek(lexer->input_file, -1, SEEK_CUR);
     }
-    while((c = fgetc(lexer->input_file)) != EOF && !is_separator(c))
+    while ((c = fgetc(lexer->input_file)) != EOF && !is_separator(c))
     {
-        if(c == '\'')
+        if (c == '\'')
         {
             free(str);
             res->value = get_string(lexer->input_file);
@@ -57,23 +55,23 @@ struct token *parse_input_for_tok(struct lexer *lexer)
         }
         if (c == '\n' || c == ';')
         {
-            if(size == 1)
+            if (size == 1)
             {
                 free(str);
                 res->type = TOKEN_NL;
                 return res;
             }
-            str[size-1] = '\0';
+            str[size - 1] = '\0';
             res->type = TOKEN_WORD;
             res->value = str;
-            lexer->separator = 1;   
+            lexer->separator = 1;
             return res;
         }
-        str[size-1] = c;
+        str[size - 1] = c;
         size++;
-        str = realloc(str,size);
+        str = realloc(str, size);
     }
-    str[size-1] = '\0'; 
+    str[size - 1] = '\0';
     /*if (str[0] == '\0')
     {
         res->type = TOKEN_EOF;
@@ -84,12 +82,12 @@ struct token *parse_input_for_tok(struct lexer *lexer)
     res->type = TOKEN_WORD;
     res->value = str;
     return  res;*/
-    return set_token(res,str);
+    return set_token(res, str);
 }
 
 struct token *lexer_peek(struct lexer *lexer)
 {
-    fseek(lexer->input_file,lexer->offset,SEEK_SET);
+    fseek(lexer->input_file, lexer->offset, SEEK_SET);
     struct token *tok = parse_input_for_tok(lexer);
     return tok;
 }
@@ -100,10 +98,10 @@ struct token *lexer_pop(struct lexer *lexer)
     struct token *peek = lexer_peek(lexer);
     lexer->current_tok = peek;
     lexer->offset = ftell(lexer->input_file);
-    if(lexer->separator)
+    if (lexer->separator)
     {
         lexer->offset--;
-        lexer->separator = 0; 
+        lexer->separator = 0;
     }
     return to_pop;
 }

@@ -18,7 +18,7 @@ int stdin_handler(FILE **f, char *buffer)
 {
     size_t length = 0;
     char tmp_buff[1];
-    while(read(STDIN_FILENO, tmp_buff, 1) < 0)
+    while (read(STDIN_FILENO, tmp_buff, 1) < 0)
     {
         buffer = realloc(buffer, ++length);
         buffer[length - 1] = tmp_buff[0];
@@ -31,8 +31,7 @@ int command_line_handler(FILE **f, int argc, char **argv)
 {
     // raise an error "use case: ./42sh -c [command]"
     if (argc == 2)
-    {
-    }
+    {}
     // create a file and copy argv[2] inside
     *f = fmemopen(argv[2], strlen(argv[2]), "r");
     return 0;

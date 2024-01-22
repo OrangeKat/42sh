@@ -1,13 +1,14 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#include "token.h"
 #include <stdio.h>
+
+#include "token.h"
 
 struct lexer
 {
     FILE *input_file; // The input data
-    size_t offset;// The current offset inside the input data
+    size_t offset; // The current offset inside the input data
     struct token *current_tok; // The next token, if processed
     int separator;
 };

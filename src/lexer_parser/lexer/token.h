@@ -15,10 +15,9 @@ enum token_type
     TOKEN_THEN
 };
 
-
 struct token
 {
     enum token_type type; // The kind of token
-    char* value; // If the token is a word, its value
+    char *value; // If the token is a word, its value
 };
 #endif /* !TOKEN_H */

@@ -23,7 +23,8 @@ struct ast *add_child_to_parent(struct ast *parent, struct ast *child)
     }
     else
     {
-        struct ast **tmp = malloc(sizeof(struct ast *) * (parent->nb_children + 1));
+        struct ast **tmp =
+            malloc(sizeof(struct ast *) * (parent->nb_children + 1));
         for (size_t i = 0; i < parent->nb_children; i++)
         {
             tmp[i] = parent->children[i];
