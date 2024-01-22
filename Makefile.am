@@ -14,4 +14,7 @@ clean:
 		src/*/*.a \
 		src/*.o \
 		src/*/*.o \
-		src/*/*/*.o
+		src/*/*/*.o \
+		src/.dirstamp \
+		src/*/.dirstamp \
+		src/*/*/.dirstamp

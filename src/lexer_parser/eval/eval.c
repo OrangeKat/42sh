@@ -4,6 +4,9 @@
 
 #include "../../builtins/builtin.h"
 
+#define ECHO_NEWLINE 2
+#define ECHO_EXTEND 1
+
 static int cmd_handler(char **data, size_t size)
 {
     if (strcmp(data[0], "true") == 0)
@@ -16,7 +19,7 @@ static int cmd_handler(char **data, size_t size)
     }
     else if (strcmp(data[0], "echo") == 0)
     {
-        return !echo(data, size, 0, 1);
+        return !echo(data, size, 2);
     }
     else
     {
