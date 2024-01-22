@@ -4,9 +4,6 @@
 
 #include "../../builtins/builtin.h"
 
-#define ECHO_NEWLINE 2
-#define ECHO_EXTEND 1
-
 static int cmd_handler(char **data, size_t size)
 {
     if (strcmp(data[0], "true") == 0)
@@ -58,7 +55,11 @@ int ast_eval(struct ast *ast)
         }
         else
         {
-            return ast_eval(ast->children[2]);
+            if (ast->nb_children == 3)
+            {
+                return ast_eval(ast->children[2]);
+            }
+            return 1;
         }
     }
     return 1;

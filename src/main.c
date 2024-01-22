@@ -83,14 +83,26 @@ int main(int argc, char **argv)
     struct ast *tree_root = NULL;
     if (parse(&tree_root, lexer) != PARSER_OK)
     {
-        lexer_destroy(lexer);
-        ast_destroy(tree_root);
+        if (lexer)
+        {
+            lexer_destroy(lexer);
+        }
+        if (tree_root)
+        {
+            ast_destroy(tree_root);
+        }
         return 1;
     }
 
-    ast_eval(tree_root);
-
-    ast_destroy(tree_root);
+    if (!ast_eval(tree_root))
+    {
+        lexer_destroy(lexer);
+        return 1;
+    }
+    if (tree_root)
+    {
+        ast_destroy(tree_root);
+    }
     lexer_destroy(lexer);
     fclose(f);
     free(buffer);

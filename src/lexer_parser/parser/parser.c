@@ -80,7 +80,6 @@ enum parser_status parse(struct ast **root, struct lexer *lexer)
     }
     else
     {
-        lexer_destroy(lexer);
         return PARSER_UNEXPECTED_TOKEN;
     }
 }
@@ -98,6 +97,7 @@ enum parser_status parse_if_else(struct lexer *lexer, struct ast **node)
 {
     struct ast *new_if = ast_genesis(AST_IF);
     *node = new_if;
+    free(lexer_pop(lexer));
 
     struct ast *condition_list = NULL;
     if (parse_list(lexer, &condition_list) == PARSER_UNEXPECTED_TOKEN)
@@ -115,10 +115,15 @@ enum parser_status parse_if_else(struct lexer *lexer, struct ast **node)
     new_if = add_child_to_parent(new_if, then_list);
 
     struct ast *else_list = NULL;
-    if (lexer->current_tok->type == TOKEN_ELSE)
+    if (lexer->current_tok->type == TOKEN_ELSE || lexer->current_tok->type == TOKEN_ELIF)
     {
         free(lexer_pop(lexer));
         if (parse_list(lexer, &else_list) == PARSER_UNEXPECTED_TOKEN)
+        {
+            return PARSER_UNEXPECTED_TOKEN;
+        }
+
+        if (lexer->current_tok->type != TOKEN_FI)
         {
             return PARSER_UNEXPECTED_TOKEN;
         }
@@ -126,15 +131,21 @@ enum parser_status parse_if_else(struct lexer *lexer, struct ast **node)
     }
     else
     {
-        free(lexer_pop(lexer));
-        if (parse_if_else(lexer, &else_list) == PARSER_UNEXPECTED_TOKEN)
+        if (lexer->current_tok->type != TOKEN_FI)
         {
             return PARSER_UNEXPECTED_TOKEN;
         }
-        if (lexer->current_tok->type == TOKEN_FI)
+        free(lexer_pop(lexer));
+
+        if (parse(&else_list, lexer) == PARSER_UNEXPECTED_TOKEN)
         {
-            free(lexer_pop(lexer));
+            return PARSER_UNEXPECTED_TOKEN;
         }
+    }
+
+    if (else_list)
+    {
+        new_if = add_child_to_parent(new_if, else_list);
     }
 
     return PARSER_OK;
@@ -152,7 +163,6 @@ enum parser_status parse_list(struct lexer *lexer, struct ast **node)
         struct ast *ast_node = NULL;
         if (parse_simple_command(lexer, &ast_node) == PARSER_UNEXPECTED_TOKEN)
         {
-            ast_destroy(ast_node);
             return PARSER_UNEXPECTED_TOKEN;
         }
         new_list = add_child_to_parent(new_list, ast_node);
