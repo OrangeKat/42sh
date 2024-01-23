@@ -1,4 +1,8 @@
-SUBDIRS = src
+SUBDIRS = src \
+		  tests
+
+debug: CFLAGS+= -g -fsanitize=address
+debug: all
 
 clean:
 	rm -rf config.log config.status configure configure~ \
@@ -17,4 +21,7 @@ clean:
 		src/*/*/*.o \
 		src/.dirstamp \
 		src/*/.dirstamp \
-		src/*/*/.dirstamp
+		src/*/*/.dirstamp \
+		testdriver
+
+.PHONY = clean debug

@@ -1,1 +1,1 @@
-check_PROGRAMS = criterion
+TESTS=test.sh
