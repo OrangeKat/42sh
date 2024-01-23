@@ -91,7 +91,7 @@ int main(int argc, char **argv)
         {
             ast_destroy(tree_root);
         }
-        return 1;
+        return 2;
     }
 
     if (!ast_eval(tree_root))

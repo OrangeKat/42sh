@@ -20,7 +20,7 @@ static int cmd_handler(char **data, size_t size)
     }
     else
     {
-        return 0;
+        return execvp(data[0], data);
     }
 }
 
