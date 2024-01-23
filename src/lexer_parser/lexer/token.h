@@ -12,6 +12,9 @@ enum token_type
     TOKEN_ELSE,
     TOKEN_FI,
     TOKEN_ELIF,
+    TOKEN_PIPE,
+    TOKEN_NOT,
+    TOKEN_REDIR,
     TOKEN_THEN
 };
 

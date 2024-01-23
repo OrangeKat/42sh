@@ -73,6 +73,26 @@ struct token *set_token(struct token *res, char *str)
         free(str);
         return res;
     }
+    if (strcmp(str, ">") == 0)
+    {
+        res->type = TOKEN_REDIR;
+        res->value = str;
+        return res;
+    }
+    if (strcmp(str, "!") == 0)
+    {
+        res->type = TOKEN_NOT;
+        res->value = NULL;
+        free(str);
+        return res;
+    }
+    if (strcmp(str, "|") == 0)
+    {
+        res->type = TOKEN_PIPE;
+        res->value = NULL;
+        free(str);
+        return res;
+    }
     res->type = TOKEN_WORD;
     res->value = str;
     return res;
