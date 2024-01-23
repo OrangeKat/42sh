@@ -20,7 +20,7 @@ int stdin_handler(FILE **f, char *buffer)
     char tmp_buff[1];
     while (read(STDIN_FILENO, tmp_buff, 1) > 0)
     {
-        if (tmp_buff[0] == '\n')
+        if (tmp_buff[0] == EOF)
         {
             length++;
             break;

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "../lexer_parser/lexer/token.h"
+#include "../lexer_parser/lexer/lexer.h"
 
 int is_separator(char c)
 {
@@ -77,6 +78,18 @@ struct token *set_token(struct token *res, char *str)
     return res;
 }
 
+void skip_comment(struct lexer *lexer)
+{
+    char c;
+    while((c = fgetc(lexer->input_file))!= EOF && c != '\n')
+    {
+        continue;
+    }
+    if (c != EOF)
+    {
+        fseek(lexer->input_file, -1, SEEK_CUR);
+    }
+}
 char *get_string(FILE *fd)
 {
     char c;

@@ -11,9 +11,14 @@ struct lexer *lexer_genesis(FILE *input_file)
 {
     struct lexer *new = malloc(sizeof(struct lexer));
     new->input_file = input_file;
+    new->separator = 0;
     new->current_tok = parse_input_for_tok(new);
     new->offset = ftell(input_file);
-    new->separator = 0;
+    if(new->separator)
+    {
+        new->offset--;
+        new->separator = 0;
+    }
     return new;
 }
 
@@ -42,7 +47,14 @@ struct token *parse_input_for_tok(struct lexer *lexer)
     }
     if (c != EOF)
     {
-        fseek(lexer->input_file, -1, SEEK_CUR);
+        if(c == '#')
+        {
+            skip_comment(lexer);
+        }
+        else
+        {
+            fseek(lexer->input_file, -1, SEEK_CUR);
+        }
     }
     while ((c = fgetc(lexer->input_file)) != EOF && !is_separator(c))
     {
@@ -70,6 +82,7 @@ struct token *parse_input_for_tok(struct lexer *lexer)
         str[size - 1] = c;
         size++;
         str = realloc(str, size);
+        
     }
     str[size - 1] = '\0';
     /*if (str[0] == '\0')
