@@ -23,7 +23,7 @@ enum parser_status parse(struct ast **root, struct lexer *lexer);
 /*
     list = simple_command { ; simple_command } [ ; ] ;
 */
-static enum parser_status parse_pipeline(struct lexer *lexer, struct ast **node);
+enum parser_status parse_pipeline(struct lexer *lexer, struct ast **node);
 
 /*
     simple_command = WORD { element } ;
