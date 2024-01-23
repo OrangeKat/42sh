@@ -62,5 +62,17 @@ int ast_eval(struct ast *ast)
             return 1;
         }
     }
+    else if (ast->type == AST_PIPE)
+    {
+        if (ast->nb_children == 1)
+        {
+            return ast_eval(ast->children[0]);
+        }
+        else
+        {
+            //TODO
+            return 123;
+        }
+    }
     return 1;
 }
