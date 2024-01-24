@@ -91,6 +91,7 @@ static enum parser_status parse_simple_command(struct lexer *lexer, struct ast *
     }
     else
     {
+        ast_destroy(new_cmd);
         return PARSER_NOK;
     }
 }
@@ -107,6 +108,7 @@ static enum parser_status parse_compound_list(struct lexer *lexer, struct ast **
         struct ast *ast_node = NULL;
         if (parse_pipeline(lexer, &ast_node) == PARSER_NOK)
         {
+            ast_destroy(new_clist);
             return PARSER_NOK;
         }
         new_clist = add_child_to_parent(new_clist, ast_node);
@@ -136,6 +138,7 @@ static enum parser_status parse_if_else(struct lexer *lexer, struct ast **node)
     struct ast *condition_list = NULL;
     if (parse_compound_list(lexer, &condition_list) == PARSER_NOK)
     {
+        ast_destroy(new_if);
         return PARSER_NOK;
     }
     new_if = add_child_to_parent(new_if, condition_list);
@@ -167,6 +170,7 @@ static enum parser_status parse_if_else(struct lexer *lexer, struct ast **node)
     {
         if (lexer->current_tok->type != TOKEN_FI)
         {
+            ast_destroy(new_if);
             return PARSER_NOK;
         }
         free(lexer_pop(lexer));
@@ -306,6 +310,7 @@ enum parser_status parse(struct ast **root, struct lexer *lexer)
     }
     else
     {
+        ast_destroy(ast_node);
         return PARSER_NOK;
     }
 }

@@ -5,7 +5,7 @@
 
 enum ast_type
 {
-    AST_CMD,
+    AST_CMD = 0,
     AST_NOT,
     AST_IF,
     AST_PIPE,

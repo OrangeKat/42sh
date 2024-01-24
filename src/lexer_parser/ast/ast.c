@@ -47,10 +47,12 @@ void ast_destroy(struct ast *ast)
 
     if (ast->data)
     {
-        for (size_t i = 0; ast->data[i] != NULL; i++)
+        size_t i;
+        for (i = 0; ast->data[i] != NULL; i++)
         {
             free(ast->data[i]);
         }
+        free(ast->data[i]);
         free(ast->data);
     }
 
