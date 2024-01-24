@@ -15,6 +15,11 @@ enum token_type
     TOKEN_PIPE,
     TOKEN_NOT,
     TOKEN_REDIR,
+    TOKEN_WHILE,
+    TOKEN_FOR,
+    TOKEN_UNTIL,
+    TOKEN_DO,
+    TOKEN_DONE,
     TOKEN_THEN
 };
 

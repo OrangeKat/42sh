@@ -43,7 +43,45 @@ int is_redir(char *str)
     return 0;
 
 }
-
+int set_token_loop(struct token *res,char *str)
+{
+    if(strcmp(str,"while")==0)
+    {
+        res->type = TOKEN_WHILE;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    if(strcmp(str,"for")==0)
+    {
+        res->type = TOKEN_FOR;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    if(strcmp(str,"until")==0)
+    {
+        res->type = TOKEN_UNTIL;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    if(strcmp(str,"do")==0)
+    {
+        res->type = TOKEN_DO;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    if(strcmp(str,"done")==0)
+    {
+        res->type = TOKEN_DONE;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    return 0;
+}
 struct token *set_token(struct token *res, char *str)
 {
     if (str[0] == '\0')
@@ -113,6 +151,10 @@ struct token *set_token(struct token *res, char *str)
         res->type = TOKEN_PIPE;
         res->value = NULL;
         free(str);
+        return res;
+    }
+    if(set_token_loop(res,str))
+    {
         return res;
     }
     res->type = TOKEN_WORD;
