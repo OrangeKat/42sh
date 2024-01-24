@@ -19,9 +19,12 @@ clean:
 		src/*.o \
 		src/*/*.o \
 		src/*/*/*.o \
+		src/.deps \
+		src/*/.deps \
+		src/*/*/.deps \
 		src/.dirstamp \
 		src/*/.dirstamp \
 		src/*/*/.dirstamp \
-		testdriver
+		test-driver
 
 .PHONY = clean debug
