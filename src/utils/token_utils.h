@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 
-#include "../lexer_parser/lexer/token.h"
 #include "../lexer_parser/lexer/lexer.h"
+#include "../lexer_parser/lexer/token.h"
 
 int is_separator(char c);
 

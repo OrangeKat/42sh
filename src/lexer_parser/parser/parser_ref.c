@@ -1,9 +1,8 @@
-#include "parser.h"
-
 #include <stdlib.h>
 
 #include "../ast/ast.h"
 #include "../lexer/lexer.h"
+#include "parser.h"
 
 static char **add_to_data(char **data, char *word)
 {
@@ -115,7 +114,8 @@ enum parser_status parse_if_else(struct lexer *lexer, struct ast **node)
     new_if = add_child_to_parent(new_if, then_list);
 
     struct ast *else_list = NULL;
-    if (lexer->current_tok->type == TOKEN_ELSE || lexer->current_tok->type == TOKEN_ELIF)
+    if (lexer->current_tok->type == TOKEN_ELSE
+        || lexer->current_tok->type == TOKEN_ELIF)
     {
         free(lexer_pop(lexer));
         if (parse_list(lexer, &else_list) == PARSER_UNEXPECTED_TOKEN)
