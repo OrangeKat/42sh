@@ -16,4 +16,6 @@ struct token *set_token(struct token *res, char *str);
 
 void skip_comment(struct lexer *lexer);
 
+int is_redir(char *str);
+
 #endif /*TOKEN_UTILS_H*/

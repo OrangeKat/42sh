@@ -22,6 +22,28 @@ int is_separator(char c)
     return 0;
 }
 
+int is_redir(char *str)
+{
+    if(strcmp(str ,"<") == 0 || strcmp(str,">") == 0)
+    {
+        return 1;
+    }
+    if(strcmp(str ,">>") == 0 || strcmp(str,">&") == 0)
+    {
+        return 1;
+    }
+    if(strcmp(str ,"<&") == 0 || strcmp(str,">|") == 0)
+    {
+        return 1;
+    }
+    if(strcmp(str,"<>")== 0)
+    {
+        return 1;
+    }
+    return 0;
+
+}
+
 struct token *set_token(struct token *res, char *str)
 {
     if (str[0] == '\0')
@@ -73,7 +95,7 @@ struct token *set_token(struct token *res, char *str)
         free(str);
         return res;
     }
-    if (strcmp(str, ">") == 0)
+    if (is_redir(str))
     {
         res->type = TOKEN_REDIR;
         res->value = str;
