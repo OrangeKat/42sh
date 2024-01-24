@@ -9,6 +9,7 @@ enum ast_type
     AST_NOT,
     AST_IF,
     AST_PIPE,
+    AST_REDIR,
     AST_LIST
 };
 
