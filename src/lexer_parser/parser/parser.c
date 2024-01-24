@@ -68,11 +68,38 @@ static enum parser_status parse_element(struct lexer *lexer, struct ast *node)
 /*
     redirection = [IONUMBER] ( '>' |  '<' | '>>' | '>&' | '<&' | '>|' | '<>' ) WORD ;
 */
-
+static enum parser_status parse_redirection(struct lexer *lexer,struct ast **node)
+{
+    struct ast *new_redir = ast_genesis(AST_REDIR);
+    char **data = new_redir->data;
+    if (lexer->current_tok->type == TOKEN_REDIR)
+    {
+        struct token *start = lexer_pop(lexer);
+        data = add_to_data(data, start->value);
+        free(start);
+        *node = new_redir;
+        return PARSER_OK;
+    }
+    else
+    {
+        *node = new_redir;
+        return PARSER_NOK;
+    }
+}
 /*
     prefix = redirection ;
 */
-
+static enum parser_status parse_prefix(struct lexer *lexer,struct ast **node)
+{
+    if(parse_redirection(lexer,node) == PARSER_OK)
+    {
+        return PARSER_OK;
+    }
+    else
+    {
+        return PARSER_NOK;
+    }
+}
 /*
     simple_command =
         prefix { prefix }
