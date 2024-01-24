@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../lexer_parser/lexer/token.h"
 #include "../lexer_parser/lexer/lexer.h"
+#include "../lexer_parser/lexer/token.h"
 
 int is_separator(char c)
 {
@@ -24,57 +24,56 @@ int is_separator(char c)
 
 int is_redir(char *str)
 {
-    if(strcmp(str ,"<") == 0 || strcmp(str,">") == 0)
+    if (strcmp(str, "<") == 0 || strcmp(str, ">") == 0)
     {
         return 1;
     }
-    if(strcmp(str ,">>") == 0 || strcmp(str,">&") == 0)
+    if (strcmp(str, ">>") == 0 || strcmp(str, ">&") == 0)
     {
         return 1;
     }
-    if(strcmp(str ,"<&") == 0 || strcmp(str,">|") == 0)
+    if (strcmp(str, "<&") == 0 || strcmp(str, ">|") == 0)
     {
         return 1;
     }
-    if(strcmp(str,"<>")== 0)
+    if (strcmp(str, "<>") == 0)
     {
         return 1;
     }
     return 0;
-
 }
 
-int set_token_loop(struct token *res,char *str)
+int set_token_loop(struct token *res, char *str)
 {
-    if(strcmp(str,"while")==0)
+    if (strcmp(str, "while") == 0)
     {
         res->type = TOKEN_WHILE;
         res->value = NULL;
         free(str);
         return 1;
     }
-    if(strcmp(str,"for")==0)
+    if (strcmp(str, "for") == 0)
     {
         res->type = TOKEN_FOR;
         res->value = NULL;
         free(str);
         return 1;
     }
-    if(strcmp(str,"until")==0)
+    if (strcmp(str, "until") == 0)
     {
         res->type = TOKEN_UNTIL;
         res->value = NULL;
         free(str);
         return 1;
     }
-    if(strcmp(str,"do")==0)
+    if (strcmp(str, "do") == 0)
     {
         res->type = TOKEN_DO;
         res->value = NULL;
         free(str);
         return 1;
     }
-    if(strcmp(str,"done")==0)
+    if (strcmp(str, "done") == 0)
     {
         res->type = TOKEN_DONE;
         res->value = NULL;
@@ -84,7 +83,7 @@ int set_token_loop(struct token *res,char *str)
     return 0;
 }
 
-int set_token_if(struct token *res,char *str)
+int set_token_if(struct token *res, char *str)
 {
     if (strcmp(str, "if") == 0)
     {
@@ -140,7 +139,7 @@ struct token *set_token(struct token *res, char *str)
         free(str);
         return res;
     }
-    if(set_token_if(res,str))
+    if (set_token_if(res, str))
     {
         return res;
     }
@@ -164,7 +163,7 @@ struct token *set_token(struct token *res, char *str)
         free(str);
         return res;
     }
-    if(set_token_loop(res,str))
+    if (set_token_loop(res, str))
     {
         return res;
     }
@@ -176,7 +175,7 @@ struct token *set_token(struct token *res, char *str)
 void skip_comment(struct lexer *lexer)
 {
     char c;
-    while((c = fgetc(lexer->input_file))!= EOF && c != '\n')
+    while ((c = fgetc(lexer->input_file)) != EOF && c != '\n')
     {
         continue;
     }

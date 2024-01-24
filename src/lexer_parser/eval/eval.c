@@ -1,6 +1,5 @@
 #include "eval.h"
 
-#include <string.h>
 #include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -112,7 +111,8 @@ static int run_piped_commands(struct ast *pipe_node)
             }
 
             size_t size = 0;
-            for (size = 0; argvs[i][size] != NULL; size++);
+            for (size = 0; argvs[i][size] != NULL; size++)
+                ;
             int ret = cmd_handler(argvs[i], size);
             for (int i = 0; i < num_commands - 1; i++)
             {

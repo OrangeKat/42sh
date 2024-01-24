@@ -36,8 +36,7 @@ int command_line_handler(FILE **f, int argc, char **argv)
 {
     // raise an error "use case: ./42sh -c [command]"
     if (argc == 2)
-    {
-    }
+    {}
     // create a file and copy argv[2] inside
     *f = fmemopen(argv[2], strlen(argv[2]), "r");
     return 0;

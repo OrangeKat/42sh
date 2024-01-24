@@ -66,9 +66,11 @@ static enum parser_status parse_element(struct lexer *lexer, struct ast *node)
 }
 
 /*
-    redirection = [IONUMBER] ( '>' |  '<' | '>>' | '>&' | '<&' | '>|' | '<>' ) WORD ;
+    redirection = [IONUMBER] ( '>' |  '<' | '>>' | '>&' | '<&' | '>|' | '<>' )
+   WORD ;
 */
-/*static enum parser_status parse_redirection(struct lexer *lexer,struct ast **node)
+/*static enum parser_status parse_redirection(struct lexer *lexer,struct ast
+**node)
 {
     struct ast *new_redir = ast_genesis(AST_REDIR);
     char **data = new_redir->data;
@@ -107,7 +109,8 @@ static enum parser_status parse_element(struct lexer *lexer, struct ast *node)
     ;
     //TODO : add redir to simple command and do the prefix and redir parser
 */
-static enum parser_status parse_simple_command(struct lexer *lexer, struct ast **node)
+static enum parser_status parse_simple_command(struct lexer *lexer,
+                                               struct ast **node)
 {
     struct ast *new_cmd = ast_genesis(AST_CMD);
     if (lexer->current_tok->type == TOKEN_WORD
@@ -125,7 +128,8 @@ static enum parser_status parse_simple_command(struct lexer *lexer, struct ast *
 /*
     compound_list = pipeline { ; pipeline } [ ; ] ;
 */
-static enum parser_status parse_compound_list(struct lexer *lexer, struct ast **node)
+static enum parser_status parse_compound_list(struct lexer *lexer,
+                                              struct ast **node)
 {
     struct ast *new_clist = ast_genesis(AST_LIST);
     *node = new_clist;
@@ -176,7 +180,8 @@ static enum parser_status parse_if_else(struct lexer *lexer, struct ast **node)
     new_if = add_child_to_parent(new_if, then_list);
 
     struct ast *else_list = NULL;
-    if (lexer->current_tok->type == TOKEN_ELSE || lexer->current_tok->type == TOKEN_ELIF)
+    if (lexer->current_tok->type == TOKEN_ELSE
+        || lexer->current_tok->type == TOKEN_ELIF)
     {
         free(lexer_pop(lexer));
         if (parse_compound_list(lexer, &else_list) == PARSER_NOK)
@@ -224,7 +229,8 @@ static enum parser_status parse_command(struct lexer *lexer, struct ast **node)
     {
         return parse_if_else(lexer, node);
     }
-    else if (lexer->current_tok->type == TOKEN_REDIR || lexer->current_tok->type == TOKEN_WORD)
+    else if (lexer->current_tok->type == TOKEN_REDIR
+             || lexer->current_tok->type == TOKEN_WORD)
     {
         return parse_simple_command(lexer, node);
     }
@@ -336,4 +342,3 @@ enum parser_status parse(struct ast **root, struct lexer *lexer)
         return PARSER_NOK;
     }
 }
-
