@@ -43,6 +43,7 @@ int is_redir(char *str)
     return 0;
 
 }
+
 int set_token_loop(struct token *res,char *str)
 {
     if(strcmp(str,"while")==0)
@@ -82,6 +83,54 @@ int set_token_loop(struct token *res,char *str)
     }
     return 0;
 }
+
+int set_token_if(struct token *res,char *str)
+{
+    if (strcmp(str, "if") == 0)
+    {
+        res->type = TOKEN_IF;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    if (strcmp(str, "else") == 0)
+    {
+        res->type = TOKEN_ELSE;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    if (strcmp(str, "fi") == 0)
+    {
+        res->type = TOKEN_FI;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    if (strcmp(str, "fi") == 0)
+    {
+        res->type = TOKEN_FI;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    if (strcmp(str, "elif") == 0)
+    {
+        res->type = TOKEN_ELIF;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    if (strcmp(str, "then") == 0)
+    {
+        res->type = TOKEN_THEN;
+        res->value = NULL;
+        free(str);
+        return 1;
+    }
+    return 0;
+}
+
 struct token *set_token(struct token *res, char *str)
 {
     if (str[0] == '\0')
@@ -91,46 +140,8 @@ struct token *set_token(struct token *res, char *str)
         free(str);
         return res;
     }
-    if (strcmp(str, "if") == 0)
+    if(set_token_if(res,str))
     {
-        res->type = TOKEN_IF;
-        res->value = NULL;
-        free(str);
-        return res;
-    }
-    if (strcmp(str, "else") == 0)
-    {
-        res->type = TOKEN_ELSE;
-        res->value = NULL;
-        free(str);
-        return res;
-    }
-    if (strcmp(str, "fi") == 0)
-    {
-        res->type = TOKEN_FI;
-        res->value = NULL;
-        free(str);
-        return res;
-    }
-    if (strcmp(str, "fi") == 0)
-    {
-        res->type = TOKEN_FI;
-        res->value = NULL;
-        free(str);
-        return res;
-    }
-    if (strcmp(str, "elif") == 0)
-    {
-        res->type = TOKEN_ELIF;
-        res->value = NULL;
-        free(str);
-        return res;
-    }
-    if (strcmp(str, "then") == 0)
-    {
-        res->type = TOKEN_THEN;
-        res->value = NULL;
-        free(str);
         return res;
     }
     if (is_redir(str))
