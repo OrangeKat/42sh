@@ -249,6 +249,7 @@ enum parser_status parse_pipeline(struct lexer *lexer, struct ast **node)
     {
         struct ast *new_not = ast_genesis(AST_NOT);
         *node = new_not;
+        free(lexer_pop(lexer));
     }
 
     struct ast *new_pipe = ast_genesis(AST_PIPE);
