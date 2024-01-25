@@ -8,6 +8,8 @@ enum ast_type
     AST_CMD,
     AST_NOT,
     AST_IF,
+    AST_WHILE,
+    AST_UNTIL,
     AST_PIPE,
     AST_REDIR,
     AST_LIST

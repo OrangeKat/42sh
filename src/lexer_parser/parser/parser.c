@@ -39,6 +39,21 @@ static int list_node_continue(enum token_type type)
     }
 }
 
+static int is_shell_command(enum token_type type)
+{
+    switch(type)
+    {
+    case TOKEN_IF:
+        return 1;
+    case TOKEN_WHILE:
+        return 1;
+    case TOKEN_UNTIL:
+        return 1;
+    default:
+        return 0;
+    }
+}
+
 /*
     element = WORD ;
 */
@@ -151,6 +166,84 @@ static enum parser_status parse_compound_list(struct lexer *lexer,
 }
 
 /*
+    rule_until = 'until' compound_list 'do' compound_list 'done' ; 
+*/
+static enum parser_status parse_until(struct lexer *lexer, struct ast **node)
+{
+    struct ast *new_until = ast_genesis(AST_UNTIL);
+    *node = new_until;
+    free(lexer_pop(lexer));
+
+    struct ast *condition_list = NULL;
+    if (parse_compound_list(lexer, &condition_list) == PARSER_NOK)
+    {
+        return PARSER_NOK;
+    }
+    new_until = add_child_to_parent(new_until, condition_list);
+
+    struct ast *do_list = NULL;
+    if (!(lexer->current_tok->type == TOKEN_DO))
+    {
+        return PARSER_NOK;
+    }
+    else
+    {
+        if (parse_compound_list(lexer, &do_list) == PARSER_NOK)
+        {
+            return PARSER_NOK;
+        }
+        new_until = add_child_to_parent(new_until, do_list);
+    }
+
+    if (!(lexer->current_tok->type == TOKEN_DONE))
+    {
+        return PARSER_NOK;
+    }
+    free(lexer_pop(lexer));
+
+    return PARSER_OK;
+}
+
+/*
+    rule_while = 'while' compound_list 'do' compound_list 'done' ; 
+*/
+static enum parser_status parse_while(struct lexer *lexer, struct ast **node)
+{
+    struct ast *new_while = ast_genesis(AST_WHILE);
+    *node = new_while;
+    free(lexer_pop(lexer));
+
+    struct ast *condition_list = NULL;
+    if (parse_compound_list(lexer, &condition_list) == PARSER_NOK)
+    {
+        return PARSER_NOK;
+    }
+    new_while = add_child_to_parent(new_while, condition_list);
+
+    struct ast *do_list = NULL;
+    if (!(lexer->current_tok->type == TOKEN_DO))
+    {
+        return PARSER_NOK;
+    }
+    else
+    {
+        if (parse_compound_list(lexer, &do_list) == PARSER_NOK)
+        {
+            return PARSER_NOK;
+        }
+        new_while = add_child_to_parent(new_while, do_list);
+    }
+
+    if (!(lexer->current_tok->type == TOKEN_DONE))
+    {
+        return PARSER_NOK;
+    }
+    free(lexer_pop(lexer));
+
+    return PARSER_OK;
+}
+
+/*
     rule_if = 'if' compound_list 'then' compound_list [else_clause] 'fi' ;
 
     else_clause =
@@ -218,6 +311,33 @@ static enum parser_status parse_if_else(struct lexer *lexer, struct ast **node)
 }
 
 /*
+    shell_command =
+        rule_if
+    |   rule_while
+    |   rule_until
+    ;
+*/
+static enum parser_status parse_shell_command(struct lexer *lexer, struct ast **node)
+{
+    if (lexer->current_tok->type == TOKEN_IF)
+    {
+        return parse_if_else(lexer, node);
+    }
+    else if (lexer->current_tok->type == TOKEN_WHILE)
+    {
+        return parse_while(lexer, node);
+    }
+    else if (lexer->current_tok->type == TOKEN_UNTIL)
+    {
+        return parse_until(lexer, node);
+    }
+    else
+    {
+        return PARSER_NOK;
+    }
+}
+
+/*
     command =
         simple_command
     |   shell_command {redirect}
@@ -225,9 +345,9 @@ static enum parser_status parse_if_else(struct lexer *lexer, struct ast **node)
 */
 static enum parser_status parse_command(struct lexer *lexer, struct ast **node)
 {
-    if (lexer->current_tok->type == TOKEN_IF)
+    if (is_shell_command(lexer->current_tok->type))
     {
-        return parse_if_else(lexer, node);
+        return parse_shell_command(lexer, node);
     }
     else if (lexer->current_tok->type == TOKEN_REDIR
              || lexer->current_tok->type == TOKEN_WORD)

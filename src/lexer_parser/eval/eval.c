@@ -86,6 +86,26 @@ static int ast_eval_not(struct ast *ast)
     return !ast_eval(ast->children[0]);
 }
 
+static int ast_eval_while(struct ast *ast)
+{
+    int ret = 1;
+    while (ast_eval(ast->children[0]))
+    {
+        ret = ast_eval(ast->children[1]);
+    }
+    return ret;
+}
+
+static int ast_eval_until(struct ast *ast)
+{
+    int ret = 1;
+    while (!ast_eval(ast->children[0]))
+    {
+        ret = ast_eval(ast->children[1]);
+    }
+    return ret;
+}
+
 int ast_eval(struct ast *ast)
 {
     switch (ast->type)
@@ -100,6 +120,10 @@ int ast_eval(struct ast *ast)
         return ast_eval_pipe(ast);
     case AST_NOT:
         return ast_eval_not(ast);
+    case AST_WHILE:
+        return ast_eval_while(ast);
+    case AST_UNTIL:
+        return ast_eval_until(ast);
     default:
         return 1;
     }
