@@ -48,36 +48,31 @@ int set_token_loop(struct token *res, char *str)
     if (strcmp(str, "while") == 0)
     {
         res->type = TOKEN_WHILE;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     if (strcmp(str, "for") == 0)
     {
         res->type = TOKEN_FOR;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     if (strcmp(str, "until") == 0)
     {
         res->type = TOKEN_UNTIL;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     if (strcmp(str, "do") == 0)
     {
         res->type = TOKEN_DO;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     if (strcmp(str, "done") == 0)
     {
         res->type = TOKEN_DONE;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     return 0;
@@ -88,43 +83,37 @@ int set_token_if(struct token *res, char *str)
     if (strcmp(str, "if") == 0)
     {
         res->type = TOKEN_IF;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     if (strcmp(str, "else") == 0)
     {
         res->type = TOKEN_ELSE;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     if (strcmp(str, "fi") == 0)
     {
         res->type = TOKEN_FI;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     if (strcmp(str, "fi") == 0)
     {
         res->type = TOKEN_FI;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     if (strcmp(str, "elif") == 0)
     {
         res->type = TOKEN_ELIF;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     if (strcmp(str, "then") == 0)
     {
         res->type = TOKEN_THEN;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return 1;
     }
     return 0;
@@ -152,15 +141,13 @@ struct token *set_token(struct token *res, char *str)
     if (strcmp(str, "!") == 0)
     {
         res->type = TOKEN_NOT;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return res;
     }
     if (strcmp(str, "|") == 0)
     {
         res->type = TOKEN_PIPE;
-        res->value = NULL;
-        free(str);
+        res->value = str;
         return res;
     }
     if (set_token_loop(res, str))
