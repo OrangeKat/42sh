@@ -42,13 +42,8 @@ int stdin_handler(FILE **f, char *buffer, size_t capacity)
     return --length;
 }
 
-int command_line_handler(FILE **f, int argc, char **argv, int i)
+int command_line_handler(FILE **f, char **argv, int i)
 {
-    // raise an error "use case: ./42sh -c [command]"
-    if (argc <= 2)
-    {
-        return 2;
-    }
     // create a file and copy argv[2] inside
     *f = fmemopen(argv[i], strlen(argv[i]), "r");
     return 0;
@@ -82,15 +77,16 @@ int main(int argc, char **argv)
     else if (strcmp("-c", argv[1]) == 0)
     {
         int i;
+        if (argc <= 2)
+        {
+            err(2,"missing an argument");
+        }
         for (i = 2; i < argc; i++)
         {
-             if (command_line_handler(&f, argc, argv, i) == 2)
-             {
-                err(2,"missing an argument");
-             }
+             command_line_handler(&f, argv, i);
              if (strlen(argv[2]) == 0)
              {
-             err(127, "expected a non empty argument");
+                err(127, "expected a non empty argument");
              }
         }
     }
