@@ -154,6 +154,18 @@ struct token *set_token(struct token *res, char *str)
     {
         return res;
     }
+    if (strcmp(str,"&&") == 0)
+    {
+        res->type = TOKEN_AND;
+        res->value = str;
+        return res;
+    }
+    if (strcmp(str,"||") == 0)
+    {
+        res->type = TOKEN_OR;
+        res->value = str;
+        return res;
+    }
     res->type = TOKEN_WORD;
     res->value = str;
     return res;

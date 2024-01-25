@@ -20,6 +20,8 @@ enum token_type
     TOKEN_UNTIL,
     TOKEN_DO,
     TOKEN_DONE,
+    TOKEN_AND,
+    TOKEN_OR,
     TOKEN_THEN
 };
 
