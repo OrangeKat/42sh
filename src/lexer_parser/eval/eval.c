@@ -106,6 +106,27 @@ static int ast_eval_until(struct ast *ast)
     return ret;
 }
 
+static int ast_eval_and(struct ast *ast)
+{
+    int ret;
+    if ((ret = ast_eval(ast->children[0])))
+    {
+        return ast_eval(ast->children[1]);
+    }
+    return ret;
+}
+
+static int ast_eval_or(struct ast *ast)
+{
+    int ret;
+    if (!(ret = ast_eval(ast->children[0])))
+    {
+        ret = ast_eval(ast->children[1]);
+    }
+    return ret;
+
+}
+
 int ast_eval(struct ast *ast)
 {
     switch (ast->type)
@@ -124,6 +145,10 @@ int ast_eval(struct ast *ast)
         return ast_eval_while(ast);
     case AST_UNTIL:
         return ast_eval_until(ast);
+    case AST_AND:
+        return ast_eval_and(ast);
+    case AST_OR:
+        return ast_eval_or(ast);
     default:
         return 1;
     }

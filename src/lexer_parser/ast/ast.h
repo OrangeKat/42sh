@@ -12,6 +12,8 @@ enum ast_type
     AST_UNTIL,
     AST_PIPE,
     AST_REDIR,
+    AST_AND,
+    AST_OR,
     AST_LIST
 };
 
