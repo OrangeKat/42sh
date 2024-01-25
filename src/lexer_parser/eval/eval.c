@@ -194,5 +194,9 @@ int ast_eval(struct ast *ast)
             return run_piped_commands(ast);
         }
     }
+    else if (ast->type == AST_NOT)
+    {
+        return !ast_eval(ast->children[0]);
+    }
     return 1;
 }
