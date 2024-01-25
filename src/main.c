@@ -39,7 +39,7 @@ int stdin_handler(FILE **f, char *buffer, size_t capacity)
     }
     buffer[++length] = '\0';
     *f = fmemopen(buffer, length - 1, "r");
-    return 0;
+    return --length;
 }
 
 int command_line_handler(FILE **f, int argc, char **argv, int i)
@@ -73,7 +73,10 @@ int main(int argc, char **argv)
     // stdin
     if (argc == 1)
     {
-        stdin_handler(&f, buffer, capacity);
+        if (stdin_handler(&f, buffer, capacity) == 0)
+        {
+            err(127, "expected a non empty input");
+        }
     }
     // check if it there is a string argument
     else if (strcmp("-c", argv[1]) == 0)
