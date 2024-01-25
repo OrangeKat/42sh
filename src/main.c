@@ -14,20 +14,30 @@
 #include "lexer_parser/parser/parser.h"
 #include "utils/file_to_string.h"
 
-int stdin_handler(FILE **f, char *buffer)
+int stdin_handler(FILE **f, char *buffer, size_t capacity)
 {
     size_t length = 0;
     char tmp_buff[1];
     while (read(STDIN_FILENO, tmp_buff, 1) > 0)
     {
-        if (tmp_buff[0] == EOF)
+        if (tmp_buff[0] == EOF || tmp_buff[0] == '\n')
         {
-            length++;
             break;
         }
-        buffer = realloc(buffer, ++length);
-        buffer[length - 1] = tmp_buff[0];
+        if (length + 1 > capacity)
+        {
+            capacity *= 2;
+            char *tmp = realloc(buffer, capacity);
+            if (!tmp)
+            {
+                free(buffer);
+                return 2;
+            }
+            buffer = tmp;
+        }
+        buffer[length++] = tmp_buff[0];
     }
+    buffer[++length] = '\0';
     *f = fmemopen(buffer, length - 1, "r");
     return 0;
 }
@@ -58,11 +68,12 @@ int file_handler(FILE **f, char **argv)
 int main(int argc, char **argv)
 {
     FILE *f = NULL;
-    char *buffer = NULL;
+    size_t capacity = 64;
+    char *buffer = malloc(capacity);
     // stdin
     if (argc == 1)
     {
-        stdin_handler(&f, buffer);
+        stdin_handler(&f, buffer, capacity);
     }
     // check if it there is a string argument
     else if (strcmp("-c", argv[1]) == 0)
