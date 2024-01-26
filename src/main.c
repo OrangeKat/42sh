@@ -20,10 +20,6 @@ int stdin_handler(FILE **f, char *buffer, size_t capacity)
     char tmp_buff[1];
     while (read(STDIN_FILENO, tmp_buff, 1) > 0)
     {
-        if (tmp_buff[0] == '\n')
-        {
-            break;
-        }
         if (length + 1 > capacity)
         {
             capacity *= 2;
@@ -79,7 +75,7 @@ int main(int argc, char **argv)
     FILE *f = NULL;
     size_t capacity = 64;
     char *buffer = malloc(capacity);
-    char *tmp;
+    char *tmp = NULL;
     // stdin
     if (argc == 1)
     {
@@ -94,14 +90,14 @@ int main(int argc, char **argv)
         int i;
         if (argc <= 2)
         {
-            err(2,"missing an argument");
+            err(2, "missing an argument");
         }
         for (i = 2; i < argc; i++)
         {
-             if (strlen(argv[2]) == 0)
-             {
+            if (strlen(argv[2]) == 0)
+            {
                 err(127, "expected a non empty argument");
-             }
+            }
         }
         command_line_handler(&f, argv, argc, &tmp);
     }
@@ -142,7 +138,10 @@ int main(int argc, char **argv)
     }
     lexer_destroy(lexer);
     fclose(f);
-    free(tmp);
+    if (tmp)
+    {
+        free(tmp);
+    }
     free(buffer);
     return 0;
 }
