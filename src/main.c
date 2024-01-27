@@ -23,13 +23,13 @@ int stdin_handler(FILE **f, char *buffer, size_t capacity)
         if (length + 1 > capacity)
         {
             capacity *= 2;
-            char *tmp = realloc(buffer, capacity);
-            if (!tmp)
+            char *buf = realloc(buffer, capacity);
+            if (!buf)
             {
                 free(buffer);
                 return 2;
             }
-            buffer = tmp;
+            buffer = buf;
         }
         buffer[length++] = tmp_buff[0];
     }
