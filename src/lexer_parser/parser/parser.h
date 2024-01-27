@@ -12,6 +12,6 @@ enum parser_status
 
 enum parser_status parse(struct ast **root, struct lexer *lexer);
 enum parser_status parse_if(struct lexer *lexer, struct ast **node);
-enum parser_status parse_pipeline(struct lexer *lexer, struct ast **node);
+enum parser_status parse_and_or(struct lexer *lexer, struct ast **node);
 
 #endif /* !PARSER_H */
