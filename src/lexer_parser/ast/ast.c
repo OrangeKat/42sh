@@ -39,6 +39,11 @@ struct ast *add_child_to_parent(struct ast *parent, struct ast *child)
 
 void ast_destroy(struct ast *ast)
 {
+    if (!ast)
+    {
+        return;
+    }
+
     for (size_t i = 0; i < ast->nb_children; i++)
     {
         ast_destroy(ast->children[i]);
