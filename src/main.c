@@ -40,7 +40,7 @@ int stdin_handler(FILE **f, char *buffer, size_t capacity)
 
 int command_line_handler(FILE **f, char **argv, int argc, char **tmp)
 {
-    size_t length = 0;
+    size_t length = 1;
     for (int i = 2; i < argc; i++)
     {
         length += strlen(argv[i]) + 1;
