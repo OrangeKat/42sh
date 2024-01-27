@@ -38,6 +38,7 @@ void lexer_destroy(struct lexer *lexer)
 struct token *parse_input_for_tok(struct lexer *lexer)
 {
     struct token *res = malloc(sizeof(struct token));
+    res->value = NULL;
     size_t size = 1;
     char *str = calloc(sizeof(char), size);
     char c;

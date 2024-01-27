@@ -20,20 +20,16 @@ int stdin_handler(FILE **f, char *buffer, size_t capacity)
     char tmp_buff[1];
     while (read(STDIN_FILENO, tmp_buff, 1) > 0)
     {
-        if (tmp_buff[0] == EOF || tmp_buff[0] == '\n')
-        {
-            break;
-        }
         if (length + 1 > capacity)
         {
             capacity *= 2;
-            char *tmp = realloc(buffer, capacity);
-            if (!tmp)
+            char *buf = realloc(buffer, capacity);
+            if (!buf)
             {
                 free(buffer);
                 return 2;
             }
-            buffer = tmp;
+            buffer = buf;
         }
         buffer[length++] = tmp_buff[0];
     }
@@ -42,10 +38,24 @@ int stdin_handler(FILE **f, char *buffer, size_t capacity)
     return --length;
 }
 
-int command_line_handler(FILE **f, char **argv, int i)
+int command_line_handler(FILE **f, char **argv, int argc, char **tmp)
 {
-    // create a file and copy argv[2] inside
-    *f = fmemopen(argv[i], strlen(argv[i]), "r");
+    size_t length = 0;
+    for (int i = 2; i < argc; i++)
+    {
+        length += strlen(argv[i]) + 1;
+    }
+    *tmp = malloc(length);
+    *tmp[0] = '\0';
+    for (int i = 2; i < argc; i++)
+    {
+        strcat(*tmp, argv[i]);
+        if (i < argc - 1)
+        {
+            strcat(*tmp, " ");
+        }
+    }
+    *f = fmemopen(*tmp, strlen(*tmp), "r");
     return 0;
 }
 
@@ -65,6 +75,7 @@ int main(int argc, char **argv)
     FILE *f = NULL;
     size_t capacity = 64;
     char *buffer = malloc(capacity);
+    char *tmp = NULL;
     // stdin
     if (argc == 1)
     {
@@ -79,16 +90,16 @@ int main(int argc, char **argv)
         int i;
         if (argc <= 2)
         {
-            err(2,"missing an argument");
+            err(2, "missing an argument");
         }
         for (i = 2; i < argc; i++)
         {
-             command_line_handler(&f, argv, i);
-             if (strlen(argv[2]) == 0)
-             {
+            if (strlen(argv[2]) == 0)
+            {
                 err(127, "expected a non empty argument");
-             }
+            }
         }
+        command_line_handler(&f, argv, argc, &tmp);
     }
     // read from a file
     else
@@ -127,6 +138,10 @@ int main(int argc, char **argv)
     }
     lexer_destroy(lexer);
     fclose(f);
+    if (tmp)
+    {
+        free(tmp);
+    }
     free(buffer);
     return 0;
 }
