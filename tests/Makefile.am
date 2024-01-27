@@ -1,1 +1,4 @@
-TESTS=test.sh
+TESTS= \ 
+	./categories/echo/simple1.sh
+
+check-local:

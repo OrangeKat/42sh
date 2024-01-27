@@ -11,10 +11,8 @@ clean:
 		doc/html \
 		src/42sh \
 		Makefile Makefile.in \
-		src/Makefile src/Makefile.in \
-		src/builtins/Makefile src/builtins/Makefile.in \
-		src/lexer_parser/Makefile src/lexer_parser/Makefile.in \
-		src/utils/Makefile src/utils/Makefile.in \
+		*/Makefile */Makefile.in \
+		src/*/Makefile src/*/Makefile.in \
 		src/*/*.a \
 		src/*.o \
 		src/*/*.o \
@@ -26,7 +24,6 @@ clean:
 		src/*/.dirstamp \
 		src/*/*/.dirstamp \
 		test-driver \
-		tests/Makefile \
-		tests/Makefile.in
+		tests/*/*/*.sh.log tests/*/*/*.sh.trs
 
 .PHONY = clean debug

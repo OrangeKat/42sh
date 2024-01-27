@@ -3,6 +3,16 @@
 
 #include <stddef.h>
 
+#define SA 0
+#define SSTAR 1
+#define SQM 2
+#define SS 3
+#define NMB_SPECIAL_VARS 4
+#define SOLDPWD 0
+#define SPWD 1
+#define SIFS 2
+#define NMB_ENV_VARS 3
+
 enum var_type
 {
     INT = 0,
@@ -23,15 +33,16 @@ struct var
     enum var_type type;
     union var_value data;
     char *name;
+    size_t len;
 };
 
 struct var_holder
 {
     struct var *user_variables;
     size_t size;
-    struct var spec_variables[4];
+    char *spec_variables[4];
     struct var *arg_variables;
-    struct var env_variables[4];
+    char *env_variables[4];
 };
 
 struct var init_var(char *data, enum var_type type, char *name);

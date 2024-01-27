@@ -29,20 +29,20 @@ void pipes_close(int **pipes, int num_commands)
 
 int run_piped_commands(struct ast *pipe_node)
 {
-    int num_commands = pipe_node->nb_children;
+    size_t num_commands = pipe_node->nb_children;
     char ***argvs = malloc(sizeof(char **) * pipe_node->nb_children);
     for (size_t i = 0; i < pipe_node->nb_children; i++)
     {
         argvs[i] = pipe_node->children[i]->data;
     }
 
-    int **pipes = malloc(sizeof(int *) * (num_commands - 1));
-    for (int i = 0; i < num_commands - 1; i++)
+    int **pipes = calloc(num_commands, sizeof(int *));
+    for (size_t i = 0; i < num_commands - 1; i++)
     {
         pipes[i] = malloc(sizeof(int) * 2);
     }
 
-    for (int i = 0; i < num_commands - 1; ++i)
+    for (size_t i = 0; i < num_commands - 1; ++i)
     {
         if (pipe(pipes[i]) == -1)
         {
@@ -51,7 +51,7 @@ int run_piped_commands(struct ast *pipe_node)
         }
     }
 
-    for (int i = 0; i < num_commands; ++i)
+    for (size_t i = 0; i < num_commands; ++i)
     {
         pid_t pid = fork();
 
@@ -84,7 +84,8 @@ int run_piped_commands(struct ast *pipe_node)
             pipes_close(pipes, num_commands);
 
             size_t size = 0;
-            for (size = 0; argvs[i][size] != NULL; size++);
+            for (size = 0; argvs[i][size] != NULL; size++)
+                ;
             int ret = cmd_handler(argvs[i], size);
             pipes_destroy(pipes, num_commands, argvs);
             return ret;
@@ -92,7 +93,7 @@ int run_piped_commands(struct ast *pipe_node)
     }
 
     pipes_close(pipes, num_commands);
-    for (int i = 0; i < num_commands; ++i)
+    for (size_t i = 0; i < num_commands; ++i)
     {
         wait(NULL);
     }

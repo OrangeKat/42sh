@@ -4,26 +4,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define SA 0
-#define SSTAR 1
-#define SQM 2
-#define SS 3
-#define NMB_SPECIAL_VARS 4
-#define SOLDPWD 0
-#define SPWD 1
-#define SIFS 2
-#define NMB_ENV_VARS 3
-
 struct var init_var(char *data, enum var_type type, char *name)
 {
     struct var res = { .type = type, .name = name };
     if (type == INT)
     {
         res.data.numb = atoi(data);
+        res.len = 1;
     }
     else if (type == STRING)
     {
         res.data.string = data;
+        res.len = 1;
     }
     else
     {
