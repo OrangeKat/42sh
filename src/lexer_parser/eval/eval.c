@@ -139,6 +139,11 @@ static int ast_eval_or(struct ast *ast)
 
 int ast_eval(struct ast *ast)
 {
+    if (!ast)
+    {
+        return 1;
+    }
+
     switch (ast->type)
     {
     case AST_CMD:

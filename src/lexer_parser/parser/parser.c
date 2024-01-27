@@ -85,6 +85,7 @@ static enum parser_status parse_simple_command(struct lexer *lexer,
     {
         if (parse_prefix(lexer, &child_redir) == PARSER_NOK)
         {
+            ast_destroy(child_redir);
             return PARSER_NOK;
         }
         new_cmd = add_child_to_parent(new_cmd, child_redir);
@@ -98,6 +99,7 @@ static enum parser_status parse_simple_command(struct lexer *lexer,
     }
     else
     {
+        ast_destroy(new_cmd);
         return PARSER_NOK;
     }
 }
@@ -116,6 +118,7 @@ static enum parser_status parse_compound_list(struct lexer *lexer,
         struct ast *ast_node = NULL;
         if (parse_and_or(lexer, &ast_node) == PARSER_NOK)
         {
+            ast_destroy(ast_node);
             return PARSER_NOK;
         }
         new_clist = add_child_to_parent(new_clist, ast_node);
@@ -144,6 +147,7 @@ static enum parser_status parse_until(struct lexer *lexer, struct ast **node)
     struct ast *condition_list = NULL;
     if (parse_compound_list(lexer, &condition_list) == PARSER_NOK)
     {
+        ast_destroy(condition_list);
         return PARSER_NOK;
     }
     new_until = add_child_to_parent(new_until, condition_list);
@@ -158,6 +162,7 @@ static enum parser_status parse_until(struct lexer *lexer, struct ast **node)
         free_token(lexer_pop(lexer));
         if (parse_compound_list(lexer, &do_list) == PARSER_NOK)
         {
+            ast_destroy(do_list);
             return PARSER_NOK;
         }
         new_until = add_child_to_parent(new_until, do_list);
@@ -184,6 +189,7 @@ static enum parser_status parse_while(struct lexer *lexer, struct ast **node)
     struct ast *condition_list = NULL;
     if (parse_compound_list(lexer, &condition_list) == PARSER_NOK)
     {
+        ast_destroy(condition_list);
         return PARSER_NOK;
     }
     new_while = add_child_to_parent(new_while, condition_list);
@@ -198,6 +204,7 @@ static enum parser_status parse_while(struct lexer *lexer, struct ast **node)
         free_token(lexer_pop(lexer));
         if (parse_compound_list(lexer, &do_list) == PARSER_NOK)
         {
+            ast_destroy(do_list);
             return PARSER_NOK;
         }
         new_while = add_child_to_parent(new_while, do_list);
@@ -247,6 +254,7 @@ enum parser_status parse_if(struct lexer *lexer, struct ast **node)
     struct ast *condition_list = NULL;
     if (parse_compound_list(lexer, &condition_list) == PARSER_NOK)
     {
+        ast_destroy(condition_list);
         return PARSER_NOK;
     }
     new_if = add_child_to_parent(new_if, condition_list);
@@ -260,6 +268,7 @@ enum parser_status parse_if(struct lexer *lexer, struct ast **node)
 
     if (parse_compound_list(lexer, &then_list) == PARSER_NOK)
     {
+        ast_destroy(then_list);
         return PARSER_NOK;
     }
     new_if = add_child_to_parent(new_if, then_list);
@@ -269,6 +278,7 @@ enum parser_status parse_if(struct lexer *lexer, struct ast **node)
         struct ast *else_clause = NULL;
         if (parse_else(lexer, &else_clause) == PARSER_NOK)
         {
+            ast_destroy(else_clause);
             return PARSER_NOK;
         }
         new_if = add_child_to_parent(new_if, else_clause);
@@ -344,14 +354,23 @@ static enum parser_status parse_pipeline(struct lexer *lexer, struct ast **node)
         free_token(lexer_pop(lexer));
     }
 
-    struct ast *new_pipe = ast_genesis(AST_PIPE);
     struct ast *new_child = NULL;
     if (parse_command(lexer, &new_child) == PARSER_NOK)
     {
-        ast_destroy(new_pipe);
+        ast_destroy(new_child);
         return PARSER_NOK;
     }
+
+    struct ast *new_pipe = ast_genesis(AST_PIPE);
     new_pipe = add_child_to_parent(new_pipe, new_child);
+    if (*node == NULL)
+    {
+        *node = new_pipe;
+    }
+    else
+    {
+        *node = add_child_to_parent(*node, new_pipe);
+    }
 
     while (lexer->current_tok->type == TOKEN_PIPE)
     {
@@ -360,19 +379,10 @@ static enum parser_status parse_pipeline(struct lexer *lexer, struct ast **node)
         new_child = NULL;
         if (parse_command(lexer, &new_child) == PARSER_NOK)
         {
-            ast_destroy(new_pipe);
+            ast_destroy(new_child);
             return PARSER_NOK;
         }
         new_pipe = add_child_to_parent(new_pipe, new_child);
-    }
-
-    if (*node == NULL)
-    {
-        *node = new_pipe;
-    }
-    else
-    {
-        *node = add_child_to_parent(*node, new_pipe);
     }
 
     return PARSER_OK;
@@ -403,6 +413,7 @@ enum parser_status parse_and_or(struct lexer *lexer, struct ast **node)
             struct ast *node_child = NULL;
             if (parse_and_or(lexer, &node_child) == PARSER_NOK)
             {
+                ast_destroy(node_child);
                 return PARSER_NOK;
             }
             new_and = add_child_to_parent(new_and, node_child);
@@ -418,6 +429,7 @@ enum parser_status parse_and_or(struct lexer *lexer, struct ast **node)
             struct ast *node_child = NULL;
             if (parse_and_or(lexer, &node_child) == PARSER_NOK)
             {
+                ast_destroy(node_child);
                 return PARSER_NOK;
             }
             new_or = add_child_to_parent(new_or, node_child);
@@ -444,6 +456,7 @@ static enum parser_status parse_list(struct lexer *lexer, struct ast **node)
         struct ast *ast_node = NULL;
         if (parse_and_or(lexer, &ast_node) == PARSER_NOK)
         {
+            ast_destroy(ast_node);
             return PARSER_NOK;
         }
         new_list = add_child_to_parent(new_list, ast_node);
@@ -486,6 +499,7 @@ enum parser_status parse(struct ast **root, struct lexer *lexer)
     }
     else
     {
+        ast_destroy(ast_node);
         return PARSER_NOK;
     }
 }
