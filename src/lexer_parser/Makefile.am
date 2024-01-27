@@ -10,6 +10,8 @@ liblexpar_a_SOURCES= \
 	lexer/token.h \
 	parser/parser.c \
 	parser/parser.h \
+	parser/parser_utils.c \
+	parser/parser_utils.h \
 	eval/eval.c \
 	eval/eval.h \
 	eval/pipe.c

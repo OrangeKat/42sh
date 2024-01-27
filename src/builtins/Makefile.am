@@ -6,6 +6,7 @@ libbin_a_SOURCES= \
 	echo.c \
 	true.c \
 	false.c \
+	exit.c \
 	builtin.h
 
 libbin_a_CPPFLAGS = -I$(top_srcdir)/src

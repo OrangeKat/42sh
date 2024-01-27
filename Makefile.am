@@ -25,6 +25,8 @@ clean:
 		src/.dirstamp \
 		src/*/.dirstamp \
 		src/*/*/.dirstamp \
-		test-driver
+		test-driver \
+		tests/Makefile \
+		tests/Makefile.in
 
 .PHONY = clean debug
