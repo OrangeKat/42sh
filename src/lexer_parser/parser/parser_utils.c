@@ -3,6 +3,15 @@
 #include <stdlib.h>
 
 #include "../lexer/token.h"
+#include "../lexer/lexer.h"
+
+void newline_cleanser(struct lexer *lexer)
+{
+    while (lexer->current_tok->type == TOKEN_NL)
+    {
+        free(lexer_pop(lexer));
+    }
+}
 
 char **add_to_data(char **data, char *word)
 {
@@ -33,6 +42,8 @@ int list_node_continue(enum token_type type)
     switch (type)
     {
     case TOKEN_EOF:
+        return 0;
+    case TOKEN_NL:
         return 0;
     case TOKEN_THEN:
         return 0;

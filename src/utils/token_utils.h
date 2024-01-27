@@ -18,4 +18,6 @@ void skip_comment(struct lexer *lexer);
 
 int is_redir(char *str);
 
+char *get_double_quote(FILE *fd);
+
 #endif /*TOKEN_UTILS_H*/

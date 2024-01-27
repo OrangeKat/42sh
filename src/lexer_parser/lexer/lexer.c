@@ -35,6 +35,27 @@ void lexer_destroy(struct lexer *lexer)
     free(lexer);
 }
 
+struct token *lexer_single_quote(struct lexer *lexer,char *str,struct token *res)
+{
+    free(str);
+    res->value = get_string(lexer->input_file);
+    res->type = TOKEN_WORD;
+    return res;
+}
+
+struct token *lexer_double_quote(struct lexer *lexer,char *str,struct token *res)
+{
+    char c;
+    free(str);
+    res->type = TOKEN_VAR;
+    if((c = fgetc(lexer->input_file)) != '$')
+    {
+            fseek(lexer->input_file, -1, SEEK_CUR);
+        res->type = TOKEN_WORD;
+    }
+    res->value = get_double_quote(lexer->input_file);
+    return res;
+}
 struct token *parse_input_for_tok(struct lexer *lexer)
 {
     struct token *res = malloc(sizeof(struct token));
@@ -61,10 +82,23 @@ struct token *parse_input_for_tok(struct lexer *lexer)
     {
         if (c == '\'')
         {
-            free(str);
+            /*free(str);
             res->value = get_string(lexer->input_file);
             res->type = TOKEN_WORD;
-            return res;
+            return res;*/
+            return lexer_single_quote(lexer,str,res);
+        }
+        if(c == '"')
+        {
+            /*free(str);
+            res->type = TOKEN_VAR;
+            if((c = fgetc(lexer->input_file)) != '$')
+            {
+                fseek(lexer->input_file, -1, SEEK_CUR);
+                res->type = TOKEN_WORD;
+            }
+            res->value = get_double_quote(lexer->input_file);*/
+            return lexer_double_quote(lexer,str,res);
         }
         if (c == '\n' || c == ';')
         {
@@ -75,8 +109,7 @@ struct token *parse_input_for_tok(struct lexer *lexer)
                 return res;
             }
             str[size - 1] = '\0';
-            res->type = TOKEN_WORD;
-            res->value = str;
+            res = set_token(res, str);
             lexer->separator = 1;
             return res;
         }
@@ -85,16 +118,6 @@ struct token *parse_input_for_tok(struct lexer *lexer)
         str = realloc(str, size);
     }
     str[size - 1] = '\0';
-    /*if (str[0] == '\0')
-    {
-        res->type = TOKEN_EOF;
-        res->value = NULL;
-        free(str);
-        return res;
-    }
-    res->type = TOKEN_WORD;
-    res->value = str;
-    return  res;*/
     return set_token(res, str);
 }
 

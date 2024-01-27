@@ -2,8 +2,10 @@
 #define PARSER_UTILS_H
 
 #include "../lexer/token.h"
+#include "../lexer/lexer.h"
 
 char **add_to_data(char **data, char *word);
+void newline_cleanser(struct lexer *lexer);
 void free_token(struct token *token);
 int list_node_continue(enum token_type type);
 int exp_node_continue(enum token_type type);

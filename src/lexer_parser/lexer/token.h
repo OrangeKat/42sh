@@ -22,6 +22,7 @@ enum token_type
     TOKEN_DONE,
     TOKEN_AND,
     TOKEN_OR,
+    TOKEN_VAR,
     TOKEN_THEN
 };
 

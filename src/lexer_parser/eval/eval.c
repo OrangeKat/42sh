@@ -51,7 +51,12 @@ static int ast_eval_list(struct ast *ast)
     int ret_val = 1;
     for (size_t i = 0; i < ast->nb_children; i++)
     {
-        if (!ast_eval(ast->children[i]))
+        ret_val = ast_eval(ast->children[i]);
+        if (ret_val == -1)
+        {
+            return 127;
+        }
+        if (!ret_val)
         {
             ret_val = 0;
         }

@@ -216,6 +216,25 @@ char *get_word(FILE *fd)
     res[size] = '\0';
     return res;
 }
+char *get_double_quote(FILE *fd)
+{
+    char c;
+    size_t size = 1;
+    char *res = calloc(sizeof(char), size);
+    while ((c = fgetc(fd)) != '"' && c != EOF)
+    {
+        res[size - 1] = c;
+        size++;
+        res = realloc(res, size);
+    }
+    if (c == EOF)
+    {
+        free(res);
+        return NULL;
+    }
+    res[size - 1] = '\0';
+    return res;
+}
 
 /*int main(void)
 {
