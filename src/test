@@ -1,1 +1,0 @@
-if ! echo hi; then echo hello | tr e a | grep hal && echo bye; else seq 5; fi
