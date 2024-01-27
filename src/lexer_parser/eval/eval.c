@@ -14,15 +14,21 @@ int cmd_handler(char **data, size_t size)
 {
     if (strcmp(data[0], "true") == 0)
     {
-        return bin_true();
+        int res = bin_true();
+        fflush(stdout);
+        return res;
     }
     else if (strcmp(data[0], "false") == 0)
     {
-        return bin_false();
+        int res = bin_false();
+        fflush(stdout);
+        return res;
     }
     else if (strcmp(data[0], "echo") == 0)
     {
-        return !echo(data, size);
+        int res = !echo(data, size);
+        fflush(stdout);
+        return res;
     }
     else
     {
@@ -124,7 +130,6 @@ static int ast_eval_or(struct ast *ast)
         ret = ast_eval(ast->children[1]);
     }
     return ret;
-
 }
 
 int ast_eval(struct ast *ast)
