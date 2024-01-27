@@ -14,7 +14,7 @@
 #include "lexer_parser/parser/parser.h"
 #include "utils/file_to_string.h"
 
-int stdin_handler(FILE **f, char *buffer, size_t capacity)
+char *stdin_handler(FILE **f, char *buffer, size_t capacity)
 {
     size_t length = 0;
     char tmp_buff[1];
@@ -23,19 +23,18 @@ int stdin_handler(FILE **f, char *buffer, size_t capacity)
         if (length + 1 > capacity)
         {
             capacity *= 2;
-            char *buf = realloc(buffer, capacity);
-            if (!buf)
+            buffer = realloc(buffer, capacity);
+            if (!buffer)
             {
                 free(buffer);
-                return 2;
+                return NULL;
             }
-            buffer = buf;
         }
         buffer[length++] = tmp_buff[0];
     }
     buffer[++length] = '\0';
     *f = fmemopen(buffer, length - 1, "r");
-    return --length;
+    return buffer;
 }
 
 int command_line_handler(FILE **f, char **argv, int argc, char **buffer)
@@ -109,7 +108,7 @@ int main(int argc, char **argv)
     char *tmp = NULL;
     if (argc == 1)
     {
-        if (stdin_handler(&f, buffer, capacity) == 0)
+        if (strlen(buffer = stdin_handler(&f, buffer, capacity)) == 0)
         {
             err(127, "expected a non empty input");
         }
