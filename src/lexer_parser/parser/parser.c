@@ -471,7 +471,6 @@ enum parser_status parse(struct ast **root, struct lexer *lexer)
     if (lexer->current_tok->type == TOKEN_NL)
     {
         free_token(lexer_pop(lexer));
-        parse(root, lexer);
         return PARSER_OK;
     }
     else if (lexer->current_tok->type == TOKEN_EOF)

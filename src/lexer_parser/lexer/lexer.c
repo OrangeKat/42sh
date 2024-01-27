@@ -109,8 +109,7 @@ struct token *parse_input_for_tok(struct lexer *lexer)
                 return res;
             }
             str[size - 1] = '\0';
-            res->type = TOKEN_WORD;
-            res->value = str;
+            res = set_token(res, str);
             lexer->separator = 1;
             return res;
         }
