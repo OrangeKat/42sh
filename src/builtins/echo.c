@@ -71,6 +71,35 @@ int echosingle(char *str, int extend)
     return 0;
 }
 
+int argset(char *arg, int *newline, int *extend)
+{
+    size_t j = 1;
+    int temp_n = *newline;
+    int temp_e = *extend;
+    while (arg[j] != '\0')
+    {
+        if (arg[j] == 'n')
+        {
+            *newline = !*newline;
+        }
+        else if (arg[j] == 'e')
+        {
+            *extend = 1;
+        }
+        else if (arg[j] == 'E')
+        {
+            *extend = 0;
+        }
+        else
+        {
+            *newline = temp_n;
+            *extend = temp_e;
+            return 0;
+        }
+        j++;
+    }
+    return 1;
+}
 /**
 ** \brief Prints the arguments separated by space
 ** \details Prints all of its arguments separated by a space
@@ -90,17 +119,12 @@ int echo(char *args[], size_t argnum)
     size_t i = 1;
     while (i < argnum)
     {
-        if (strcmp(args[i], "-n") == 0)
+        if (args[i][0] == '-')
         {
-            newline = 0;
-        }
-        else if (strcmp(args[i], "-e") == 0)
-        {
-            extend = 1;
-        }
-        else if (strcmp(args[i], "-E") == 0)
-        {
-            extend = 0;
+            if (!argset(args[i], &newline, &extend))
+            {
+                break;
+            }
         }
         else
         {
