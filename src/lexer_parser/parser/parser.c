@@ -118,11 +118,6 @@ static enum parser_status parse_compound_list(struct lexer *lexer,
             return PARSER_NOK;
         }
         new_clist = add_child_to_parent(new_clist, ast_node);
-
-        if (lexer->current_tok->type == TOKEN_NL)
-        {
-            free_token(lexer_pop(lexer));
-        }
     }
     return PARSER_OK;
 }
