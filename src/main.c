@@ -133,6 +133,7 @@ int main(int argc, char **argv)
         {
             ast_destroy(tree_root);
         }
+        free(buffer);
         return 2;
     }
 
