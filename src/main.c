@@ -38,24 +38,24 @@ int stdin_handler(FILE **f, char *buffer, size_t capacity)
     return --length;
 }
 
-int command_line_handler(FILE **f, char **argv, int argc, char **tmp)
+int command_line_handler(FILE **f, char **argv, int argc, char **buffer)
 {
     size_t length = 0;
     for (int i = 2; i < argc; i++)
     {
         length += strlen(argv[i]) + 1;
     }
-    *tmp = malloc(length);
-    *tmp[0] = '\0';
+    *buffer = malloc(length);
+    *buffer[0] = '\0';
     for (int i = 2; i < argc; i++)
     {
-        strcat(*tmp, argv[i]);
+        strcat(*buffer, argv[i]);
         if (i < argc - 1)
         {
-            strcat(*tmp, " ");
+            strcat(*buffer, " ");
         }
     }
-    *f = fmemopen(*tmp, strlen(*tmp), "r");
+    *f = fmemopen(*buffer, strlen(*buffer), "r");
     return 0;
 }
 
@@ -70,22 +70,10 @@ int file_handler(FILE **f, char **argv)
     return 0;
 }
 
-int main(int argc, char **argv)
+static int file_allocator(FILE **f, int argc, char **argv, char **buffer)
 {
-    FILE *f = NULL;
-    size_t capacity = 64;
-    char *buffer = malloc(capacity);
-    char *tmp = NULL;
-    // stdin
-    if (argc == 1)
-    {
-        if (stdin_handler(&f, buffer, capacity) == 0)
-        {
-            err(127, "expected a non empty input");
-        }
-    }
     // check if it there is a string argument
-    else if (strcmp("-c", argv[1]) == 0)
+    if (strcmp("-c", argv[1]) == 0)
     {
         int i;
         if (argc <= 2)
@@ -99,17 +87,39 @@ int main(int argc, char **argv)
                 err(127, "expected a non empty argument");
             }
         }
-        command_line_handler(&f, argv, argc, &tmp);
+        command_line_handler(f, argv, argc, buffer);
     }
     // read from a file
     else
     {
-        file_handler(&f, argv);
+        file_handler(f, argv);
     }
-
     if (f == NULL)
     {
-        // error handling: not sure if necessary
+        return 0;
+    }
+    return 1;
+}
+
+int main(int argc, char **argv)
+{
+    FILE *f = NULL;
+    size_t capacity = 64;
+    char *buffer = malloc(capacity);
+    char *tmp = NULL;
+    if (argc == 1)
+    {
+        if (stdin_handler(&f, buffer, capacity) == 0)
+        {
+            err(127, "expected a non empty input");
+        }
+    }
+    else
+    {
+        if (!file_allocator(&f, argc, argv, &tmp))
+        {
+            return 2;
+        }
     }
 
     struct lexer *lexer = lexer_genesis(f);
@@ -127,7 +137,8 @@ int main(int argc, char **argv)
         return 2;
     }
 
-    if (!ast_eval(tree_root))
+    int ret_val = ast_eval(tree_root);
+    if (!ret_val)
     {
         lexer_destroy(lexer);
         return 1;
@@ -143,5 +154,9 @@ int main(int argc, char **argv)
         free(tmp);
     }
     free(buffer);
-    return 0;
+    if (ret_val != 127)
+    {
+        return 0;
+    }
+    return ret_val;
 }
