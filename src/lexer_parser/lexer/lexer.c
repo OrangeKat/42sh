@@ -39,6 +39,11 @@ struct token *lexer_single_quote(struct lexer *lexer,char *str,struct token *res
 {
     free(str);
     res->value = get_string(lexer->input_file);
+    if(res->value == NULL)
+    {
+        res->type = TOKEN_ERROR;
+        return res;
+    }
     res->type = TOKEN_WORD;
     return res;
 }
