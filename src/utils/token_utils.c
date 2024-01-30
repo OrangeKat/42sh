@@ -221,7 +221,7 @@ char *get_double_quote(FILE *fd)
     char c;
     size_t size = 1;
     char *res = calloc(sizeof(char), size);
-    while ((c = fgetc(fd)) != '"' && c != EOF)
+    while ((c = fgetc(fd)) != '\"' && c != EOF)
     {
         res[size - 1] = c;
         size++;

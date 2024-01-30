@@ -20,7 +20,7 @@ char *stdin_handler(FILE **f, char *buffer, size_t capacity)
     char tmp_buff[1];
     while (read(STDIN_FILENO, tmp_buff, 1) > 0)
     {
-        if (length + 1 > capacity)
+        if (length + 1 == capacity)
         {
             capacity *= 2;
             buffer = realloc(buffer, capacity);
@@ -79,12 +79,17 @@ static int file_allocator(FILE **f, int argc, char **argv, char **buffer)
         {
             err(2, "missing an argument");
         }
+        int is_empty = 1;
         for (i = 2; i < argc; i++)
         {
-            if (strlen(argv[2]) == 0)
+            if (strlen(argv[i]) != 0)
             {
-                err(127, "expected a non empty argument");
+                is_empty = 0;
             }
+        }
+        if (is_empty)
+        {
+            return 3;
         }
         command_line_handler(f, argv, argc, buffer);
     }
@@ -108,16 +113,18 @@ int main(int argc, char **argv)
     char *tmp = NULL;
     if (argc == 1)
     {
-        if (strlen(buffer = stdin_handler(&f, buffer, capacity)) == 0)
+        if (strlen(buffer = stdin_handler(&f, buffer, capacity)) == 1)
         {
-            err(127, "expected a non empty input");
+            err(2, "expected a non empty input");
         }
     }
     else
     {
-        if (!file_allocator(&f, argc, argv, &tmp))
+        int file_val = file_allocator(&f, argc, argv, &tmp);
+        if (file_val == 3)
         {
-            return 2;
+            free(buffer);
+            return 0;
         }
     }
 
@@ -134,13 +141,14 @@ int main(int argc, char **argv)
             ast_destroy(tree_root);
         }
         free(buffer);
-        return 2;
+        err(2, "Wrong grammar");
     }
 
     int ret_val = ast_eval(tree_root);
     if (!ret_val)
     {
         lexer_destroy(lexer);
+        free(buffer);
         return 1;
     }
     if (tree_root)
@@ -158,5 +166,5 @@ int main(int argc, char **argv)
     {
         return 0;
     }
-    return ret_val;
+    err(ret_val, "something went wrong when eval do did done his thing :C");
 }
