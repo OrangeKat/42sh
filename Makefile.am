@@ -5,7 +5,7 @@ debug: CFLAGS+= -g -fsanitize=address
 debug: all
 
 clean:
-	rm -rf config.log config.status configure configure~ \
+	@rm -rf config.log config.status configure configure~ \
 		install-sh install-sh~ depcomp missing \
 		aclocal.m4 ar-lib autom4te.cache/ compile \
 		doc/html \
