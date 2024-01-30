@@ -6,6 +6,7 @@
 int bin_true(void);
 int bin_false(void);
 int echo(char *args[], size_t argnum);
-unsigned int bin_exit(char **args, size_t argnum);
+int bin_exit(char **args, size_t argnum);
+int cd(char **args, size_t argsnum);
 
 #endif // BUILTIN_H

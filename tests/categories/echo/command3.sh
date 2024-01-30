@@ -5,8 +5,8 @@ TEST_OUT=".teststd.out"
 REF="bash --posix"
 TEST="./../src/42sh"
 
-$REF -c "echo -ne foo\tbar" >"$REF_OUT"
-$TEST -c "echo -ne foo\tbar" >"$TEST_OUT"
+$REF -c "echo -ne 'foo\tbar'" >"$REF_OUT"
+$TEST -c "echo -ne 'foo\tbar'" >"$TEST_OUT"
 diff "$REF_OUT" "$TEST_OUT"
 DIFF_CODE=$?
 

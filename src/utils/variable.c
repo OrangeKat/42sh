@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 struct var init_var(char *data, enum var_type type, char *name)
 {
@@ -47,6 +48,11 @@ struct var_holder *init_var_holder(void)
     vh->user_variables = NULL;
     vh->size = 0;
     vh->arg_variables = NULL;
+    char *buffer = malloc(1024);
+    buffer = getcwd(buffer, 1024);
+    vh->env_variables[0] = NULL;
+    vh->env_variables[1] = buffer;
+    vh->env_variables[2] = " \t\n";
     return vh;
 }
 
@@ -54,6 +60,10 @@ void destroy_holder(struct var_holder *vh)
 {
     free(vh->user_variables);
     free(vh->arg_variables);
+    for (int i = 0; i < NMB_ENV_VARS - 1; i++)
+    {
+        free(vh->env_variables[i]);
+    }
     free(vh);
 }
 
