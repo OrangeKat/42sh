@@ -183,21 +183,27 @@ void skip_comment(struct lexer *lexer)
         fseek(lexer->input_file, -1, SEEK_CUR);
     }
 }
-char *escape(FILE *fd, char *str, size_t size)
+size_t escape(FILE *fd, char **str, size_t size,int tf)
 {
     char c;
     c = fgetc(fd);
     if (c == EOF)
     {
-        free(str);
-        return NULL;
+        free(*str);
+        return 0;
     }
     else
     {
-        str[size - 1] = c;
+        char q = tf == 1 ? '\'' : '\"'; 
+        if(c == q)
+        {
+            *str[size-2] = c;
+            return size;
+        }
+        *str[size - 1] = c;
         (size)++;
-        str = realloc(str, size);
-        return str;
+        *str = realloc(*str, size);
+        return size;
     }
 }
 char *get_string(FILE *fd)
@@ -209,12 +215,14 @@ char *get_string(FILE *fd)
     {
         if (c == '\\')
         {
-            res = escape(fd, res, size);
-            if (res == NULL)
+            res[size - 1] = c;
+            size++;
+            res = realloc(res, size);
+            size = escape(fd, &res, size,1);
+            if (size == 0)
             {
                 return res;
             }
-            size++;
             continue;
         }
         res[size - 1] = c;
@@ -254,12 +262,14 @@ char *get_double_quote(FILE *fd)
     {
         if (c == '\\')
         {
-            res = escape(fd, res, size);
-            if (res == NULL)
+            res[size - 1] = c;
+            size++;
+            res = realloc(res, size);
+            size = escape(fd, &res, size,1);
+            if (size == 0)
             {
                 return res;
             }
-            size++;
             continue;
         }
         res[size - 1] = c;
