@@ -113,23 +113,26 @@ static enum parser_status parse_compound_list(struct lexer *lexer,
     newline_cleanser(lexer);
     struct ast *new_clist = ast_genesis(AST_LIST);
     *node = new_clist;
+
+    struct ast *new_and_or = NULL;
+    if (parse_and_or(lexer, &new_and_or) == PARSER_NOK)
+    {
+        ast_destroy(new_and_or);
+        return PARSER_NOK;
+    }
+    new_clist = add_child_to_parent(new_clist, new_and_or);
+
+    newline_cleanser(lexer);
     while (list_node_continue(lexer->current_tok->type))
     {
-        struct ast *ast_node = NULL;
-        if (parse_and_or(lexer, &ast_node) == PARSER_NOK)
+        struct ast *node = NULL;
+        if (parse_and_or(lexer, &node) == PARSER_NOK)
         {
-            ast_destroy(ast_node);
+            ast_destroy(node);
             return PARSER_NOK;
         }
-        new_clist = add_child_to_parent(new_clist, ast_node);
-    }
-    if (lexer->current_tok->type == TOKEN_NL)
-    {
+        new_clist = add_child_to_parent(new_clist, node);
         newline_cleanser(lexer);
-    }
-    else
-    {
-        return PARSER_NOK;
     }
 
     return PARSER_OK;
@@ -357,7 +360,6 @@ static enum parser_status parse_pipeline(struct lexer *lexer, struct ast **node)
     {
         struct ast *new_not = ast_genesis(AST_NOT);
         *node = new_not;
-        free_token(lexer_pop(lexer));
     }
 
     struct ast *new_child = NULL;

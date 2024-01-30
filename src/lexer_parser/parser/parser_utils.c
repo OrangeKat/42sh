@@ -43,19 +43,17 @@ int list_node_continue(enum token_type type)
     {
     case TOKEN_EOF:
         return 0;
-    case TOKEN_NL:
-        return 0;
     case TOKEN_THEN:
         return 0;
+    case TOKEN_DO:
+        return 0;
     case TOKEN_FI:
+        return 0;
+    case TOKEN_DONE:
         return 0;
     case TOKEN_ELSE:
         return 0;
     case TOKEN_ELIF:
-        return 0;
-    case TOKEN_DO:
-        return 0;
-    case TOKEN_DONE:
         return 0;
     default:
         return 1;
