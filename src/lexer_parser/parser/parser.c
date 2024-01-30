@@ -45,7 +45,7 @@ static enum parser_status parse_redirection(struct lexer *lexer, struct ast **no
         data = add_to_data(data, start->value);
         free(start);
         *node = new_redir;
-        return PARSER_OK;
+        return parse_element(lexer, new_redir);
     }
     else
     {
@@ -347,7 +347,13 @@ static enum parser_status parse_command(struct lexer *lexer, struct ast **node)
 */
 static enum parser_status parse_pipeline(struct lexer *lexer, struct ast **node)
 {
-    if (lexer->current_tok->type == TOKEN_NOT)
+    int is_neg = -1;
+    while (lexer->current_tok->type == TOKEN_NOT)
+    {
+        free_token(lexer_pop(lexer));
+        is_neg = -is_neg;
+    }
+    if (is_neg == 1)
     {
         struct ast *new_not = ast_genesis(AST_NOT);
         *node = new_not;
