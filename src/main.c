@@ -130,6 +130,7 @@ int main(int argc, char **argv)
 
     struct lexer *lexer = lexer_genesis(f);
     struct ast *tree_root = NULL;
+    int ret_val = 0;
     if (parse(&tree_root, lexer) != PARSER_OK)
     {
         if (lexer)
@@ -144,13 +145,14 @@ int main(int argc, char **argv)
         err(2, "Wrong grammar");
     }
 
-    int ret_val = ast_eval(tree_root);
+    ret_val = ast_eval(tree_root);
     if (!ret_val)
     {
         lexer_destroy(lexer);
         free(buffer);
         return 1;
     }
+
     if (tree_root)
     {
         ast_destroy(tree_root);

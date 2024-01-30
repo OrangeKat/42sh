@@ -1,0 +1,34 @@
+====================================
+   42sh 0.1: tests/test-suite.log
+====================================
+
+# TOTAL: 15
+# PASS:  13
+# SKIP:  0
+# XFAIL: 1
+# FAIL:  1
+# XPASS: 0
+# ERROR: 0
+
+.. contents:: :depth: 2
+
+FAIL: ./categories/echo/command3.sh
+===================================
+
+1c1
+< foo	bar
+\ No newline at end of file
+---
+> footbar
+\ No newline at end of file
+FAIL categories/echo/command3.sh (exit status: 1)
+
+XFAIL: ./categories/echo/fail.sh
+================================
+
+1c1
+< toto
+---
+> vraiment ap
+XFAIL categories/echo/fail.sh (exit status: 1)
+

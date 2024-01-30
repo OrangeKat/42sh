@@ -1,0 +1,6 @@
+libbin_a-true.o: true.c /run/current-system/sw/include/stdc-predef.h \
+ builtin.h \
+ /nix/store/b7hvml0m3qmqraz1022fwvyyg6fc1vdy-gcc-12.2.0/lib/gcc/x86_64-unknown-linux-gnu/12.2.0/include/stddef.h
+/run/current-system/sw/include/stdc-predef.h:
+builtin.h:
+/nix/store/b7hvml0m3qmqraz1022fwvyyg6fc1vdy-gcc-12.2.0/lib/gcc/x86_64-unknown-linux-gnu/12.2.0/include/stddef.h:

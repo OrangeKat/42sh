@@ -32,7 +32,17 @@ int cmd_handler(char **data, size_t size)
     }
     else
     {
-        return execvp(data[0], data);
+        pid_t child = fork();
+        if (child < 0)
+        {
+            perror("fork fail");
+            exit(1);
+        }
+        else if (child == 0)
+        {
+            return execvp(data[0], data);
+        }
+        return 1;
     }
 }
 
