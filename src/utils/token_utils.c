@@ -154,13 +154,13 @@ struct token *set_token(struct token *res, char *str)
     {
         return res;
     }
-    if (strcmp(str,"&&") == 0)
+    if (strcmp(str, "&&") == 0)
     {
         res->type = TOKEN_AND;
         res->value = str;
         return res;
     }
-    if (strcmp(str,"||") == 0)
+    if (strcmp(str, "||") == 0)
     {
         res->type = TOKEN_OR;
         res->value = str;
@@ -183,21 +183,21 @@ void skip_comment(struct lexer *lexer)
         fseek(lexer->input_file, -1, SEEK_CUR);
     }
 }
-char *escape(FILE *fd,char **str,size_t *size)
+char *escape(FILE *fd, char *str, size_t size)
 {
     char c;
     c = fgetc(fd);
-    if(c == EOF)
+    if (c == EOF)
     {
-        free(*str);
+        free(str);
         return NULL;
     }
     else
     {
-        *str[*size-1] = c;
-        (*size)++;
-        *str = realloc(*str,*size);
-        return *str;
+        str[size - 1] = c;
+        (size)++;
+        str = realloc(str, size);
+        return str;
     }
 }
 char *get_string(FILE *fd)
@@ -207,13 +207,14 @@ char *get_string(FILE *fd)
     char *res = calloc(sizeof(char), size);
     while ((c = fgetc(fd)) != '\'' && c != EOF)
     {
-        if(c == '\\')
+        if (c == '\\')
         {
-            res = escape(fd,&res,&size);
-            if(res == NULL)
+            res = escape(fd, res, size);
+            if (res == NULL)
             {
                 return res;
             }
+            size++;
             continue;
         }
         res[size - 1] = c;
@@ -251,13 +252,14 @@ char *get_double_quote(FILE *fd)
     char *res = calloc(sizeof(char), size);
     while ((c = fgetc(fd)) != '\"' && c != EOF)
     {
-        if(c == '\\')
+        if (c == '\\')
         {
-            res = escape(fd,&res,&size);
-            if(res == NULL)
+            res = escape(fd, res, size);
+            if (res == NULL)
             {
                 return res;
             }
+            size++;
             continue;
         }
         res[size - 1] = c;

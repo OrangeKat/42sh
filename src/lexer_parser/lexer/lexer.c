@@ -35,11 +35,12 @@ void lexer_destroy(struct lexer *lexer)
     free(lexer);
 }
 
-struct token *lexer_single_quote(struct lexer *lexer,char *str,struct token *res)
+struct token *lexer_single_quote(struct lexer *lexer, char *str,
+                                 struct token *res)
 {
     free(str);
     res->value = get_string(lexer->input_file);
-    if(res->value == NULL)
+    if (res->value == NULL)
     {
         res->type = TOKEN_ERROR;
         return res;
@@ -48,29 +49,31 @@ struct token *lexer_single_quote(struct lexer *lexer,char *str,struct token *res
     return res;
 }
 
-struct token *lexer_double_quote(struct lexer *lexer,char *str,struct token *res)
+struct token *lexer_double_quote(struct lexer *lexer, char *str,
+                                 struct token *res)
 {
     char c;
     free(str);
     res->type = TOKEN_VAR;
-    if((c = fgetc(lexer->input_file)) != '$')
+    if ((c = fgetc(lexer->input_file)) != '$')
     {
         fseek(lexer->input_file, -1, SEEK_CUR);
         res->type = TOKEN_WORD;
     }
     res->value = get_double_quote(lexer->input_file);
-    if(res->value == NULL)
+    if (res->value == NULL)
     {
         res->type = TOKEN_ERROR;
     }
     return res;
 }
 
-struct token *escape_char(struct lexer *lexer,struct token *res,char **str,size_t *size)
+struct token *escape_char(struct lexer *lexer, struct token *res, char **str,
+                          size_t *size)
 {
     char c;
     c = fgetc(lexer->input_file);
-    if(c == EOF)
+    if (c == EOF)
     {
         free(str);
         res->type = TOKEN_ERROR;
@@ -79,9 +82,9 @@ struct token *escape_char(struct lexer *lexer,struct token *res,char **str,size_
     }
     else
     {
-        *str[*size-1] = c;
+        *str[*size - 1] = c;
         (*size)++;
-        *str = realloc(*str,*size);
+        *str = realloc(*str, *size);
         return res;
     }
 }
@@ -112,16 +115,16 @@ struct token *parse_input_for_tok(struct lexer *lexer)
     {
         if (c == '\'')
         {
-            return lexer_single_quote(lexer,str,res);
+            return lexer_single_quote(lexer, str, res);
         }
         if (c == '\"')
         {
-            return lexer_double_quote(lexer,str,res);
+            return lexer_double_quote(lexer, str, res);
         }
         if (c == '\\')
         {
-            res = escape_char(lexer,res,&str,&size);
-            if(res->type == TOKEN_ERROR)
+            res = escape_char(lexer, res, &str, &size);
+            if (res->type == TOKEN_ERROR)
             {
                 return res;
             }

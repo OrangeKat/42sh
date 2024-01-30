@@ -1,8 +1,8 @@
 #ifndef PARSER_UTILS_H
 #define PARSER_UTILS_H
 
-#include "../lexer/token.h"
 #include "../lexer/lexer.h"
+#include "../lexer/token.h"
 
 char **add_to_data(char **data, char *word);
 void newline_cleanser(struct lexer *lexer);

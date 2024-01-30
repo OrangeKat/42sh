@@ -17,7 +17,7 @@ static enum parser_status parse_element(struct lexer *lexer, struct ast *node)
         struct token *start = lexer_pop(lexer);
         data = add_to_data(data, start->value);
         free(start);
-        while(exp_node_continue(lexer->current_tok->type))
+        while (exp_node_continue(lexer->current_tok->type))
         {
             struct token *tmp = lexer_pop(lexer);
             data = add_to_data(data, tmp->value);
@@ -33,9 +33,11 @@ static enum parser_status parse_element(struct lexer *lexer, struct ast *node)
 }
 
 /*
-    redirection = [IONUMBER] ( '>' |  '<' | '>>' | '>&' | '<&' | '>|' | '<>' ) WORD ;
+    redirection = [IONUMBER] ( '>' |  '<' | '>>' | '>&' | '<&' | '>|' | '<>' )
+   WORD ;
 */
-static enum parser_status parse_redirection(struct lexer *lexer, struct ast **node)
+static enum parser_status parse_redirection(struct lexer *lexer,
+                                            struct ast **node)
 {
     struct ast *new_redir = ast_genesis(AST_REDIR);
     char **data = new_redir->data;
@@ -59,7 +61,7 @@ static enum parser_status parse_redirection(struct lexer *lexer, struct ast **no
 */
 static enum parser_status parse_prefix(struct lexer *lexer, struct ast **node)
 {
-    if(parse_redirection(lexer,node) == PARSER_OK)
+    if (parse_redirection(lexer, node) == PARSER_OK)
     {
         return PARSER_OK;
     }
@@ -139,7 +141,7 @@ static enum parser_status parse_compound_list(struct lexer *lexer,
 }
 
 /*
-    rule_until = 'until' compound_list 'do' compound_list 'done' ; 
+    rule_until = 'until' compound_list 'do' compound_list 'done' ;
 */
 static enum parser_status parse_until(struct lexer *lexer, struct ast **node)
 {
@@ -181,7 +183,7 @@ static enum parser_status parse_until(struct lexer *lexer, struct ast **node)
 }
 
 /*
-    rule_while = 'while' compound_list 'do' compound_list 'done' ; 
+    rule_while = 'while' compound_list 'do' compound_list 'done' ;
 */
 static enum parser_status parse_while(struct lexer *lexer, struct ast **node)
 {
@@ -303,7 +305,8 @@ enum parser_status parse_if(struct lexer *lexer, struct ast **node)
     |   rule_until
     ;
 */
-static enum parser_status parse_shell_command(struct lexer *lexer, struct ast **node)
+static enum parser_status parse_shell_command(struct lexer *lexer,
+                                              struct ast **node)
 {
     if (lexer->current_tok->type == TOKEN_IF)
     {
@@ -408,7 +411,8 @@ enum parser_status parse_and_or(struct lexer *lexer, struct ast **node)
         return PARSER_NOK;
     }
 
-    while (lexer->current_tok->type == TOKEN_AND || lexer->current_tok->type == TOKEN_OR)
+    while (lexer->current_tok->type == TOKEN_AND
+           || lexer->current_tok->type == TOKEN_OR)
     {
         if (lexer->current_tok->type == TOKEN_AND)
         {

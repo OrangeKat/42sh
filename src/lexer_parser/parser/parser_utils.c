@@ -2,8 +2,8 @@
 
 #include <stdlib.h>
 
-#include "../lexer/token.h"
 #include "../lexer/lexer.h"
+#include "../lexer/token.h"
 
 void newline_cleanser(struct lexer *lexer)
 {
@@ -62,7 +62,7 @@ int list_node_continue(enum token_type type)
 
 int exp_node_continue(enum token_type type)
 {
-    switch(type)
+    switch (type)
     {
     case TOKEN_NL:
         return 0;
@@ -83,7 +83,7 @@ int exp_node_continue(enum token_type type)
 
 int is_shell_command(enum token_type type)
 {
-    switch(type)
+    switch (type)
     {
     case TOKEN_IF:
         return 1;
