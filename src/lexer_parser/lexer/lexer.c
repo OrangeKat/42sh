@@ -55,10 +55,14 @@ struct token *lexer_double_quote(struct lexer *lexer,char *str,struct token *res
     res->type = TOKEN_VAR;
     if((c = fgetc(lexer->input_file)) != '$')
     {
-            fseek(lexer->input_file, -1, SEEK_CUR);
+        fseek(lexer->input_file, -1, SEEK_CUR);
         res->type = TOKEN_WORD;
     }
     res->value = get_double_quote(lexer->input_file);
+    if(res->value == NULL)
+    {
+        res->type = TOKEN_ERROR;
+    }
     return res;
 }
 struct token *parse_input_for_tok(struct lexer *lexer)
