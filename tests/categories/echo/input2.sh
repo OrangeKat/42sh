@@ -5,9 +5,12 @@ TEST_OUT=".teststd.out"
 REF="bash --posix"
 TEST="./../src/42sh"
 
-$REF -c "echo toto" >"$REF_OUT"
-$TEST -c "echo toto" >"$TEST_OUT"
+cat in2 | $REF >"$REF_OUT"
+cat in2 | $TEST >"$TEST_OUT"
 diff "$REF_OUT" "$TEST_OUT"
+DIFF_CODE=$?
 
 rm $REF_OUT
 rm $TEST_OUT
+
+exit $DIFF_CODE

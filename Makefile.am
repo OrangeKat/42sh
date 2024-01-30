@@ -24,6 +24,7 @@ clean:
 		src/*/.dirstamp \
 		src/*/*/.dirstamp \
 		test-driver \
+		tests/test-suite.log \
 		tests/*/*/*.sh.log tests/*/*/*.sh.trs
 
 .PHONY = clean debug
