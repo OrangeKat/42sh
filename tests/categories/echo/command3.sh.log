@@ -1,7 +1,0 @@
-1c1
-< foo	bar
-\ No newline at end of file
----
-> footbar
-\ No newline at end of file
-FAIL categories/echo/command3.sh (exit status: 1)
