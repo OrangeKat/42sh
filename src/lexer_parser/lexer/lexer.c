@@ -65,6 +65,25 @@ struct token *lexer_double_quote(struct lexer *lexer,char *str,struct token *res
     }
     return res;
 }
+
+void escape_char(struct lexer *lexer,struct token *res,char *str,size_t size)
+{
+    char c;
+    c = fgetc(lexer->input_file);
+    if(c == EOF)
+    {
+        free(str);
+        res->type = TOKEN_ERROR;
+        res->value = NULL;
+    }
+    else
+    {
+        str[size-1] = c;
+        size++;
+        str = realloc(str,size);
+    }
+}
+
 struct token *parse_input_for_tok(struct lexer *lexer)
 {
     struct token *res = malloc(sizeof(struct token));
@@ -91,23 +110,19 @@ struct token *parse_input_for_tok(struct lexer *lexer)
     {
         if (c == '\'')
         {
-            /*free(str);
-            res->value = get_string(lexer->input_file);
-            res->type = TOKEN_WORD;
-            return res;*/
             return lexer_single_quote(lexer,str,res);
         }
-        if(c == '"')
+        if (c == '"')
         {
-            /*free(str);
-            res->type = TOKEN_VAR;
-            if((c = fgetc(lexer->input_file)) != '$')
-            {
-                fseek(lexer->input_file, -1, SEEK_CUR);
-                res->type = TOKEN_WORD;
-            }
-            res->value = get_double_quote(lexer->input_file);*/
             return lexer_double_quote(lexer,str,res);
+        }
+        if (c == '\\')
+        {
+            escape_char(lexer,res,str,size);
+            if(res->type == TOKEN_ERROR)
+            {
+                return res;
+            }
         }
         if (c == '\n' || c == ';')
         {
@@ -150,34 +165,3 @@ struct token *lexer_pop(struct lexer *lexer)
     }
     return to_pop;
 }
-
-/*
-int main(void)
-{
-    struct lexer *lex = lexer_genesis(fopen("test.sh","r"));
-    struct token *tok = lexer_peek(lex);
-    printf("current:%s\n",lex->current_tok->value);
-    printf("peek:%s\n",tok->value);
-    tok = lexer_pop(lex);
-    tok = lexer_peek(lex);
-    printf("current:%s\n",lex->current_tok->value);
-    printf("peek:%s\n",tok->value);
-    tok = lexer_pop(lex);
-    tok = lexer_peek(lex);
-    printf("current:%s\n",lex->current_tok->value);
-    printf("peek:%s\n",tok->value);
-    tok = lexer_pop(lex);
-    tok = lexer_peek(lex);
-    printf("current:%s\n",lex->current_tok->value);
-    printf("peek:%s\n",tok->value);
-    tok = lexer_pop(lex);
-    tok = lexer_peek(lex);
-    printf("current:%s\n",lex->current_tok->value);
-    printf("peek:%s\n",tok->value);
-    tok = lexer_pop(lex);
-    tok = lexer_peek(lex);
-    printf("current:%s\n",lex->current_tok->value);
-    printf("peek:%s\n",tok->value);
-    return 0;
-}
-*/
