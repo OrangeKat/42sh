@@ -66,7 +66,7 @@ struct token *lexer_double_quote(struct lexer *lexer,char *str,struct token *res
     return res;
 }
 
-void escape_char(struct lexer *lexer,struct token *res,char *str,size_t size)
+struct token *escape_char(struct lexer *lexer,struct token *res,char **str,size_t *size)
 {
     char c;
     c = fgetc(lexer->input_file);
@@ -75,12 +75,14 @@ void escape_char(struct lexer *lexer,struct token *res,char *str,size_t size)
         free(str);
         res->type = TOKEN_ERROR;
         res->value = NULL;
+        return res;
     }
     else
     {
-        str[size-1] = c;
-        size++;
-        str = realloc(str,size);
+        *str[*size-1] = c;
+        (*size)++;
+        *str = realloc(*str,*size);
+        return res;
     }
 }
 
@@ -118,11 +120,12 @@ struct token *parse_input_for_tok(struct lexer *lexer)
         }
         if (c == '\\')
         {
-            escape_char(lexer,res,str,size);
+            res = escape_char(lexer,res,&str,&size);
             if(res->type == TOKEN_ERROR)
             {
                 return res;
             }
+            continue;
         }
         if (c == '\n' || c == ';')
         {
