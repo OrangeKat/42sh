@@ -210,6 +210,10 @@ char *get_string(FILE *fd)
         if(c == '\\')
         {
             res = escape(fd,&res,&size);
+            if(res == NULL)
+            {
+                return res;
+            }
             continue;
         }
         res[size - 1] = c;
@@ -250,6 +254,10 @@ char *get_double_quote(FILE *fd)
         if(c == '\\')
         {
             res = escape(fd,&res,&size);
+            if(res == NULL)
+            {
+                return res;
+            }
             continue;
         }
         res[size - 1] = c;
