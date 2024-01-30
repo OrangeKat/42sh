@@ -114,7 +114,7 @@ struct token *parse_input_for_tok(struct lexer *lexer)
         {
             return lexer_single_quote(lexer,str,res);
         }
-        if (c == '"')
+        if (c == '\"')
         {
             return lexer_double_quote(lexer,str,res);
         }

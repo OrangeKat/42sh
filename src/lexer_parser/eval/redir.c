@@ -145,33 +145,15 @@ int redirect_to_fd(struct ast *cmd_node)
     {
         fd_out = -1;
     }
-    else
-    {
-        fprintf(stderr, "Unspecified behavior for output redirection\n");
-        exit(EXIT_FAILURE);
-    }
     int fd_in = open(redir_node->data[2], O_RDONLY);
-    if (fd_in == -1) {
-        error("open");
-    }
     pid_t pid = fork();
-    if (pid == -1) {
-        error("fork");
-    }
-
     if (pid == 0)
     {
-        if (dup2(fd_in, STDIN_FILENO) == -1)
-        {
-            error("dup2");
-        }
-
+        if (dup2(fd_in, STDIN_FILENO) == -1) {error("dup2");}
         close(fd_in);
         if (fd_out != -1)
         {
-            if (dup2(fd_out, STDOUT_FILENO) == -1) {
-                error("dup2");
-            }
+            if (dup2(fd_out, STDOUT_FILENO) == -1) {error("dup2");}
             close(fd_out);
         }
         size_t size = 0;
@@ -191,7 +173,6 @@ int redirect_to_fd(struct ast *cmd_node)
         } 
         else if (WIFSIGNALED(status))
         {
-            fprintf(stderr, "terminated by signal %d\n",WTERMSIG(status));
             return 127;
         }
         close(fd_in);
@@ -204,14 +185,48 @@ int redirect_fd_to_fd(struct ast *cmd_node)
 
 }
 
-int redirect_last(struct ast *cmd_node)
-{
-
-}
-
 int redirect_open_and_write(struct ast *cmd_node)
 {
-    
+    int fd = open(filename, O_CREAT | O_RDWR, 0644);
+    if (fd == -1) {
+        error("open");
+    }
+
+    pid_t pid = fork();
+    if (pid == -1) {
+        error("fork");
+    }
+
+    if (pid == 0) { // Child process
+        // Redirect stdin from the file
+        if (dup2(fd, STDIN_FILENO) == -1) {
+            error("dup2");
+        }
+
+        // Redirect stdout to the file
+        if (dup2(fd, STDOUT_FILENO) == -1) {
+            error("dup2");
+        }
+
+        // Close the original file descriptor
+        close(fd);
+
+        // Execute the command
+        if (execvp(command, data + 2) == -1) {
+            perror("execvp");
+            exit(127);
+        }
+    } else { // Parent process
+        int status;
+        waitpid(pid, &status, 0);
+
+        if (WIFEXITED(status)) {
+            printf("%s exited with %d!\n", command, WEXITSTATUS(status));
+        } else if (WIFSIGNALED(status)) {
+            fprintf(stderr, "%s terminated by signal %d\n", command, WTERMSIG(status));
+            exit(1);
+        }
+    }
 }
 
 int select_pipe(struct ast *node,char** data)

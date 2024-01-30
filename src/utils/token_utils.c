@@ -183,6 +183,23 @@ void skip_comment(struct lexer *lexer)
         fseek(lexer->input_file, -1, SEEK_CUR);
     }
 }
+char *escape(FILE *fd,char **str,size_t *size)
+{
+    char c;
+    c = fgetc(fd);
+    if(c == EOF)
+    {
+        free(*str);
+        return NULL;
+    }
+    else
+    {
+        *str[*size-1] = c;
+        (*size)++;
+        *str = realloc(*str,*size);
+        return *str;
+    }
+}
 char *get_string(FILE *fd)
 {
     char c;
@@ -190,6 +207,11 @@ char *get_string(FILE *fd)
     char *res = calloc(sizeof(char), size);
     while ((c = fgetc(fd)) != '\'' && c != EOF)
     {
+        if(c == '\\')
+        {
+            res = escape(fd,&res,&size);
+            continue;
+        }
         res[size - 1] = c;
         size++;
         res = realloc(res, size);
@@ -202,6 +224,7 @@ char *get_string(FILE *fd)
     res[size - 1] = '\0';
     return res;
 }
+
 char *get_word(FILE *fd)
 {
     size_t size = 1;
@@ -216,6 +239,7 @@ char *get_word(FILE *fd)
     res[size] = '\0';
     return res;
 }
+
 char *get_double_quote(FILE *fd)
 {
     char c;
@@ -223,6 +247,11 @@ char *get_double_quote(FILE *fd)
     char *res = calloc(sizeof(char), size);
     while ((c = fgetc(fd)) != '\"' && c != EOF)
     {
+        if(c == '\\')
+        {
+            res = escape(fd,&res,&size);
+            continue;
+        }
         res[size - 1] = c;
         size++;
         res = realloc(res, size);
@@ -235,13 +264,3 @@ char *get_double_quote(FILE *fd)
     res[size - 1] = '\0';
     return res;
 }
-
-/*int main(void)
-{
-    struct token *tok = malloc(sizeof(struct token));
-    tok->type = 0;
-    tok->value = NULL;
-    char *str = "if";
-    tok = set_token(tok,str);
-    printf("%d\n",tok->type);
-}*/
