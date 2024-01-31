@@ -20,12 +20,12 @@ int redirect_to_file(struct ast *cmd_node)
 {
     struct ast *redir_node = cmd_node->children[0];
     char **cmd = cmd_node->data;
-    char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
+    /*char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
     for (size_t i = 0; i < redir_node->nb_children; i++)
     {
         argvs[i] = redir_node->children[i]->data;
     }
-
+    */
     int fd = open(redir_node->data[1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
     if (fd == -1)
     {
@@ -72,11 +72,11 @@ int redirect_to_stdin(struct ast *cmd_node)
 {
     struct ast *redir_node = cmd_node->children[0];
     char **cmd = cmd_node->data;
-    char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
+    /*char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
     for (size_t i = 0; i < redir_node->nb_children; i++)
     {
         argvs[i] = redir_node->children[i]->data;
-    }
+    }*/
     int fd_in = open(redir_node->data[1], O_RDONLY);
     if (fd_in == -1) {
         error("open");
@@ -126,11 +126,11 @@ int redirect_to_end_of_file(struct ast *cmd_node)
 {
     struct ast *redir_node = cmd_node->children[0];
     char **cmd = cmd_node->data;
-    char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
+    /*char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
     for (size_t i = 0; i < redir_node->nb_children; i++)
     {
         argvs[i] = redir_node->children[i]->data;
-    }
+    }*/
     int fd = open(redir_node->data[1], O_CREAT | O_WRONLY | O_APPEND, 0644);
     if (fd == -1)
     {
@@ -179,11 +179,11 @@ int redirect_to_fd(struct ast *cmd_node)
 {
     struct ast *redir_node = cmd_node->children[0];
     char **cmd = cmd_node->data;
-    char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
+    /*char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
     for (size_t i = 0; i < redir_node->nb_children; i++)
     {
         argvs[i] = redir_node->children[i]->data;
-    }
+    }*/
     int fd_out;
     int isCorrect = 1;
     size_t length = strlen(redir_node->data[1]);
@@ -248,11 +248,11 @@ int redirect_fd_to_fd(struct ast *cmd_node)
 {
     struct ast *redir_node = cmd_node->children[0];
     char **cmd = cmd_node->data;
-    char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
+    /*char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
     for (size_t i = 0; i < redir_node->nb_children; i++)
     {
         argvs[i] = redir_node->children[i]->data;
-    }
+    }*/
     int fd_in;
     int isCorrect = 1;
     size_t length = strlen(redir_node->data[1]);
@@ -304,11 +304,11 @@ int redirect_open_and_write(struct ast *cmd_node)
 {   
     struct ast *redir_node = cmd_node->children[0];
     char **cmd = cmd_node->data;
-    char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
+    /*char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
     for (size_t i = 0; i < redir_node->nb_children; i++)
     {
         argvs[i] = redir_node->children[i]->data;
-    }
+    }*/
     int fd = open(redir_node->data[1], O_CREAT | O_RDWR, 0644);
     if (fd == -1)
     {
