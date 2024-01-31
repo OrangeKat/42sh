@@ -357,7 +357,7 @@ int redirect_open_and_write(struct ast *cmd_node)
 
 int select_redir(struct ast *node)
 {
-    struct ast *redir_node = cmd_node->children[0];
+    struct ast *redir_node = node->children[0];
     if (strcmp(redir_node->data[0], ">") == 0)
     {
         return redirect_to_file(node);

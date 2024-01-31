@@ -46,6 +46,7 @@ static enum parser_status parse_redirection(struct lexer *lexer,
         struct token *start = lexer_pop(lexer);
         data = add_to_data(data, start->value);
         free(start);
+        new_redir->data = data;
         *node = new_redir;
         return parse_element(lexer, new_redir);
     }
