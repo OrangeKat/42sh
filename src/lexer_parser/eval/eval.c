@@ -10,6 +10,25 @@
 
 #include "../../builtins/builtin.h"
 
+static void execute_cmd(char **data, int *ret_val)
+{
+    pid_t child = fork();
+    if (child == 0)
+    {
+        execvp(data[0], data);
+        exit(127);
+    }
+    else
+    {
+        int status;
+        waitpid(child, &status, 0);
+        if (WIFEXITED(status))
+        {
+            *ret_val = WEXITSTATUS(status);
+        }
+    }
+}
+
 int cmd_handler(char **data, size_t size)
 {
     if (strcmp(data[0], "true") == 0)
@@ -32,17 +51,9 @@ int cmd_handler(char **data, size_t size)
     }
     else
     {
-        pid_t child = fork();
-        if (child < 0)
-        {
-            perror("fork fail");
-            exit(1);
-        }
-        else if (child == 0)
-        {
-            return execvp(data[0], data);
-        }
-        return 1;
+        int status;
+        execute_cmd(data, &status);
+        return status == 127 ? -1 : 1;
     }
 }
 

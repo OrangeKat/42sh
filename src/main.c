@@ -168,5 +168,5 @@ int main(int argc, char **argv)
     {
         return 0;
     }
-    err(ret_val, "something went wrong when eval do did done his thing :C");
+    err(127, "something went wrong when eval do did done his thing :C");
 }
