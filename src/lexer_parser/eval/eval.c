@@ -20,7 +20,7 @@ static void execute_cmd(char **data, int *ret_val)
     }
     else
     {
-        int status;
+        int status = 0;
         waitpid(child, &status, 0);
         if (WIFEXITED(status))
         {
@@ -51,7 +51,7 @@ int cmd_handler(char **data, size_t size)
     }
     else
     {
-        int status;
+        int status = 0;
         execute_cmd(data, &status);
         return status == 127 ? -1 : 1;
     }

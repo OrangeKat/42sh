@@ -13,7 +13,8 @@ TESTS= \
 	./categories/if_else/input1.sh \
 	./categories/if_else/input2.sh \
 	./categories/if_else/input3.sh \
-	./categories/if_else/inputtricky.sh
+	./categories/if_else/inputtricky.sh \
+	./categories/while_until/input1.sh
 
 XFAIL_TESTS= \
 	./categories/echo/fail.sh

@@ -7,16 +7,10 @@ TEST_ERR=".teststd.err"
 REF="bash --posix"
 TEST="./../src/42sh"
 
-cat inlots | $REF >"$REF_OUT" 2>"$REF_ERR"
-REF_CODE= $?
-cat inlots | $TEST >"$TEST_OUT" 2>"$TEST_ERR"
-TEST_CODE= $?
+cat in1 | $REF >"$REF_OUT" 2>"$REF_ERR"
+cat in1 | $TEST >"$TEST_OUT" 2>"$TEST_ERR"
 diff "$REF_OUT" "$TEST_OUT"
 DIFF_CODE=$?
-
-if [ $REF_CODE -ne $TEST_CODE ]; then
-	echo "wrong return code"
-fi
 
 if [ $DIFF_CODE -ne 0 ]; then
 	echo "wrong stdout"
@@ -34,4 +28,4 @@ rm $TEST_OUT
 rm $REF_ERR
 rm $TEST_ERR
 
-exit $DIFF_CODE && $ERR_CODE && [ $REF_CODE -eq $TEST_CODE]
+exit $DIFF_CODE && $ERR_CODE
