@@ -357,31 +357,32 @@ int redirect_open_and_write(struct ast *cmd_node)
 
 int select_redir(struct ast *node)
 {
-    if (strcmp(node->data[0], ">") == 0)
+    struct ast *redir_node = cmd_node->children[0];
+    if (strcmp(redir_node->data[0], ">") == 0)
     {
         return redirect_to_file(node);
     }
-    if (strcmp(node->data[0], "<") == 0)
+    if (strcmp(redir_node->data[0], "<") == 0)
     {
         return redirect_to_stdin(node);
     }
-    if (strcmp(node->data[0], ">>") == 0)
+    if (strcmp(redir_node->data[0], ">>") == 0)
     {
         return redirect_to_end_of_file(node);
     }
-    if (strcmp(node->data[0], ">&") == 0)
+    if (strcmp(redir_node->data[0], ">&") == 0)
     {
         return redirect_to_fd(node);
     }
-    if (strcmp(node->data[0], "<&") == 0)
+    if (strcmp(redir_node->data[0], "<&") == 0)
     {
         return redirect_fd_to_fd(node);
     }
-    if (strcmp(node->data[0], ">|") == 0)
+    if (strcmp(redir_node->data[0], ">|") == 0)
     {
         return redirect_to_file(node);
     }
-    if (strcmp(node->data[0], "<>") == 0)
+    if (strcmp(redir_node->data[0], "<>") == 0)
     {
         return redirect_open_and_write(node);
     }
