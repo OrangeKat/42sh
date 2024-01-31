@@ -61,7 +61,7 @@ static int ast_eval_cmd(struct ast *ast)
 {
     if (ast->nb_children == 1)
     {
-        return select_redir(ast); 
+        return select_redir(ast);
     }
     size_t size = 0;
     while (ast->data[size] != NULL)
