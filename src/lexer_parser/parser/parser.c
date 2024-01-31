@@ -97,6 +97,17 @@ static enum parser_status parse_simple_command(struct lexer *lexer,
         && parse_element(lexer, new_cmd) == PARSER_OK)
     {
         *node = new_cmd;
+
+        if (lexer->current_tok->type == TOKEN_REDIR)
+        {
+            struct ast *new_redir = NULL;
+            if (parse_redirection(lexer, &new_redir) == PARSER_NOK)
+            {
+                ast_destroy(new_redir);
+                return PARSER_NOK;
+            }
+            add_child_to_parent(new_cmd, new_redir);
+        }
         return PARSER_OK;
     }
     else
