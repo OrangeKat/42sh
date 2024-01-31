@@ -74,6 +74,8 @@ int exp_node_continue(enum token_type type)
         return 0;
     case TOKEN_OR:
         return 0;
+    case TOKEN_REDIR:
+        return 0;
     case TOKEN_ERROR:
         return 0;
     default:

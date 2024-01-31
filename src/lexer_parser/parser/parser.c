@@ -421,6 +421,7 @@ enum parser_status parse_and_or(struct lexer *lexer, struct ast **node)
         ast_destroy(node_pipe);
         return PARSER_NOK;
     }
+    newline_cleanser(lexer);
 
     while (lexer->current_tok->type == TOKEN_AND
            || lexer->current_tok->type == TOKEN_OR)
