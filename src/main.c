@@ -15,6 +15,8 @@
 #include "utils/file_to_string.h"
 #include "utils/variable.h"
 
+struct var_holder *g_vh = NULL;
+
 char *stdin_handler(FILE **f, char *buffer, size_t capacity)
 {
     size_t length = 0;
@@ -128,11 +130,10 @@ int main(int argc, char **argv)
             return 0;
         }
     }
-    struct var_holder *g_vh = init_var_holder();
+    g_vh = init_var_holder();
 
     struct lexer *lexer = lexer_genesis(f);
     struct ast *tree_root = NULL;
-    int ret_val = 0;
     if (parse(&tree_root, lexer) != PARSER_OK)
     {
         if (lexer)
@@ -147,7 +148,7 @@ int main(int argc, char **argv)
         err(2, "Wrong grammar");
     }
 
-    ret_val = ast_eval(tree_root);
+    int ret_val = ast_eval(tree_root);
     if (!ret_val)
     {
         lexer_destroy(lexer);
@@ -167,6 +168,10 @@ int main(int argc, char **argv)
     }
     free(buffer);
     destroy_holder(g_vh);
+    if (ret_val < -1)
+    {
+        return ret_val + 257;
+    }
     if (ret_val != 127)
     {
         return 0;
