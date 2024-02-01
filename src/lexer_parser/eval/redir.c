@@ -193,7 +193,7 @@ int redirect_to_fd(struct ast *cmd_node)
     {
         argvs[i] = redir_node->children[i]->data;
     }*/
-    int fd_out;
+    int fd_out = -1;
     int isCorrect = 1;
     size_t length = strlen(redir_node->data[1]);
     for (size_t i = 0; i < length; i++)
