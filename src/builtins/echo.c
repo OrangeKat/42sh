@@ -80,7 +80,7 @@ int argset(char *arg, int *newline, int *extend)
     {
         if (arg[j] == 'n')
         {
-            *newline = !*newline;
+            *newline = 0;
         }
         else if (arg[j] == 'e')
         {
