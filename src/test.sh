@@ -94,4 +94,34 @@ run_test "echo '      argueux     '" "spaces as args"
 
 run_test "echo -neennne 42\\nsh" "echo mix options 2"
 
+run_test "echo 'simple single quotes'" "simple single quotes"
+
+run_test "echo 'spaces between single quotes'" "spaces between single quotes"
+
+run_test "echo 'This is a test with\'escaped\' single quote.'" "single quotes with escaped single quote"
+
+run_test "echo 'single quote at the start'" "single quote at the start"
+
+run_test "echo 'single quote at the end'" "single quote at the end"
+
+run_test "echo 'This is a test with\tescaped\t tab inside single quotes.'" "single quotes with escaped tab"
+
+run_test "echo "simple double quotes"" "simple double quotes"
+
+run_test "echo "spaces between double quotes"" "spaces between double quotes"
+
+run_test "echo "This is a test with\"escaped\" double quote."" "double quotes with escaped double quote"
+
+run_test "echo "double quote at the start"" "double quote at the start"
+
+run_test "echo "double quote at the end"" "double quote at the end"
+
+run_test "echo "This is a test with\tescaped\t tab inside double quotes."" "double quotes with escaped tab"
+
+run_test "echo 'Single quotes with "double quotes" inside.'" "single quotes with double quotes inside"
+
+run_test "echo "Double quotes with 'single quotes' inside."" "double quotes with single quotes inside"
+
+run_test "echo 'Mix of single quotes and double quotes: "Hello" and 'World''" "mix of single and double quotes"
+
 echo "All tests completed."
