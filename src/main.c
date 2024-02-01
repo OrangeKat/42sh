@@ -13,6 +13,7 @@
 #include "lexer_parser/lexer/lexer.h"
 #include "lexer_parser/parser/parser.h"
 #include "utils/file_to_string.h"
+#include "utils/variable.h"
 
 char *stdin_handler(FILE **f, char *buffer, size_t capacity)
 {
@@ -127,6 +128,7 @@ int main(int argc, char **argv)
             return 0;
         }
     }
+    struct var_holder *g_vh = init_var_holder();
 
     struct lexer *lexer = lexer_genesis(f);
     struct ast *tree_root = NULL;
@@ -164,6 +166,7 @@ int main(int argc, char **argv)
         free(tmp);
     }
     free(buffer);
+    destroy_holder(g_vh);
     if (ret_val != 127)
     {
         return 0;

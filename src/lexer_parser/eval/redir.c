@@ -74,11 +74,13 @@ int redirect_to_stdin(struct ast *cmd_node)
     struct ast *redir_node = cmd_node->children[0];
     char **cmd = cmd_node->data;
     int fileDescriptor = open(redir_node->data[1], O_RDONLY);
-    if (fileDescriptor == -1) {
+    if (fileDescriptor == -1)
+    {
         perror("Erreur lors de l'ouverture du fichier");
         return -1;
     }
-    if (dup2(fileDescriptor, STDIN_FILENO) == -1) {
+    if (dup2(fileDescriptor, STDIN_FILENO) == -1)
+    {
         perror("Erreur lors de la redirection de l'entrée standard");
         close(fileDescriptor);
         return -1;
@@ -151,13 +153,12 @@ int redirect_to_fd(struct ast *cmd_node)
 {
     struct ast *redir_node = cmd_node->children[0];
     char **cmd = cmd_node->data;
-<<<<<<< HEAD
     /*char ***argvs = malloc(sizeof(char **) * redir_node->nb_children);
     for (size_t i = 0; i < redir_node->nb_children; i++)
     {
         argvs[i] = redir_node->children[i]->data;
     }*/
-    int fd_out = -1;
+    /*
     int isCorrect = 1;
     size_t length = strlen(redir_node->data[1]);
     for (size_t i = 0; i < length; i++)
@@ -166,14 +167,18 @@ int redirect_to_fd(struct ast *cmd_node)
         {
             isCorrect = 0;
         }
-=======
-    size_t size = 0;
-    int fileDescriptor = open(redir_node->data[1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
-    if (fileDescriptor == -1) {
-        return 1;
->>>>>>> c3b18fcb588778b1bde102655736c752e904389c
     }
-    if (dup2(fileDescriptor, STDOUT_FILENO) == -1 || dup2(fileDescriptor, STDERR_FILENO) == -1) {
+    */
+    size_t size = 0;
+    int fileDescriptor =
+        open(redir_node->data[1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+    if (fileDescriptor == -1)
+    {
+        return 1;
+    }
+    if (dup2(fileDescriptor, STDOUT_FILENO) == -1
+        || dup2(fileDescriptor, STDERR_FILENO) == -1)
+    {
         close(fileDescriptor);
         return 1;
     }
@@ -197,10 +202,12 @@ int redirect_fd_to_fd(struct ast *cmd_node)
         argvs[i] = redir_node->children[i]->data;
     }*/
     int fileDescriptor = open(redir_node->data[1], O_RDONLY);
-    if (fileDescriptor == -1) {
+    if (fileDescriptor == -1)
+    {
         return 1;
     }
-    if (dup2(fileDescriptor, STDIN_FILENO) == -1) {
+    if (dup2(fileDescriptor, STDIN_FILENO) == -1)
+    {
         close(fileDescriptor);
         return 1;
     }
