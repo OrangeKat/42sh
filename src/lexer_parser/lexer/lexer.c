@@ -45,6 +45,7 @@ struct token *lexer_single_quote(struct lexer *lexer, char *str,
         res->type = TOKEN_ERROR;
         return res;
     }
+
     res->type = TOKEN_WORD;
     return res;
 }
@@ -86,6 +87,21 @@ char *escape_char(struct lexer *lexer, char *str, size_t *size)
     }
 }
 
+
+struct token *new_line(struct lexer *lexer,char *str,struct token *res,size_t size)
+{
+    if (size == 1)
+    {
+        free(str);
+        res->type = TOKEN_NL;
+        return res;
+    }
+    str[size - 1] = '\0';
+    res = set_token(res, str);
+    lexer->separator = 1;
+    return res;
+}
+
 struct token *parse_input_for_tok(struct lexer *lexer)
 {
     struct token *res = malloc(sizeof(struct token));
@@ -112,10 +128,22 @@ struct token *parse_input_for_tok(struct lexer *lexer)
     {
         if (c == '\'')
         {
+            if(str[0] != '\0')
+            {
+                fseek(lexer->input_file, -1, SEEK_CUR);
+                str[size - 1] = '\0';
+                return set_token(res,str);
+            }
             return lexer_single_quote(lexer, str, res);
         }
         if (c == '\"')
         {
+            if(str[0] != '\0')
+            {
+                fseek(lexer->input_file, -1, SEEK_CUR);
+                str[size - 1] = '\0';
+                return set_token(res,str);
+            }
             return lexer_double_quote(lexer, str, res);
         }
         if (c == '\\')
@@ -130,7 +158,7 @@ struct token *parse_input_for_tok(struct lexer *lexer)
         }
         if (c == '\n' || c == ';')
         {
-            if (size == 1)
+            /*if (size == 1)
             {
                 free(str);
                 res->type = TOKEN_NL;
@@ -139,7 +167,8 @@ struct token *parse_input_for_tok(struct lexer *lexer)
             str[size - 1] = '\0';
             res = set_token(res, str);
             lexer->separator = 1;
-            return res;
+            return res;*/
+            return new_line(lexer,str,res,size);
         }
         str[size - 1] = c;
         size++;
