@@ -49,6 +49,18 @@ int cmd_handler(char **data, size_t size)
         fflush(stdout);
         return res;
     }
+    else if (strcmp(data[0], "exit") == 0)
+    {
+        int res = bin_exit(data, size);
+        fflush(stdout);
+        return res;
+    }
+    else if (strcmp(data[0], "cd") == 0)
+    {
+        int res = cd(data, size);
+        fflush(stdout);
+        return res;
+    }
     else
     {
         int status = 0;

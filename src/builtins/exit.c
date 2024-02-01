@@ -8,5 +8,5 @@ int bin_exit(char **args, size_t argnum)
     {
         return 1;
     }
-    return atoi(args[1]) - 256;
+    return atoi(args[1]) % 256 - 256;
 }
