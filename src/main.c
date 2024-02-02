@@ -12,7 +12,6 @@
 #include "lexer_parser/eval/eval.h"
 #include "lexer_parser/lexer/lexer.h"
 #include "lexer_parser/parser/parser.h"
-#include "utils/file_to_string.h"
 #include "utils/variable.h"
 
 struct var_holder *g_vh = NULL;

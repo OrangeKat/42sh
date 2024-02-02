@@ -3,9 +3,7 @@ lib_LIBRARIES = libutils.a
 
 # List of files to compile in libutils.a
 libutils_a_SOURCES= \
-	file_to_string.c \
 	token_utils.c \
-	file_to_string.h \
 	token_utils.h \
 	variable.c \
 	variable.h
