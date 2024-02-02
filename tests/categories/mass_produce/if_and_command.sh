@@ -7,7 +7,7 @@
     REF="bash --posix"
     TEST="./../src/42sh"
 
-    COMMAND=echo hello | tr e a | grep hal
+    COMMAND=if cat hello.txt; then echo inside if; echo bye bye; fi
     echo $COMMAND >in
 
     cat in | $REF >"$REF_OUT" 2>"$REF_ERR"

@@ -1,4 +1,4 @@
-TESTS= \
+TESTS = \
 	./categories/echo/command1.sh \
 	./categories/echo/command2.sh \
 	./categories/echo/command3.sh \
@@ -15,40 +15,43 @@ TESTS= \
 	./categories/if_else/input3.sh \
 	./categories/if_else/inputtricky.sh \
 	./categories/while_until/input1.sh \
-	./categories/mass_produce/'2 ifs.sh' \
-	./categories/mass_produce/'2 nl between echo.sh' \
-	./categories/mass_produce/'between.sh' \
-	./categories/mass_produce/'big arg.sh' \
-	./categories/mass_produce/'colliding key words.sh' \
-	./categories/mass_produce/'comment: not first.sh' \
-	./categories/mass_produce/'double.sh' \
-	./categories/mass_produce/'echo mix options 2.sh' \
-	./categories/mass_produce/'embedded ifs 1.sh' \
-	./categories/mass_produce/'embedded ifs 2.sh' \
-	./categories/mass_produce/'empty quotes.sh' \
-	./categories/mass_produce/'empty single quotes.sh' \
-	./categories/mass_produce/'if and command.sh' \
-	./categories/mass_produce/'if false else.sh' \
-	./categories/mass_produce/'if false.sh' \
-	./categories/mass_produce/'if true else.sh' \
-	./categories/mass_produce/'is.sh' \
-	./categories/mass_produce/'many_args.sh' \
-	./categories/mass_produce/'mix of single and double quotes.sh' \
-	./categories/mass_produce/'multiple quotes.sh' \
-	./categories/mass_produce/'non existant.sh' \
-	./categories/mass_produce/'pipe.sh' \
-	./categories/mass_produce/'quote.sh' \
-	./categories/mass_produce/"quotes inside.'.sh" \
-	./categories/mass_produce/'quotes.sh' \
-	./categories/mass_produce/'simple quote.sh' \
-	./categories/mass_produce/'simple seq.sh' \
-	./categories/mass_produce/'simple single quotes.sh' \
-	./categories/mass_produce/'single quote at the end.sh' \
-	./categories/mass_produce/'single quote at the start.sh' \
-	./categories/mass_produce/'single quotes with escaped single quote.sh' \
-	./categories/mass_produce/'single quotes with escaped tab.sh' \
-	./categories/mass_produce/'spaces as args.sh' \
-	./categories/mass_produce/'spaces between single quotes.sh'
+	./categories/mass_produce/simple_seq.sh \
+	./categories/mass_produce/many_args.sh \
+	./categories/mass_produce/big_arg.sh \
+	./categories/mass_produce/non_existant.sh \
+	./categories/mass_produce/2_nl_between_echo.sh \
+	./categories/mass_produce/pipe.sh \
+	./categories/mass_produce/comment_not_first.sh \
+	./categories/mass_produce/colliding_key_words.sh \
+	./categories/mass_produce/embedded_ifs_1.sh \
+	./categories/mass_produce/embedded_ifs_2.sh \
+	./categories/mass_produce/if_and_command.sh \
+	./categories/mass_produce/if_false.sh \
+	./categories/mass_produce/if_false_else.sh \
+	./categories/mass_produce/if_true_else.sh \
+	./categories/mass_produce/2_ifs.sh \
+	./categories/mass_produce/empty_single_quotes.sh \
+	./categories/mass_produce/empty_quotes.sh \
+	./categories/mass_produce/multiple_quotes.sh \
+	./categories/mass_produce/simple_quote.sh \
+	./categories/mass_produce/spaces_as_args.sh \
+	./categories/mass_produce/spaces_as_args.sh \
+	./categories/mass_produce/echo_mix_options_2.sh \
+	./categories/mass_produce/simple_single_quotes.sh \
+	./categories/mass_produce/spaces_between_single_quotes.sh \
+	./categories/mass_produce/single_quotes_with_escaped_single_quote.sh \
+	./categories/mass_produce/single_quote_at_the_start.sh \
+	./categories/mass_produce/single_quote_at_the_end.sh \
+	./categories/mass_produce/single_quotes_with_escaped_tab.sh \
+	./categories/mass_produce/simple_double_quotes.sh \
+	./categories/mass_produce/spaces_between_double_quotes.sh \
+	./categories/mass_produce/double_quotes_with_escaped_double_quote.sh \
+	./categories/mass_produce/double_quote_at_the_start.sh \
+	./categories/mass_produce/double_quote_at_the_end.sh \
+	./categories/mass_produce/double_quotes_with_escaped_tab.sh \
+	./categories/mass_produce/single_quotes_with_double_quotes_inside.sh \
+	./categories/mass_produce/double_quotes_with_single_quotes_inside.sh \
+	./categories/mass_produce/mix_of_single_and_double_quotes.sh
 
 XFAIL_TESTS= \
 	./categories/echo/fail.sh

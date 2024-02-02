@@ -7,7 +7,7 @@
     REF="bash --posix"
     TEST="./../src/42sh"
 
-    COMMAND=echo hello | tr e a | grep hal
+    COMMAND=echo 'Mix of single quotes and double quotes: "Hello" and 'World''
     echo $COMMAND >in
 
     cat in | $REF >"$REF_OUT" 2>"$REF_ERR"

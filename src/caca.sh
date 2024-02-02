@@ -44,6 +44,8 @@ flm_test() {
     rm in
 
     exit \$DIFF_CODE && \$ERR_CODE && [ \$REF_CODE -eq \$TEST_CODE]" >${description}.sh
+    chmod +x "${description}.sh"
+    echo "./categories/mass_produce/'${description}.sh \'" >> Makefile.am
 }
 
 flm_test "seq 5" "simple seq"
@@ -105,20 +107,20 @@ flm_test "echo 'single quote at the end'" "single quote at the end"
 
 flm_test "echo 'This is a test with\tescaped\t tab inside single quotes.'" "single quotes with escaped tab"
 
-flm_test "echo "simple double quotes"" "simple double quotes"
+flm_test "echo \"simple double quotes" "simple double quotes"
 
-flm_test "echo "spaces between double quotes"" "spaces between double quotes"
+flm_test "echo \"spaces between double quotes\"" "spaces between double quotes"
 
-flm_test "echo "This is a test with\"escaped\" double quote."" "double quotes with escaped double quote"
+flm_test "echo \"This is a test with\"escaped\" double quote.\"" "double quotes with escaped double quote"
 
-flm_test "echo "double quote at the start"" "double quote at the start"
+flm_test "echo \"double quote at the start\"" "double quote at the start"
 
-flm_test "echo "double quote at the end"" "double quote at the end"
+flm_test "echo \"double quote at the end\"" "double quote at the end"
 
-flm_test "echo "This is a test with\tescaped\t tab inside double quotes."" "double quotes with escaped tab"
+flm_test "echo \"This is a test with\tescaped\t tab inside double quotes.\"" "double quotes with escaped tab"
 
-flm_test "echo 'Single quotes with "double quotes" inside.'" "single quotes with double quotes inside"
+flm_test "echo 'Single quotes with \"double quotes\" inside.'" "single quotes with double quotes inside"
 
-flm_test "echo "Double quotes with 'single quotes' inside."" "double quotes with single quotes inside"
+flm_test "echo \"Double quotes with 'single quotes' inside.\"" "double quotes with single quotes inside"
 
-flm_test "echo 'Mix of single quotes and double quotes: "Hello" and 'World''" "mix of single and double quotes"
+flm_test "echo 'Mix of single quotes and double quotes: \"Hello\" and 'World''" "mix of single and double quotes"
