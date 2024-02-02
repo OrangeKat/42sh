@@ -2,5 +2,5 @@ autoreconf --install
 ./configure
 clear
 make check
-gcovr -r .
+gcovr
 make clean

@@ -9,6 +9,29 @@
 #include <unistd.h>
 
 #include "../../builtins/builtin.h"
+#include "../../utils/variable.h"
+
+static char **expand_vars(char **data, size_t size)
+{
+    char **res = malloc(sizeof(char *) * size);
+    for (size_t i = 0; i < size; i++)
+    {
+        if (*data[i] == '$')
+        {
+            extern struct var_holder *g_vh;
+            struct var v = get_variable(data[i] + 1, g_vh);
+            if (v.type == STRING)
+            {
+                res[i] = v.data.string;
+            }
+        }
+        else
+        {
+            res[i] = data[i];
+        }
+    }
+    return res;
+}
 
 static void execute_cmd(char **data, int *ret_val)
 {
@@ -31,40 +54,47 @@ static void execute_cmd(char **data, int *ret_val)
 
 int cmd_handler(char **data, size_t size)
 {
+    char **data_exp = expand_vars(data, size);
     if (strcmp(data[0], "true") == 0)
     {
         int res = bin_true();
         fflush(stdout);
+        free(data_exp);
         return res;
     }
     else if (strcmp(data[0], "false") == 0)
     {
         int res = bin_false();
         fflush(stdout);
+        free(data_exp);
         return res;
     }
     else if (strcmp(data[0], "echo") == 0)
     {
         int res = !echo(data, size);
         fflush(stdout);
+        free(data_exp);
         return res;
     }
     else if (strcmp(data[0], "exit") == 0)
     {
         int res = bin_exit(data, size);
         fflush(stdout);
+        free(data_exp);
         return res;
     }
     else if (strcmp(data[0], "cd") == 0)
     {
         int res = cd(data, size);
         fflush(stdout);
+        free(data_exp);
         return res;
     }
     else
     {
         int status = 0;
         execute_cmd(data, &status);
+        free(data_exp);
         return status == 127 ? -1 : 1;
     }
 }

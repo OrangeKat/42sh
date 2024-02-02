@@ -12,7 +12,7 @@ flm_test() {
     REF=\"bash --posix\"
     TEST=\"./../src/42sh\"
 
-    COMMAND=$test_script
+    COMMAND='$test_script'
     echo \$COMMAND >in
 
     cat in | \$REF >\"\$REF_OUT\" 2>\"\$REF_ERR\"
@@ -44,8 +44,13 @@ flm_test() {
     rm in
 
     exit \$DIFF_CODE && \$ERR_CODE && [ \$REF_CODE -eq \$TEST_CODE]" >./categories/mass_produce/${description}.sh
+<<<<<<< Updated upstream
 	chmod +x "./categories/mass_produce/${description}.sh"
 	echo "./categories/mass_produce/${description}.sh \\" >>Makefile.am
+=======
+    chmod +x "./categories/mass_produce/${description}.sh"
+    #echo "./categories/mass_produce/${description}.sh \\" >> Makefile.am
+>>>>>>> Stashed changes
 }
 
 flm_test "echo hello | tr e a | grep hal" "double_pipe"

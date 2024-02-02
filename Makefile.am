@@ -4,7 +4,7 @@ SUBDIRS = src \
 debug: CFLAGS+= -g -fsanitize=address
 debug: all
 
-check: CFLAGS+= -fPIC -coverage -O0 -fprofile-arcs -ftest-coverage
+check: CFLAGS+= -g -fPIC -coverage
 check: LDLIBS+= -lgcov
 
 clean:

@@ -43,6 +43,22 @@ int is_redir(char *str)
     return 0;
 }
 
+int set_token_var(struct token *res, char *str)
+{
+    for (size_t i = 0; str[i] != '\0'; i++)
+    {
+        if (str[i] == '=')
+        {
+            if (str[i + 1] != '\0')
+            {
+                res->type = TOKEN_VAR;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
 int set_token_loop(struct token *res, char *str)
 {
     if (strcmp(str, "while") == 0)
@@ -126,6 +142,10 @@ struct token *set_token(struct token *res, char *str)
         res->type = TOKEN_EOF;
         res->value = NULL;
         free(str);
+        return res;
+    }
+    if (set_token_var(res, str))
+    {
         return res;
     }
     if (set_token_if(res, str))

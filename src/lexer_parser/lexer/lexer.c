@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "../../utils/token_utils.h"
+#include "../../utils/variable.h"
 #include "token.h"
 
 struct lexer *lexer_genesis(FILE *input_file)
@@ -53,14 +54,8 @@ struct token *lexer_single_quote(struct lexer *lexer, char *str,
 struct token *lexer_double_quote(struct lexer *lexer, char *str,
                                  struct token *res)
 {
-    char c;
     free(str);
-    res->type = TOKEN_VAR;
-    if ((c = fgetc(lexer->input_file)) != '$')
-    {
-        fseek(lexer->input_file, -1, SEEK_CUR);
-        res->type = TOKEN_WORD;
-    }
+    res->type = TOKEN_WORD;
     res->value = get_double_quote(lexer->input_file);
     if (res->value == NULL)
     {
@@ -196,5 +191,20 @@ struct token *lexer_pop(struct lexer *lexer)
         lexer->offset--;
         lexer->separator = 0;
     }
+
+    if (lexer->current_tok->type == TOKEN_VAR)
+    {
+        extern struct var_holder *g_vh;
+        char *var_name = lexer->current_tok->value;
+        char *var_val = var_name;
+        for (size_t i = 0; var_name[i] != '='; i++)
+        {
+            var_val++;
+        }
+        var_val++;
+        set_variable(var_name, var_val, STRING, g_vh);
+        free(lexer_pop(lexer));
+    }
+
     return to_pop;
 }
