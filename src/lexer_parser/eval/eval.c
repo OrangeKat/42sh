@@ -19,10 +19,10 @@ static char **expand_vars(char **data, size_t size)
         if (*data[i] == '$')
         {
             extern struct var_holder *g_vh;
-            struct var v = get_variable(data[i] + 1, g_vh);
-            if (v.type == STRING)
+            struct var *v = get_variable(data[i] + 1, g_vh);
+            if (v->type == STRING)
             {
-                res[i] = v.data.string;
+                res[i] = v->data.string;
             }
         }
         else

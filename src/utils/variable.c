@@ -5,18 +5,20 @@
 #include <string.h>
 #include <unistd.h>
 
-struct var init_var(char *data, enum var_type type, char *name)
+struct var *init_var(char *data, enum var_type type, char *name)
 {
-    struct var res = { .type = type, .name = name };
+    struct var *res = malloc(sizeof(struct var));
+    res->name = name;
+    res->type = type;
     if (type == INT)
     {
-        res.data.numb = atoi(data);
-        res.len = 1;
+        res->data.numb = atoi(data);
+        res->len = 1;
     }
     else if (type == STRING)
     {
-        res.data.string = data;
-        res.len = 1;
+        res->data.string = data;
+        res->len = 1;
     }
     else
     {
@@ -25,15 +27,25 @@ struct var init_var(char *data, enum var_type type, char *name)
     return res;
 }
 
-struct var set_var(struct var var, char *value)
+void destroy_var(struct var *v)
 {
-    if (var.type == INT)
+    free(v->name);
+    if (v->type == STRING)
     {
-        var.data.numb = atoi(value);
+        free(v->data.string);
     }
-    else if (var.type == STRING)
+    free(v);
+}
+
+struct var *set_var(struct var *var, char *value)
+{
+    if (var->type == INT)
     {
-        var.data.string = value;
+        var->data.numb = atoi(value);
+    }
+    else if (var->type == STRING)
+    {
+        var->data.string = value;
     }
     else
     {
@@ -52,15 +64,35 @@ struct var_holder *init_var_holder(void)
     buffer = getcwd(buffer, 1024);
     vh->env_variables[0] = NULL;
     vh->env_variables[1] = buffer;
-    vh->env_variables[2] = " \t\n";
+    vh->env_variables[2] = malloc(4 * sizeof(char));
+    vh->env_variables[2][0] = ' ';
+    vh->env_variables[2][1] = '\t';
+    vh->env_variables[2][2] = '\n';
+    vh->env_variables[2][3] = '\0';
     return vh;
+}
+
+int unset_variable(size_t index, struct var_holder *vh)
+{
+    destroy_var(vh->user_variables[index]);
+    for (size_t i = index; i < vh->size - 1; i++)
+    {
+        vh->user_variables[i] = vh->user_variables[i + 1];
+    }
+    vh->size--;
+    vh->user_variables = realloc(vh->user_variables, vh->size);
+    return 0;
 }
 
 void destroy_holder(struct var_holder *vh)
 {
+    while (vh->size != 0)
+    {
+        unset_variable(0, vh);
+    }
     free(vh->user_variables);
     free(vh->arg_variables);
-    for (int i = 0; i < NMB_ENV_VARS - 1; i++)
+    for (int i = 0; i < NMB_ENV_VARS; i++)
     {
         free(vh->env_variables[i]);
     }
@@ -72,7 +104,7 @@ size_t access_variable(char *name, struct var_holder *vh)
     size_t i = 0;
     while (i < vh->size)
     {
-        if (strcmp(name, vh->user_variables[i].name) == 0)
+        if (strcmp(name, vh->user_variables[i]->name) == 0)
         {
             return i;
         }
@@ -89,7 +121,7 @@ int set_variable(char *name, char *value, enum var_type type,
     {
         vh->size++;
         vh->user_variables =
-            realloc(vh->user_variables, vh->size * sizeof(struct var));
+            realloc(vh->user_variables, vh->size * sizeof(struct var *));
         vh->user_variables[index] = init_var(value, type, name);
     }
     else
@@ -99,12 +131,12 @@ int set_variable(char *name, char *value, enum var_type type,
     return 0;
 }
 
-struct var get_variable(char *name, struct var_holder *vh)
+struct var *get_variable(char *name, struct var_holder *vh)
 {
     size_t index = access_variable(name, vh);
     if (index == vh->size)
     {
-        // error handling
+        return NULL;
     }
     return vh->user_variables[index];
 }
