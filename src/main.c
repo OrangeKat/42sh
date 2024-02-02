@@ -108,6 +108,37 @@ static int file_allocator(FILE **f, int argc, char **argv, char **buffer)
     return 1;
 }
 
+int loop_parse(struct ast *tree_root, struct lexer *lexer, char *buffer, int ret_val)
+{
+    if (parse(&tree_root, lexer) != PARSER_OK)
+    {
+        if (lexer)
+        {
+            lexer_destroy(lexer);
+        }
+        if (tree_root)
+        {
+            ast_destroy(tree_root);
+        }
+        free(buffer);
+        err(2, "Wrong grammar");
+    }
+
+    ret_val = ast_eval(tree_root);
+    if (!ret_val)
+    {
+        lexer_destroy(lexer);
+        free(buffer);
+        return 1;
+    }
+    if (tree_root)
+    {
+        ast_destroy(tree_root);
+    }
+    tree_root = NULL;
+    return ret_val;
+}
+
 int main(int argc, char **argv)
 {
     FILE *f = NULL;
@@ -134,32 +165,12 @@ int main(int argc, char **argv)
 
     struct lexer *lexer = lexer_genesis(f);
     struct ast *tree_root = NULL;
-    if (parse(&tree_root, lexer) != PARSER_OK)
+    int ret_val = 0;
+    while (lexer->current_tok->type != TOKEN_EOF)
     {
-        if (lexer)
-        {
-            lexer_destroy(lexer);
-        }
-        if (tree_root)
-        {
-            ast_destroy(tree_root);
-        }
-        free(buffer);
-        err(2, "Wrong grammar");
+        ret_val = loop_parse(tree_root, lexer, buffer, ret_val);
     }
 
-    int ret_val = ast_eval(tree_root);
-    if (!ret_val)
-    {
-        lexer_destroy(lexer);
-        free(buffer);
-        return 1;
-    }
-
-    if (tree_root)
-    {
-        ast_destroy(tree_root);
-    }
     lexer_destroy(lexer);
     fclose(f);
     if (tmp)
