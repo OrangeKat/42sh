@@ -4,6 +4,9 @@ SUBDIRS = src \
 debug: CFLAGS+= -g -fsanitize=address
 debug: all
 
+check: CFLAGS+= -fPIC -coverage -O0 -fprofile-arcs -ftest-coverage
+check: LDLIBS+= -lgcov
+
 clean:
 	@rm -rf config.log config.status configure configure~ \
 		install-sh install-sh~ depcomp missing \

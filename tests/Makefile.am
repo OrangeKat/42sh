@@ -51,7 +51,21 @@ TESTS = \
 	./categories/mass_produce/double_quotes_with_escaped_tab.sh \
 	./categories/mass_produce/single_quotes_with_double_quotes_inside.sh \
 	./categories/mass_produce/double_quotes_with_single_quotes_inside.sh \
-	./categories/mass_produce/mix_of_single_and_double_quotes.sh
+	./categories/mass_produce/mix_of_single_and_double_quotes.sh \
+	./categories/mass_produce/double_pipe.sh \
+	./categories/mass_produce/single_pipe.sh \
+	./categories/mass_produce/simple_cd.sh \
+	./categories/mass_produce/complex_cd.sh \
+	./categories/mass_produce/simple_exit.sh \
+	./categories/mass_produce/exit_if.sh \
+	./categories/mass_produce/simple_redir.sh \
+	./categories/mass_produce/simple_while.sh \
+	./categories/mass_produce/simple_until.sh \
+	./categories/mass_produce/simple_reredir.sh \
+	./categories/mass_produce/simple_reverse_redir.sh \
+	./categories/mass_produce/simple_and_redir.sh \
+	./categories/mass_produce/simple_xor_redir.sh \
+	./categories/mass_produce/simple_reverse_and_redir.sh
 
 XFAIL_TESTS= \
 	./categories/echo/fail.sh
