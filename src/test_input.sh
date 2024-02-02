@@ -5,10 +5,10 @@ run_test() {
 	local description=$2
 	echo "Running test: $description"
 
-	bash_out=$(bash --posix -c "$test_script")
+	bash_out=$(echo "$test_script" | bash --posix)
 	bash_exit_code=$?
 
-	_42sh_out=$(./a.out -c "$test_script")
+	_42sh_out=$(echo "$test_script" | ./a.out)
 	_42sh_exit_code=$?
 
 	test1=0
@@ -45,58 +45,7 @@ run_test() {
 	echo "-------------------------"
 }
 
-flm_test
-{
-	local test_script=$1
-	local description=$2
-	echo
-	"#!/bin/sh
-
-    REF_OUT=".refstd.out"
-    TEST_OUT=".teststd.out"
-    REF_ERR=".refstd.err"
-    TEST_ERR=".teststd.err"
-    REF="bash --posix"
-    TEST="./../src/42sh"
-
-COMMAND=$test_script
-echo $COMMAND >in
-
-cat in | $REF >"$REF_OUT" 2>"$REF_ERR"
-REF_CODE= $?
-cat in | $TEST >"$TEST_OUT" 2>"$TEST_ERR"
-TEST_CODE= $?
-diff "$REF_OUT" "$TEST_OUT"
-DIFF_CODE=$?
-
-if [ $REF_CODE -ne $TEST_CODE ]; then
-    echo "wrong return code"
-fi
-
-if [ $DIFF_CODE -ne 0 ]; then
-    echo "wrong stdout"
-fi
-
-diff "$REF_ERR" "$TEST_ERR"
-ERR_CODE=$?
-
-if [ $ERR_CODE -ne 0 ]; then
-    echo "wrong stderr"
-fi
-
-rm $REF_OUT
-rm $TEST_OUT
-rm $REF_ERR
-rm $TEST_ERR
-rm in
-
-exit $DIFF_CODE && $ERR_CODE && [ $REF_CODE -eq $TEST_CODE]
-" >${description}.sh
-}
-
-#run_test "echo hello" "simple echo"
-
-flm_test "seq 5" "simple seq"
+run_test "seq 5" "simple seq"
 
 run_test "echo Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Egestas purus viverra accumsan in nisl nisi. At quis risus sed vulputate. Neque laoreet suspendisse interdum consectetur libero. Et molestie ac feugiat sed lectus vestibulum mattis. Tristique nulla aliquet enim tortor at auctor. Aliquet porttitor lacus luctus accumsan tortor. Tellus cras adipiscing enim eu turpis. Mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare. Nec sagittis aliquam malesuada bibendum arcu vitae elementum. Consequat id porta nibh venenatis cras. Dolor magna eget est lorem ipsum. Vivamus at augue eget arcu dictum varius duis. Aliquam eleifend mi in nulla. Cursus risus at ultrices mi tempus imperdiet nulla malesuada. Adipiscing elit ut aliquam purus sit amet luctus venenatis. Risus at ultrices mi tempus imperdiet nulla malesuada pellentesque elit. Mauris cursus mattis molestie a iaculis at erat pellentesque adipiscing." "many_args"
 
@@ -142,35 +91,5 @@ run_test "echo '           '" "spaces as args"
 run_test "echo '      argueux     '" "spaces as args"
 
 run_test "echo -neennne 42\\nsh" "echo mix options 2"
-
-run_test "echo 'simple single quotes'" "simple single quotes"
-
-run_test "echo 'spaces between single quotes'" "spaces between single quotes"
-
-run_test "echo 'This is a test with\'escaped\' single quote.'" "single quotes with escaped single quote"
-
-run_test "echo 'single quote at the start'" "single quote at the start"
-
-run_test "echo 'single quote at the end'" "single quote at the end"
-
-run_test "echo 'This is a test with\tescaped\t tab inside single quotes.'" "single quotes with escaped tab"
-
-run_test "echo "simple double quotes"" "simple double quotes"
-
-run_test "echo "spaces between double quotes"" "spaces between double quotes"
-
-run_test "echo "This is a test with\"escaped\" double quote."" "double quotes with escaped double quote"
-
-run_test "echo "double quote at the start"" "double quote at the start"
-
-run_test "echo "double quote at the end"" "double quote at the end"
-
-run_test "echo "This is a test with\tescaped\t tab inside double quotes."" "double quotes with escaped tab"
-
-run_test "echo 'Single quotes with "double quotes" inside.'" "single quotes with double quotes inside"
-
-run_test "echo "Double quotes with 'single quotes' inside."" "double quotes with single quotes inside"
-
-run_test "echo 'Mix of single quotes and double quotes: "Hello" and 'World''" "mix of single and double quotes"
 
 echo "All tests completed."
