@@ -128,8 +128,7 @@ int loop_parse(struct ast *tree_root, struct lexer *lexer, char *buffer,
     if (!ret_val)
     {
         ast_destroy(tree_root);
-        lexer_destroy(lexer);
-        return 1;
+        return 0;
     }
     if (tree_root)
     {
@@ -165,8 +164,8 @@ int main(int argc, char **argv)
 
     struct lexer *lexer = lexer_genesis(f);
     struct ast *tree_root = NULL;
-    int ret_val = 0;
-    while (ret_val == 0 && lexer->current_tok->type != TOKEN_EOF)
+    int ret_val = 1;
+    while (ret_val == 1 && lexer->current_tok->type != TOKEN_EOF)
     {
         ret_val = loop_parse(tree_root, lexer, buffer, ret_val);
     }

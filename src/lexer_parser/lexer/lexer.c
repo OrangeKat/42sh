@@ -192,7 +192,7 @@ struct token *lexer_pop(struct lexer *lexer)
         lexer->separator = 0;
     }
 
-    if (lexer->current_tok->type == TOKEN_VAR)
+    if (peek->type == TOKEN_VAR)
     {
         extern struct var_holder *g_vh;
         char *var_name = lexer->current_tok->value;
@@ -203,8 +203,16 @@ struct token *lexer_pop(struct lexer *lexer)
         }
         var_val++;
         set_variable(var_name, var_val, STRING, g_vh);
-        free(lexer_pop(lexer));
-    }
+        free(peek);
 
+        peek = lexer_peek(lexer);
+        lexer->current_tok = peek;
+        lexer->offset = ftell(lexer->input_file);
+        if (lexer->separator)
+        {
+            lexer->offset--;
+            lexer->separator = 0;
+        }
+    }
     return to_pop;
 }

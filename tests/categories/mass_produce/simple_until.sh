@@ -7,7 +7,7 @@
     REF="bash --posix"
     TEST="./../src/42sh"
 
-    COMMAND=until true; do echo true; done
+    COMMAND='until true; do echo true; done'
     echo $COMMAND >in
 
     cat in | $REF >"$REF_OUT" 2>"$REF_ERR"

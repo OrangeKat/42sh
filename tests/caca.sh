@@ -44,39 +44,8 @@ flm_test() {
     rm in
 
     exit \$DIFF_CODE && \$ERR_CODE && [ \$REF_CODE -eq \$TEST_CODE]" >./categories/mass_produce/${description}.sh
-<<<<<<< Updated upstream
 	chmod +x "./categories/mass_produce/${description}.sh"
 	echo "./categories/mass_produce/${description}.sh \\" >>Makefile.am
-=======
-    chmod +x "./categories/mass_produce/${description}.sh"
-    #echo "./categories/mass_produce/${description}.sh \\" >> Makefile.am
->>>>>>> Stashed changes
 }
 
-flm_test "echo hello | tr e a | grep hal" "double_pipe"
-
-flm_test "echo hello | grep hel" "single_pipe"
-
-flm_test "cd ..; pwd" "simple_cd"
-
-flm_test "cd ..; cd ./src; pwd; cd; pwd" "complex_cd"
-
-flm_test "exit 255" "simple_exit"
-
-flm_test "if exit 255; then echo qlqch; fi" "exit_if"
-
-flm_test "echo hello > redir.txt" "simple_redir"
-
-flm_test "while false; do echo hello; done" "simple_while"
-
-flm_test "until true; do echo true; done" "simple_until"
-
-flm_test "echo hello >> redir.txt" "simple_reredir"
-
-flm_test "cat < Makefile.am" "simple_reverse_redir"
-
-flm_test "echo hello >& redir.txt" "simple_and_redir"
-
-flm_test "echo hello <> redir.txt" "simple_xor_redir"
-
-flm_test "cat &< Makefile.am" "simple_reverse_and_redir"
+flm_test 'hi=hello; echo $hi' 'assign_and_use_var'

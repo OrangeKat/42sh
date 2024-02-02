@@ -65,9 +65,30 @@ TESTS = \
 	./categories/mass_produce/simple_reverse_redir.sh \
 	./categories/mass_produce/simple_and_redir.sh \
 	./categories/mass_produce/simple_xor_redir.sh \
-	./categories/mass_produce/simple_reverse_and_redir.sh
+	./categories/mass_produce/simple_reverse_and_redir.sh \
+	./categories/mass_produce/fail_exit.sh \
+	./categories/mass_produce/pipe_fail.sh \
+	./categories/mass_produce/redir_fail.sh \
+	./categories/mass_produce/bad_then_sep.sh \
+	./categories/mass_produce/bad_fi_sep.sh \
+	./categories/mass_produce/no_then.sh \
+	./categories/mass_produce/no_fi.sh \
+	./categories/mass_produce/no_if.sh \
+	./categories/mass_produce/if_elif_else.sh \
+	./categories/mass_produce/bad_udo_sep.sh \
+	./categories/mass_produce/bad_udone_sep.sh \
+	./categories/mass_produce/no_udone.sh \
+	./categories/mass_produce/no_udo.sh \
+	./categories/mass_produce/no_until.sh \
+	./categories/mass_produce/bad_wdo_sep.sh \
+	./categories/mass_produce/bad_wdone_sep.sh \
+	./categories/mass_produce/no_wdone.sh \
+	./categories/mass_produce/no_wdo.sh \
+	./categories/mass_produce/assign_and_use_var.sh \
+	./categories/mass_produce/no_while.sh
 
 XFAIL_TESTS= \
 	./categories/echo/fail.sh
 
 check-local:
+	

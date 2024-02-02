@@ -7,7 +7,7 @@
     REF="bash --posix"
     TEST="./../src/42sh"
 
-    COMMAND='if exit 255; then echo qlqch; fi'
+    COMMAND='while true do echo hello; done'
     echo $COMMAND >in
 
     cat in | $REF >"$REF_OUT" 2>"$REF_ERR"

@@ -133,7 +133,7 @@ static int ast_eval_list(struct ast *ast)
 
 static int ast_eval_if(struct ast *ast)
 {
-    if (ast_eval(ast->children[0]))
+    if (ast_eval(ast->children[0]) > 0)
     {
         return ast_eval(ast->children[1]);
     }
@@ -167,7 +167,7 @@ static int ast_eval_not(struct ast *ast)
 static int ast_eval_while(struct ast *ast)
 {
     int ret = 1;
-    while (ast_eval(ast->children[0]))
+    while (ast_eval(ast->children[0]) > 0)
     {
         ret = ast_eval(ast->children[1]);
     }
@@ -177,7 +177,7 @@ static int ast_eval_while(struct ast *ast)
 static int ast_eval_until(struct ast *ast)
 {
     int ret = 1;
-    while (!ast_eval(ast->children[0]))
+    while ((ast_eval(ast->children[0]) == 0))
     {
         ret = ast_eval(ast->children[1]);
     }
@@ -187,7 +187,7 @@ static int ast_eval_until(struct ast *ast)
 static int ast_eval_and(struct ast *ast)
 {
     int ret;
-    if ((ret = ast_eval(ast->children[0])))
+    if ((ret = ast_eval(ast->children[0]) > 0))
     {
         return ast_eval(ast->children[1]);
     }
@@ -197,7 +197,7 @@ static int ast_eval_and(struct ast *ast)
 static int ast_eval_or(struct ast *ast)
 {
     int ret;
-    if (!(ret = ast_eval(ast->children[0])))
+    if (!(ret = ast_eval(ast->children[0]) > 0))
     {
         ret = ast_eval(ast->children[1]);
     }

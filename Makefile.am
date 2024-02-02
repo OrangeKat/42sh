@@ -4,7 +4,7 @@ SUBDIRS = src \
 debug: CFLAGS+= -g -fsanitize=address
 debug: all
 
-check: CFLAGS+= -g -fPIC -coverage
+check: CFLAGS+= -g -fPIC --coverage
 check: LDLIBS+= -lgcov
 
 clean:
@@ -28,6 +28,15 @@ clean:
 		src/*/*/.dirstamp \
 		test-driver \
 		tests/test-suite.log \
-		tests/*/*/*.sh.log tests/*/*/*.sh.trs
+		tests/*/*/*.sh.log tests/*/*/*.sh.trs \
+		src/*/*/*.gcno \
+		src/*/*.gcno \
+		src/*.gcno \
+		src/*/*/*.gcda \
+		src/*/*.gcda \
+		src/*.gcda \
+		*.gcda \
+		*.gcno
+
 
 .PHONY = clean debug

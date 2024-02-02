@@ -235,6 +235,47 @@ static enum parser_status parse_while(struct lexer *lexer, struct ast **node)
 
     return PARSER_OK;
 }
+/*
+    elif
+*/
+static enum parser_status parse_elif(struct lexer *lexer, struct ast **node)
+{
+    struct ast *new_if = ast_genesis(AST_IF);
+    *node = new_if;
+    free_token(lexer_pop(lexer));
+
+    struct ast *condition_list = NULL;
+    if (parse_compound_list(lexer, &condition_list) == PARSER_NOK)
+    {
+        ast_destroy(condition_list);
+        return PARSER_NOK;
+    }
+    new_if = add_child_to_parent(new_if, condition_list);
+
+    struct ast *then_list = NULL;
+    if (lexer->current_tok->type != TOKEN_THEN)
+    {
+        return PARSER_NOK;
+    }
+    free_token(lexer_pop(lexer));
+
+    if (parse_compound_list(lexer, &then_list) == PARSER_NOK)
+    {
+        ast_destroy(then_list);
+        return PARSER_NOK;
+    }
+    new_if = add_child_to_parent(new_if, then_list);
+
+    struct ast *else_clause = NULL;
+    if (parse_else(lexer, &else_clause) == PARSER_NOK)
+    {
+        ast_destroy(else_clause);
+        return PARSER_NOK;
+    }
+    new_if = add_child_to_parent(new_if, else_clause);
+
+    return PARSER_OK;
+}
 
 /*
     else_clause =
@@ -242,11 +283,11 @@ static enum parser_status parse_while(struct lexer *lexer, struct ast **node)
     |   'elif' = rule_if
     ;
 */
-static enum parser_status parse_else(struct lexer *lexer, struct ast **node)
+enum parser_status parse_else(struct lexer *lexer, struct ast **node)
 {
     if (lexer->current_tok->type == TOKEN_ELIF)
     {
-        return parse_if(lexer, node);
+        return parse_elif(lexer, node);
     }
     else if (lexer->current_tok->type == TOKEN_ELSE)
     {

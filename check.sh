@@ -1,6 +1,5 @@
 autoreconf --install
-./configure
-clear
+./configure CFLAGS="--coverage -fPIC" LDLIBS='-lgcov'
+make
 make check
-gcovr
-make clean
+gcovr --root src/
