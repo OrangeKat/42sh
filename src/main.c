@@ -125,10 +125,11 @@ int loop_parse(struct ast *tree_root, struct lexer *lexer, char *buffer,
         err(2, "Wrong grammar");
     }
 
-    ret_val = !ast_eval(tree_root);
+    ret_val = ast_eval(tree_root);
     if (!ret_val)
     {
         ast_destroy(tree_root);
+        lexer_destroy(lexer);
         return 1;
     }
     if (tree_root)
@@ -180,13 +181,17 @@ int main(int argc, char **argv)
     free(buffer);
     ast_destroy(tree_root);
     destroy_holder(g_vh);
+    if (!ret_val)
+    {
+        return 1;
+    }
     if (ret_val < -1)
     {
         return ret_val + 257;
     }
-    if (ret_val != -1)
+    if (ret_val != 127)
     {
-        return ret_val;
+        return 0;
     }
     err(127, "something went wrong when eval do did done his thing :C");
 }
