@@ -108,7 +108,8 @@ static int file_allocator(FILE **f, int argc, char **argv, char **buffer)
     return 1;
 }
 
-int loop_parse(struct ast *tree_root, struct lexer *lexer, char *buffer, int ret_val)
+int loop_parse(struct ast *tree_root, struct lexer *lexer, char *buffer,
+               int ret_val)
 {
     if (parse(&tree_root, lexer) != PARSER_OK)
     {
