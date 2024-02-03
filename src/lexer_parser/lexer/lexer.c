@@ -201,6 +201,7 @@ struct token *lexer_pop(struct lexer *lexer)
         {
             var_val++;
         }
+        *var_val = '\0';
         var_val++;
         set_variable(var_name, var_val, STRING, g_vh);
         free(peek);
