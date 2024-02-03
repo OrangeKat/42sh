@@ -15,6 +15,24 @@ struct lexer *lexer_genesis(FILE *input_file)
     new->separator = 0;
     new->current_tok = parse_input_for_tok(new);
     new->offset = ftell(input_file);
+    if (new->current_tok->type == TOKEN_VAR)
+    {
+        extern struct var_holder *g_vh;
+        char *var_name = new->current_tok->value;
+        char *var_val = var_name;
+        for (size_t i = 0; var_name[i] != '='; i++)
+        {
+            var_val++;
+        }
+        *var_val = '\0';
+        var_val++;
+        set_variable(var_name, var_val, STRING, g_vh);
+        free(new->current_tok);
+
+        new->current_tok = parse_input_for_tok(new);
+        new->offset = ftell(input_file);
+    }
+
     if (new->separator)
     {
         new->offset--;

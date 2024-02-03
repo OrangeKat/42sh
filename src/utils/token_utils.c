@@ -52,6 +52,7 @@ int set_token_var(struct token *res, char *str)
             if (str[i + 1] != '\0')
             {
                 res->type = TOKEN_VAR;
+                res->value = str;
                 return 1;
             }
         }

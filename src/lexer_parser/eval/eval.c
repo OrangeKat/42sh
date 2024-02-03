@@ -71,21 +71,21 @@ int cmd_handler(char **data, size_t size)
     }
     else if (strcmp(data[0], "echo") == 0)
     {
-        int res = !echo(data, size);
+        int res = !echo(data_exp, size);
         fflush(stdout);
         free(data_exp);
         return res;
     }
     else if (strcmp(data[0], "exit") == 0)
     {
-        int res = bin_exit(data, size);
+        int res = bin_exit(data_exp, size);
         fflush(stdout);
         free(data_exp);
         return res;
     }
     else if (strcmp(data[0], "cd") == 0)
     {
-        int res = cd(data, size);
+        int res = cd(data_exp, size);
         fflush(stdout);
         free(data_exp);
         return res;
@@ -93,7 +93,7 @@ int cmd_handler(char **data, size_t size)
     else
     {
         int status = 0;
-        execute_cmd(data, &status);
+        execute_cmd(data_exp, &status);
         free(data_exp);
         return status == 127 ? -1 : 1;
     }
