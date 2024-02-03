@@ -7,7 +7,8 @@ TEST_ERR=".teststd.err"
 REF="bash --posix"
 TEST="./../src/42sh"
 
-COMMAND='cd ..; cd ./src; pwd; cd; pwd'
+#put the command to test here in quotes (double or single idk yet)
+COMMAND='cd src ; pwd ; cd - ; pwd'
 echo $COMMAND >in
 
 cat in | $REF >"$REF_OUT" 2>"$REF_ERR"

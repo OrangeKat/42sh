@@ -7,13 +7,14 @@ TEST_ERR=".teststd.err"
 REF="bash --posix"
 TEST="./../src/42sh"
 
-COMMAND='cd ..; cd ./src; pwd; cd; pwd'
+#put the command to test here in quotes (double or single idk yet)
+COMMAND='echo -e "je vais le fichier\tcaca.sh\tje le deteste"'
 echo $COMMAND >in
 
 cat in | $REF >"$REF_OUT" 2>"$REF_ERR"
-REF_CODE=$?
+REF_CODE= $?
 cat in | $TEST >"$TEST_OUT" 2>"$TEST_ERR"
-TEST_CODE=$?
+TEST_CODE= $?
 diff "$REF_OUT" "$TEST_OUT"
 DIFF_CODE=$?
 

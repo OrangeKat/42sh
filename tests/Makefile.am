@@ -2,6 +2,7 @@ TESTS = \
 	./categories/echo/command1.sh \
 	./categories/echo/command2.sh \
 	./categories/echo/command3.sh \
+	./categories/echo/lotsofexpands.sh \
 	./categories/echo/fail.sh \
 	./categories/echo/input1.sh \
 	./categories/echo/input2.sh \
@@ -55,6 +56,7 @@ TESTS = \
 	./categories/mass_produce/double_pipe.sh \
 	./categories/mass_produce/single_pipe.sh \
 	./categories/mass_produce/simple_cd.sh \
+	./categories/mass_produce/cddash.sh \
 	./categories/mass_produce/complex_cd.sh \
 	./categories/mass_produce/simple_exit.sh \
 	./categories/mass_produce/exit_if.sh \
