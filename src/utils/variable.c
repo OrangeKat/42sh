@@ -35,6 +35,7 @@ void destroy_var(struct var *v)
 
 struct var *set_var(struct var *var, char *value)
 {
+    free(var->name);
     if (var->type == INT)
     {
         var->data.numb = atoi(value);
