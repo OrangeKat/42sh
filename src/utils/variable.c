@@ -30,10 +30,6 @@ struct var *init_var(char *data, enum var_type type, char *name)
 void destroy_var(struct var *v)
 {
     free(v->name);
-    if (v->type == STRING)
-    {
-        free(v->data.string);
-    }
     free(v);
 }
 
