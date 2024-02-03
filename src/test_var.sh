@@ -1,0 +1,2 @@
+hi=hello
+echo $hi

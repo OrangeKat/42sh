@@ -85,6 +85,9 @@ TESTS = \
 	./categories/mass_produce/no_wdone.sh \
 	./categories/mass_produce/no_wdo.sh \
 	./categories/mass_produce/assign_and_use_var.sh \
+	./categories/mass_produce/reassign_and_use_var.sh \
+	./categories/mass_produce/and.sh \
+	./categories/mass_produce/or.sh \
 	./categories/mass_produce/no_while.sh
 
 XFAIL_TESTS= \

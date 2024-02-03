@@ -1,1 +1,0 @@
-./categories/mass_produce/simple_and_redir.sh: line 10: hello: command not found

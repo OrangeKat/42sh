@@ -36,6 +36,7 @@ clean:
 		src/*/*.gcda \
 		src/*.gcda \
 		*.gcda \
+		tests/redir.txt \
 		*.gcno
 
 

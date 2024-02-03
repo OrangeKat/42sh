@@ -48,4 +48,5 @@ flm_test() {
 	echo "./categories/mass_produce/${description}.sh \\" >>Makefile.am
 }
 
-flm_test 'hi=hello; echo $hi' 'assign_and_use_var'
+flm_test 'echo hello && echo hi' 'and'
+flm_test 'echo hello || echo hi' 'or'

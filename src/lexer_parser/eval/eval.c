@@ -13,7 +13,7 @@
 
 static char **expand_vars(char **data, size_t size)
 {
-    char **res = malloc(sizeof(char *) * size);
+    char **res = malloc(sizeof(char *) * (size + 1));
     for (size_t i = 0; i < size; i++)
     {
         if (*data[i] == '$')
@@ -30,6 +30,7 @@ static char **expand_vars(char **data, size_t size)
             res[i] = data[i];
         }
     }
+    res[size] = NULL;
     return res;
 }
 
